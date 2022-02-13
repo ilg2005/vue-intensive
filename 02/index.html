@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Vue Basics</title>
+    <link rel="stylesheet" href="theme.css"/>
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+<div class="container" id="app">
+    <div class="card">
+        <h1 :style="{
+            color: inputValue.length > 3 ? 'green' : '',
+            fontSize: inputValue.length > 3 ? '2rem' : ''
+        }"
+        >{{ title }}</h1>
+        <div class="form-control">
+            <input type="text"
+                   :style="{color:inputColor}"
+                   :placeholder="placeholderString"
+                   v-model="inputValue"
+                   @keyup.enter="addNote"
+            />
+            <!--
+                                :value="inputValue"
+                                @input="inputChangeHandler"
+             -->
+        </div>
+        <div>
+            <button class="btn primary" @click="addNote">Добавить</button>
+        </div>
+        <hr>
+        <ul class="list" v-if="notes.length !== 0">
+
+            <li class="list-item"
+                v-for="(note, idx) in notes"
+            >
+                <!--
+                                <span :class="note.length > 5 ? 'danger' : ''">
+                                    {{ idx + 1 }}. {{ note.toUpperCase() }}
+                                </span>
+                -->
+<!--                <span :class="{
+                    'danger': note.length > 5
+                }">
+                    {{ idx + 1 }}. {{ note.toUpperCase() }}
+                </span>-->
+                <span :class="['bold', {'danger': note.length > 5}]">
+                    {{ idx + 1 }}. {{ note.toUpperCase() }}
+                </span>
+                <div>
+                    <button class="btn danger" @click="removeNote(idx)">Удалить</button>
+                </div>
+                <hr>
+            </li>
+            <hr/>
+            <li>
+                <strong>Общее количество заметок: {{ notes.length }} | Удвоенное: {{ doubleCountComputed }}</strong>
+            </li>
+        </ul>
+        <div v-else>
+            Заметок пока нет
+        </div>
+    </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
