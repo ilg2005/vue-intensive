@@ -174,3 +174,7 @@ h3 {
 .list-item:hover {
     color: red;
 }
+
+.list-item input:focus {
+    background-color:  lightgreen;
+}
