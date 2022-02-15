@@ -31,6 +31,7 @@ const App = {
         this.activeIndex += 1
       if (this.activeIndex === this.steps.length) {
         this.isFinished = true
+        this.activeIndex -= 1
       }
 
     },
