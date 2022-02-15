@@ -13,8 +13,8 @@
       <h1>План по изучению Vue.js</h1>
 
       <div class="steps">
-        <div class="steps-content">
-            {{ steps[activeIndex].text }}
+        <div class="steps-content"> Текст
+<!--            {{ steps[activeIndex].text }}-->
         </div>
         <ul class="steps-list">
           <li
@@ -30,14 +30,23 @@
               <span>{{ i + 1 }}</span> {{ step.title }}
           </li>
         </ul>
-        <div>
+        <div v-if="!isFinished">
           <button
                   class="btn"
                   @click="prev"
                   :disabled="!activeIndex"
           >Назад</button>
-          <button class="btn primary">Вперед</button>
+          <button
+                  class="btn primary"
+                  @click="nextOrFinish"
+          >{{ isLastStep ? 'Закончить' : 'Вперед' }}</button>
         </div>
+          <div v-else>
+              <button
+                      class="btn"
+                      @click="reset"
+              >Начать заново</button>
+          </div>
       </div>
     </div>
   </div>
