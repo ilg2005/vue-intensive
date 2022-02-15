@@ -31,7 +31,11 @@
           </li>
         </ul>
         <div>
-          <button class="btn" :disabled="!activeIndex">Назад</button>
+          <button
+                  class="btn"
+                  @click="prev"
+                  :disabled="!activeIndex"
+          >Назад</button>
           <button class="btn primary">Вперед</button>
         </div>
       </div>
