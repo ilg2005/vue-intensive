@@ -1,18 +1,45 @@
 <template>
   <div class="card">
-    <h3> Новость </h3>
-    <p v-if="isOpen">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto cumque ex, excepturi illum
-      neque non quia similique tenetur vitae voluptatem. Accusantium adipisci doloremque magnam quod.</p>
-    <button class="btn" @click="isOpen = !isOpen">Открыть</button>
+    <h3> {{ id }}. {{ title }} </h3>
+    <p v-if="itemOpen"> {{ content }}</p>
+    <button class="btn" @click="open">{{ itemOpen ? 'Закрыть' : 'Открыть' }}</button>
   </div>
 </template>
 
 <script>
 export default {
   name: "AppNews",
+  // props: ['title'],
+  props: {
+    title: {
+      type: String,
+    },
+    content: {
+      type: String,
+    },
+    id: {
+      type: Number,
+    },
+    isOpen: {
+      type: Boolean,
+      required: false,
+      default: false,
+      validator(value) {
+        return value === true || value === false
+      }
+    }
+  },
   data() {
     return {
-      isOpen: false
+      itemOpen: false,
+    }
+  },
+  methods: {
+    open() {
+      this.itemOpen = !this.itemOpen
+      if (this.itemOpen) {
+        this.$emit('open')
+      }
     }
   }
 }

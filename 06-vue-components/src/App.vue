@@ -2,21 +2,16 @@
   <div class="container pt-1">
     <div class="card">
       <h2>Актуальные новости на {{ now }}</h2>
+      <span>Открыто: {{ openRate }}</span>
       <hr>
-<!--
-      <ul>
-        <li
-            class="list-item"
-            v-for="(event, idx) in news"
-            :key="event"
-        > {{ ++idx + ') ' + event }}
-
-        </li>
-      </ul>
--->
-      <app-news></app-news>
-      <app-news></app-news>
-      <app-news></app-news>
+      <app-news v-for="event in news"
+                :key="event.id"
+                :title="event.title"
+                :id="event.id"
+                :content="event.content"
+                :isOpen="event.isOpen"
+                @open="openRate++"
+      ></app-news>
     </div>
 
 
@@ -34,10 +29,27 @@ export default {
   data() {
     return {
       now: new Date().toLocaleDateString(),
+      openRate: 0,
       news: [
-        'Силуанов назвал сроки запуска проектов с использованием средств ФНБ',
-        'Определился соперник сборной России по хоккею в полуфинале Олимпиады',
-        'Vue 3 успешно работает'
+        {
+          title: 'Силуанов назвал сроки запуска проектов с использованием средств ФНБ',
+          id: 1,
+          isOpen: false,
+          content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, dolore?'
+        },
+        {
+          title: 'Определился соперник сборной России по хоккею в полуфинале Олимпиады',
+          id: 2,
+          isOpen: false,
+          content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, dolore?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, dolore?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, dolore?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, dolore?'
+        },
+        {
+          title: 'Vue 3 успешно работает',
+          id: 3,
+          isOpen: false,
+          content: 'Lorem ipsum'
+        },
+
       ]
     }
   }
