@@ -7,6 +7,8 @@
       <p> {{ content }}</p>
       <app-button v-if="!wasRead" color="primary" @action="mark">Прочесть новость</app-button>
       <app-button color="danger" v-if="wasRead" @action="$emit('unmark', id)">Отметить непрочитанной</app-button>
+      <hr>
+      <app-news-list></app-news-list>
 
     </div>
   </div>
@@ -14,9 +16,11 @@
 
 <script>
 import AppButton from "@/components/AppButton";
+import AppNewsList from "@/components/AppNewsList";
+
 export default {
   name: "AppNews",
-  components: {AppButton},
+  components: {AppButton, AppNewsList},
   // props: ['title'],
   props: {
     wasRead: Boolean,
