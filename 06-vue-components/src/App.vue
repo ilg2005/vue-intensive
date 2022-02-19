@@ -1,87 +1,42 @@
 <template>
   <div class="container pt-1">
     <div class="card">
-      <h2>Актуальные новости на {{ now }}</h2>
-      <span>Открыто: <strong>{{ openRate }}</strong> | Прочитано: <strong>{{ readRate }}</strong></span>
-      <hr>
-      <app-news v-for="event in news"
-                :key="event.id"
-                :title="event.title"
-                :id="event.id"
-                :content="event.content"
-                :isOpen="event.isOpen"
-                :was-read="event.wasRead"
-                @open="openRate++"
-                @read-news="readNews"
-                @unmark="unreadNews"
-      ></app-news>
+      <h2>Slots</h2>
     </div>
+
+    <app-list>
+      <template #default="{idx, iter}">
+        <span style="color: orange;"><strong>{{ ++idx }} - </strong> Item: {{iter}}</span>
+      </template>
+    </app-list>
+
+    <app-block>
+      <template #footer>
+        <hr>
+        <p>Это футер</p>
+      </template>
+      <p>Текст для нового блока</p>
+
+      <template v-slot:header>
+        <h3>Это заголовок!</h3>
+      </template>
+
+    </app-block>
 
 
   </div>
 </template>
 
 <script>
-
-import AppNews from "@/components/AppNews";
+import AppBlock from "@/components/AppBlock";
+import AppList from "@/components/AppList";
 
 export default {
-
   name: 'App',
-  components: {AppNews},
-  data() {
-    return {
-      now: new Date().toLocaleDateString(),
-      openRate: 0,
-      readRate: 0,
-      news: [
-        {
-          title: 'Силуанов назвал сроки запуска проектов с использованием средств ФНБ',
-          id: 1,
-          isOpen: false,
-          wasRead: false,
-          content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, dolore?'
-        },
-        {
-          title: 'Определился соперник сборной России по хоккею в полуфинале Олимпиады',
-          id: 2,
-          isOpen: false,
-          wasRead: false,
-          content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, dolore?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, dolore?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, dolore?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, dolore?'
-        },
-        {
-          title: 'Vue 3 успешно работает',
-          id: 3,
-          isOpen: false,
-          wasRead: false,
-          content: 'Lorem ipsum'
-        },
-
-      ]
-    }
-  },
-  provide() {
-    return {
-      title: 'Список всех новостей: ',
-      news: this.news
-    }
-  },
-  methods: {
-    readNews(id) {
-      const idx = this.news.findIndex(news => news.id === id)
-      this.news[idx].wasRead = true
-      this.readRate++
-    },
-    unreadNews(id) {
-      const idx = this.news.findIndex(news => news.id === id)
-      this.news[idx].wasRead = false
-      this.readRate--
-
-    }
-  }
+  components: {AppBlock, AppList}
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
