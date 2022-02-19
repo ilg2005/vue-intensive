@@ -32,9 +32,23 @@ export default {
       active: 'one',
     }
   },
+  mounted() {
+    setTimeout(() => {
+      this.componentName = 'changedComponentName'
+    }, 1500)
+  },
   computed: {
-    componentName() {
+   /* componentName() {
       return 'app-text-' + this.active
+    },*/
+
+    componentName : {
+      get() {
+        return 'app-text-' + this.active
+      },
+      set(value) {
+        console.log('componentName - ', value)
+      }
     },
 
     oneColor() {
