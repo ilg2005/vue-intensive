@@ -2,6 +2,13 @@
   <div class="container">
     <form class="card" @submit.prevent="submitHandler">
       <h1>Анкета на Vue разработчика!</h1>
+
+      <app-input label="Как тебя зовут?"
+                 placeholder="Введи имя"
+                 :error="errors.nameInput"
+                 v-model.trim="nameInput"
+      ></app-input>
+
       <div class="form-control">
         <label for="name">Как тебя зовут?</label>
         <input
@@ -61,7 +68,7 @@
       <div class="form-checkbox">
         <span class="label">Правила компании</span>
         <div class="checkbox">
-          <label><input type="checkbox" v-model="agree" /> Согласен с правилами компании</label>
+          <label><input type="checkbox" v-model="agree"/> Согласен с правилами компании</label>
         </div>
       </div>
 
@@ -71,17 +78,22 @@
 </template>
 
 <script>
+import AppInput from "./AppInput";
+
 export default {
+  components: {AppInput},
   data() {
     return {
       name: '',
+      nameInput: '',
       age: 23,
       city: 'msk',
       relocate: 'yes',
       skills: [],
       agree: false,
       errors: {
-        name: null
+        name: null,
+        nameInput: null,
       }
     }
   },
@@ -95,11 +107,19 @@ export default {
         this.errors.name = null
       }
 
+      if (this.nameInput.length === 0) {
+        this.errors.nameInput = 'Имя должно быть заполнено'
+        isValid = false;
+      } else {
+        this.errors.nameInput = null
+      }
+
       return isValid
     },
     submitHandler() {
       if (this.isFormValid()) {
         console.group('Form Data:')
+        console.log('name from AppInput: ', this.nameInput)
         console.log('name: ', this.name)
         console.log('age: ', this.age)
         console.log('city: ', this.city)
@@ -117,6 +137,7 @@ export default {
 small {
   color: red;
 }
+
 .form-control input.invalid {
   border-color: #e53935;
 }
