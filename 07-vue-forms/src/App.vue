@@ -1,15 +1,24 @@
 <template>
   <div class="container">
-    <form class="card">
+    <form class="card" @submit.prevent="submitHandler">
       <h1>Анкета на Vue разработчика!</h1>
       <div class="form-control">
         <label for="name">Как тебя зовут?</label>
-        <input type="text" id="name" placeholder="Введи имя">
+        <input
+            type="text"
+            id="name"
+            v-model.trim="name"
+            placeholder="Введи имя"
+        >
       </div>
 
       <div class="form-control">
         <label for="age">Выбери возраст</label>
-        <input type="number" id="age" value="20">
+        <input
+            type="number"
+            id="age"
+            v-model.number="age"
+        >
       </div>
 
       <div class="form-control">
@@ -52,7 +61,22 @@
 </template>
 
 <script>
-  export default {}
+  export default {
+    data() {
+      return {
+        name: '',
+        age: 23,
+      }
+    },
+    methods: {
+      submitHandler() {
+        console.group('Form Data:')
+        console.log('name: ', this.name)
+        console.log('age: ', this.age)
+        console.groupEnd()
+      }
+    }
+  }
 </script>
 
 <style>
