@@ -9,7 +9,9 @@
             id="name"
             v-model.trim="name"
             placeholder="Введи имя"
+            :class="errors.name && !this.name.length ? 'invalid' : ''"
         >
+        <small v-if="errors.name && !this.name.length">{{ errors.name }}</small>
       </div>
 
       <div class="form-control">
@@ -75,26 +77,47 @@ export default {
       name: '',
       age: 23,
       city: 'msk',
-      relocate: null,
+      relocate: 'yes',
       skills: [],
-      agree: false
+      agree: false,
+      errors: {
+        name: null
+      }
     }
   },
   methods: {
+    isFormValid() {
+      let isValid = true
+      if (this.name.length === 0) {
+        this.errors.name = 'Имя должно быть заполнено'
+        isValid = false;
+      } else {
+        this.errors.name = null
+      }
+
+      return isValid
+    },
     submitHandler() {
-      console.group('Form Data:')
-      console.log('name: ', this.name)
-      console.log('age: ', this.age)
-      console.log('city: ', this.city)
-      console.log('Relocation: ', this.relocate)
-      console.log('skills: ', this.skills)
-      console.log('agree: ', this.agree)
-      console.groupEnd()
+      if (this.isFormValid()) {
+        console.group('Form Data:')
+        console.log('name: ', this.name)
+        console.log('age: ', this.age)
+        console.log('city: ', this.city)
+        console.log('Relocation: ', this.relocate)
+        console.log('skills: ', this.skills)
+        console.log('agree: ', this.agree)
+        console.groupEnd()
+      }
     }
   }
 }
 </script>
 
 <style>
-
+small {
+  color: red;
+}
+.form-control input.invalid {
+  border-color: #e53935;
+}
 </style>
