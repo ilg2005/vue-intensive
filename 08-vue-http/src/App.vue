@@ -21,6 +21,7 @@ export default {
   methods: {
     createPerson() {
       console.log('name: ', this.name)
+      // https://vue-with-http-c754b-default-rtdb.europe-west1.firebasedatabase.app/
     }
   }
 }
