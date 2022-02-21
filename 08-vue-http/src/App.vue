@@ -57,8 +57,6 @@ export default {
         ...data[key]
       }))
 
-      console.log(this.people)
-
     }
   }
 }
