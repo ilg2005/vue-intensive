@@ -19,9 +19,22 @@ export default {
     }
   },
   methods: {
-    createPerson() {
-      console.log('name: ', this.name)
-      // https://vue-with-http-c754b-default-rtdb.europe-west1.firebasedatabase.app/
+   async createPerson() {
+      const url = 'https://vue-with-http-c754b-default-rtdb.europe-west1.firebasedatabase.app/people.json'
+     const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          firstName: this.name
+        })
+      })
+
+     const firebaseData =await response.json()
+     console.log(firebaseData)
+     this.name = ''
+
     }
   }
 }
