@@ -12,6 +12,7 @@
     <div class="card">
       <app-people-list :people="people"
                        @load="loadPeople"
+                       @delete="deletePerson"
       ></app-people-list>
     </div>
   </div>
@@ -23,6 +24,11 @@ import axios from 'axios'
 
 export default {
   components: {AppPeopleList},
+
+  mounted() {
+    this.loadPeople()
+  },
+
   data() {
     return {
       name: '',
@@ -31,6 +37,12 @@ export default {
     }
   },
   methods: {
+    async deletePerson(personID) {
+
+      await axios.delete(`https://vue-with-http-c754b-default-rtdb.europe-west1.firebasedatabase.app/people/${personID}.json`)
+      this.people = this.people.filter(objPerson => objPerson.id !== personID)
+
+    },
 
     async createPerson() {
 
@@ -46,17 +58,22 @@ export default {
 
       const firebaseData = await response.json()
       console.log(firebaseData)
+      this.people.push({
+        firstName: this.name,
+        id: firebaseData.name
+      })
       this.name = ''
-
     },
+
     async loadPeople() {
 
-      const {data} = await axios.get(this.url)
-      this.people = Object.keys(data).map(key => ({
-        id: key,
-        ...data[key]
-      }))
-
+      if (this.people.length) {
+        const {data} = await axios.get(this.url)
+        this.people = Object.keys(data).map(key => ({
+          id: key,
+          ...data[key]
+        }))
+      }
     }
   }
 }
