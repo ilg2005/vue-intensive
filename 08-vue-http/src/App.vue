@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <app-alert :alert="alert" @close="alert = null"></app-alert>
+
     <form class="card" @submit.prevent="createPerson">
       <h2>Работа с базой данных</h2>
       <div class="form-control">
@@ -20,10 +22,11 @@
 
 <script>
 import AppPeopleList from "@/components/AppPeopleList";
+import AppAlert from "@/components/AppAlert";
 import axios from 'axios'
 
 export default {
-  components: {AppPeopleList},
+  components: {AppPeopleList, AppAlert},
 
   mounted() {
     this.loadPeople()
@@ -34,6 +37,7 @@ export default {
       name: '',
       people: [],
       url: 'https://vue-with-http-c754b-default-rtdb.europe-west1.firebasedatabase.app/people.json',
+      alert: null,
     }
   },
   methods: {
@@ -66,14 +70,23 @@ export default {
     },
 
     async loadPeople() {
-
-      if (this.people.length) {
+      try {
         const {data} = await axios.get(this.url)
+        if (!data) {
+          throw new Error('Список людей пуст')
+        }
         this.people = Object.keys(data).map(key => ({
           id: key,
           ...data[key]
         }))
+      } catch (e) {
+        this.alert = {
+          type: 'danger',
+          title: 'Ошибка!',
+          text: e.message
+        }
       }
+
     }
   }
 }
