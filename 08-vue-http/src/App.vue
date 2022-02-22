@@ -43,8 +43,24 @@ export default {
   methods: {
     async deletePerson(personID) {
 
-      await axios.delete(`https://vue-with-http-c754b-default-rtdb.europe-west1.firebasedatabase.app/people/${personID}.json`)
-      this.people = this.people.filter(objPerson => objPerson.id !== personID)
+      try {
+        const name = this.people.find(objPerson => objPerson.id === personID).firstName
+        await axios.delete(`https://vue-with-http-c754b-default-rtdb.europe-west1.firebasedatabase.app/people/${personID}.json`)
+        this.people = this.people.filter(objPerson => objPerson.id !== personID)
+        this.alert = {
+          type: 'primary',
+          title: 'Успешно!',
+          text: `Пользователь ${name} был удален.`
+        }
+      } catch (e) {
+        this.alert = {
+          type: 'danger',
+          title: 'Ошибка!',
+          text: e.message
+        }
+      }
+
+
 
     },
 
