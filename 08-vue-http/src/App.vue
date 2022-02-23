@@ -11,7 +11,8 @@
       <button class="btn primary" :disabled="!name.length">Создать</button>
     </form>
     <hr>
-    <div class="card">
+    <app-loader v-if="isLoading"></app-loader>
+    <div class="card" v-else>
       <app-people-list :people="people"
                        @load="loadPeople"
                        @delete="deletePerson"
@@ -23,10 +24,11 @@
 <script>
 import AppPeopleList from "@/components/AppPeopleList";
 import AppAlert from "@/components/AppAlert";
+import AppLoader from "@/components/AppLoader";
 import axios from 'axios'
 
 export default {
-  components: {AppPeopleList, AppAlert},
+  components: {AppPeopleList, AppAlert, AppLoader},
 
   mounted() {
     this.loadPeople()
@@ -38,6 +40,7 @@ export default {
       people: [],
       url: 'https://vue-with-http-c754b-default-rtdb.europe-west1.firebasedatabase.app/people.json',
       alert: null,
+      isLoading: false
     }
   },
   methods: {
@@ -59,7 +62,6 @@ export default {
           text: e.message
         }
       }
-
 
 
     },
@@ -85,23 +87,32 @@ export default {
       this.name = ''
     },
 
-    async loadPeople() {
-      try {
-        const {data} = await axios.get(this.url)
-        if (!data) {
-          throw new Error('Список людей пуст')
+    loadPeople() {
+      this.isLoading = true
+
+      setTimeout(async () => {
+        try {
+          const {data} = await axios.get(this.url)
+          if (!data) {
+            throw new Error('Список людей пуст')
+          }
+
+          this.people = Object.keys(data).map(key => ({
+            id: key,
+            ...data[key]
+          }))
+
+          this.isLoading = false
+        } catch (e) {
+          this.isLoading = false
+          this.alert = {
+            type: 'danger',
+            title: 'Ошибка!',
+            text: e.message
+          }
         }
-        this.people = Object.keys(data).map(key => ({
-          id: key,
-          ...data[key]
-        }))
-      } catch (e) {
-        this.alert = {
-          type: 'danger',
-          title: 'Ошибка!',
-          text: e.message
-        }
-      }
+
+      }, 1500)
 
     }
   }
