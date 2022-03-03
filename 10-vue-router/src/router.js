@@ -7,6 +7,8 @@ import MailView from "@/views/MailView";
 
 export default createRouter({
     history: createWebHistory(),
+    linkActiveClass: 'active',
+    linkExactActiveClass: 'active',
     routes: [
         {
             path: '/login',
