@@ -3,6 +3,7 @@ import LoginView from "@/views/LoginView";
 import ForgetView from "@/views/ForgetView";
 import DashboardView from "@/views/DashboardView";
 import MailView from "@/views/MailView";
+import AppEmailBody from "@/components/AppEmailBody";
 
 
 export default createRouter({
@@ -24,8 +25,15 @@ export default createRouter({
             component: DashboardView
         },
         {
-            path: '/mail/:mailId?',
-            component: MailView
+            path: '/mail',
+            component: MailView,
+            children: [
+                {
+                    path: ':mailId?',
+                    component: AppEmailBody,
+                    props: true
+                }
+            ]
         },
     ]
 })
