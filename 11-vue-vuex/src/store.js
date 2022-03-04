@@ -5,6 +5,11 @@ const store = createStore({
         return {
             counter: 1
         }
+    },
+    mutations: {
+        add(state, payload) {
+            state.counter += payload.value ? payload.value : payload
+        }
     }
 })
 
