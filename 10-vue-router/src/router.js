@@ -7,7 +7,7 @@ import ErrorView404 from "@/views/ErrorView404";
 import AppEmailBody from "@/components/AppEmailBody";
 
 
-export default createRouter({
+const router = createRouter({
     history: createWebHistory(),
     linkActiveClass: 'active',
     linkExactActiveClass: 'active',
@@ -19,10 +19,15 @@ export default createRouter({
         },
         {
             path: '/forget',
-            component: ForgetView
+            component: ForgetView,
+            meta: {forbidden: true}
         },
         {
             path: '/dashboard',
+            name: 'home',
+            beforeEnter() {
+                console.log('beforeEnter')
+            },
             component: DashboardView
         },
         {
@@ -42,3 +47,19 @@ export default createRouter({
         }
     ]
 })
+
+router.beforeEach((to, from, next) => {
+    console.log('beforeEach')
+    if (to.meta.forbidden) {
+        next({
+            name: 'home'
+        })
+    } else {
+        next()
+    }
+})
+
+router.afterEach(() => {
+    console.log('afterEach')
+})
+export default router
