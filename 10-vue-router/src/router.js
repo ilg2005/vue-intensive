@@ -32,6 +32,7 @@ const router = createRouter({
         },
         {
             path: '/mail',
+            name: 'email',
             component: MailView,
             children: [
                 {
