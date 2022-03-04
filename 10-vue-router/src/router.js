@@ -3,6 +3,7 @@ import LoginView from "@/views/LoginView";
 import ForgetView from "@/views/ForgetView";
 import DashboardView from "@/views/DashboardView";
 import MailView from "@/views/MailView";
+import ErrorView404 from "@/views/ErrorView404";
 import AppEmailBody from "@/components/AppEmailBody";
 
 
@@ -35,5 +36,9 @@ export default createRouter({
                 }
             ]
         },
+        {
+            path: '/:notFound(.*)',
+            component: ErrorView404
+        }
     ]
 })
