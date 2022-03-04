@@ -1,11 +1,15 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import LoginView from "@/views/LoginView";
-import ForgetView from "@/views/ForgetView";
 import DashboardView from "@/views/DashboardView";
+/*
 import MailView from "@/views/MailView";
+*/
+/*
 import ErrorView404 from "@/views/ErrorView404";
+*/
 import AppEmailBody from "@/components/AppEmailBody";
 
+const MailView = () => import('@/views/MailView')
 
 const router = createRouter({
     history: createWebHistory(),
@@ -19,7 +23,7 @@ const router = createRouter({
         },
         {
             path: '/forget',
-            component: ForgetView,
+            component: () => /* WebpackChunkName: "forget" */ import('@/views/ForgetView'),
             meta: {forbidden: true}
         },
         {
@@ -44,7 +48,7 @@ const router = createRouter({
         },
         {
             path: '/:notFound(.*)',
-            component: ErrorView404
+            component: () => /* WebpackChunkName: "error404" */ import('@/views/ErrorView404')
         }
     ]
 })
