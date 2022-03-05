@@ -1,7 +1,8 @@
-import {createStore} from 'vuex'
+import {createStore, createLogger} from 'vuex'
 import counterModule from "@/store/modules/counter";
 
 const store = createStore({
+    plugins: [createLogger()],
     modules: {
         count: counterModule
     },
