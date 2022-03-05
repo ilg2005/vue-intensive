@@ -13,6 +13,7 @@ const store = createStore({
     },
     actions: {
         incrementAsync(context, payload) {
+            console.log('context: ', context)
             setTimeout(() => {
                 context.commit({
                     type: 'add',
