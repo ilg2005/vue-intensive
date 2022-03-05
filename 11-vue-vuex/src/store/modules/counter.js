@@ -1,6 +1,4 @@
-import {createStore} from 'vuex'
-
-const store = createStore({
+export default {
     state() {
         return {
             counter: 1
@@ -24,17 +22,15 @@ const store = createStore({
     },
     getters: {
         counter(state) {
-/*
-            if (state.counter > 50) {
-                return 0
-            }
-*/
+            /*
+                        if (state.counter > 50) {
+                            return 0
+                        }
+            */
             return state.counter
         },
         doubleCounter(_, getters) {
             return getters.counter * 2
         }
     }
-})
-
-export default store
+}
