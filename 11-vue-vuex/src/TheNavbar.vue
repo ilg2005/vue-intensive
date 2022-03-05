@@ -9,10 +9,10 @@
 import {mapGetters, mapMutations} from'vuex'
 export default {
   computed: {
-    ...mapGetters(['counter'])
+    ...mapGetters('count',['counter'])
   },
   methods: {
-    ...mapMutations(['add']),
+    ...mapMutations('count',['add']),
     addFive() {
       this.add(5)
     }

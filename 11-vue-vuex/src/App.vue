@@ -17,11 +17,12 @@ import {mapGetters, mapMutations, mapActions} from 'vuex'
 export default {
   components: {TheNavbar},
   computed: {
-    ...mapGetters(['counter', 'doubleCounter', 'uppercaseTitle'])
+    ...mapGetters(['uppercaseTitle']),
+    ...mapGetters('count', ['counter', 'doubleCounter'])
   },
   methods: {
-    ...mapMutations(['add']),
-    ...mapActions(['incrementAsync'])
+    ...mapMutations('count', ['add']),
+    ...mapActions('count', ['incrementAsync'])
   }
 }
 </script>
