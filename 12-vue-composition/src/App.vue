@@ -14,6 +14,7 @@
     <framework-info
         :name="name"
         :version="version"
+        @change-version="changeVer"
     ></framework-info>
   </div>
 </template>
@@ -43,13 +44,18 @@ export default {
       version.value = 4
     }
 
+    function changeVer() {
+      version.value = 3
+    }
+
     return {
       title,
       name,
       version,
       framework,
       firstName,
-      change: changeInfo
+      change: changeInfo,
+      changeVer
     }
   }
   /*data() {
