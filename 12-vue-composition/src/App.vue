@@ -4,7 +4,8 @@
       <h1> {{ title }}</h1>
       <small>data, methods, computed, watch</small>
       <div class="form-control">
-        <input type="text" ref="textInput">
+<!--        <input type="text" ref="textInput">-->
+        <input type="text" v-model="firstName">
       </div>
       <hr>
       <p>Название: <strong>{{ name }}</strong></p>
@@ -23,7 +24,8 @@ export default {
     const name = ref('VueJS')
     const version = ref(3)
     const title = ref('Vue Composition Api')
-    const textInput = ref(null)
+    // const textInput = ref(null)
+    const firstName = ref('')
 
     const framework = reactive({
       name: 'VueJS',
@@ -37,10 +39,12 @@ export default {
       console.log('old: 1)', oldValues[0], '2)', oldValues[1])
     })
 
+    watch(firstName, (newValue) => console.log(newValue))
+
     function changeInfo() {
       name.value = 'Vue JS!'
       version.value = 4
-      console.log('textInput.value.value: ', textInput.value.value)
+      // console.log('textInput.value.value: ', textInput.value.value)
     }
 
     return {
@@ -49,7 +53,8 @@ export default {
       version,
       framework,
       doubleVersion,
-      textInput,
+      // textInput,
+      firstName,
       change: changeInfo
     }
   }
