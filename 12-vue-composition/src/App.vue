@@ -3,6 +3,9 @@
     <div class="card">
       <h1> {{ title }}</h1>
       <small>data, methods, computed, watch</small>
+      <div class="form-control">
+        <input type="text" ref="textInput">
+      </div>
       <hr>
       <p>Название: <strong>{{ name }}</strong></p>
       <p>Версия: <strong>{{ version }} ({{ doubleVersion }})</strong></p>
@@ -20,6 +23,7 @@ export default {
     const name = ref('VueJS')
     const version = ref(3)
     const title = ref('Vue Composition Api')
+    const textInput = ref(null)
 
     const framework = reactive({
       name: 'VueJS',
@@ -36,6 +40,7 @@ export default {
     function changeInfo() {
       name.value = 'Vue JS!'
       version.value = 4
+      console.log('textInput.value.value: ', textInput.value.value)
     }
 
     return {
@@ -44,6 +49,7 @@ export default {
       version,
       framework,
       doubleVersion,
+      textInput,
       change: changeInfo
     }
   }
