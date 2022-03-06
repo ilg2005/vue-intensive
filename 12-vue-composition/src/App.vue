@@ -4,27 +4,30 @@
       <h1> {{ title }}</h1>
       <small>data, methods, computed, watch</small>
       <div class="form-control">
-<!--        <input type="text" ref="textInput">-->
         <input type="text" v-model="firstName">
       </div>
       <hr>
-      <p>Название: <strong>{{ name }}</strong></p>
-      <p>Версия: <strong>{{ version }} ({{ doubleVersion }})</strong></p>
 
       <button class="btn" @click="change">Изменить</button>
     </div>
+
+    <framework-info
+        :name="name"
+        :version="version"
+    ></framework-info>
   </div>
 </template>
 
 <script>
-import {ref, reactive, computed, watch} from "vue";
+import {ref, reactive, watch} from "vue";
+import FrameworkInfo from "@/FrameworkInfo";
 
 export default {
+  components: {FrameworkInfo},
   setup() {
     const name = ref('VueJS')
     const version = ref(3)
     const title = ref('Vue Composition Api')
-    // const textInput = ref(null)
     const firstName = ref('')
 
     const framework = reactive({
@@ -32,19 +35,12 @@ export default {
       version: 3
     })
 
-    const doubleVersion = computed(() => version.value * 2)
-
-    watch([doubleVersion, name], (newValues, oldValues) => {
-      console.log('new: 1)', newValues[0], '2)', newValues[1])
-      console.log('old: 1)', oldValues[0], '2)', oldValues[1])
-    })
 
     watch(firstName, (newValue) => console.log(newValue))
 
     function changeInfo() {
       name.value = 'Vue JS!'
       version.value = 4
-      // console.log('textInput.value.value: ', textInput.value.value)
     }
 
     return {
@@ -52,8 +48,6 @@ export default {
       name,
       version,
       framework,
-      doubleVersion,
-      // textInput,
       firstName,
       change: changeInfo
     }
