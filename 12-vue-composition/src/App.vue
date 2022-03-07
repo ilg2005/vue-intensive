@@ -12,8 +12,6 @@
     </div>
 
     <framework-info
-        :name="name"
-        :version="version"
         @changeVersion="changeVer"
         class="temp"
     >
@@ -25,7 +23,7 @@
 </template>
 
 <script>
-import {ref, reactive, watch} from "vue";
+import {ref, reactive, watch, provide} from "vue";
 import FrameworkInfo from "@/FrameworkInfo";
 
 export default {
@@ -41,6 +39,8 @@ export default {
       version: 3
     })
 
+    provide('name', name)
+    provide('version', version)
 
     watch(firstName, (newValue) => console.log(newValue))
 
@@ -55,8 +55,6 @@ export default {
 
     return {
       title,
-      name,
-      version,
       framework,
       firstName,
       change: changeInfo,
