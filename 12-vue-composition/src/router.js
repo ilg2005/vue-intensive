@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomePage from "@/views/HomePage";
 import ReusablePage from "@/views/ReusablePage";
+import VuexPage from "@/views/VuexPage";
 
 export default createRouter({
     history: createWebHistory(),
@@ -13,6 +14,10 @@ export default createRouter({
         {
             path: '/reusable',
             component: ReusablePage
+        },
+        {
+            path: '/vuex',
+            component: VuexPage
         },
     ],
     linkActiveClass: 'active',
