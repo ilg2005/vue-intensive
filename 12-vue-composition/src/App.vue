@@ -14,8 +14,13 @@
     <framework-info
         :name="name"
         :version="version"
-        @change-version="changeVer"
-    ></framework-info>
+        @changeVersion="changeVer"
+        class="temp"
+    >
+      <template #footer>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa magnam nulla quas quia ut voluptas.</p>
+      </template>
+    </framework-info>
   </div>
 </template>
 

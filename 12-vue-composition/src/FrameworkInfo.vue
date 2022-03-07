@@ -12,12 +12,13 @@ import {computed} from "vue";
 
 export default {
   props: ['name', 'version'],
-  emits: ['change-version'],
+  emits: ['changeVersion'],
   setup(props, context) {
+    console.log(context)
     const doubleVersion = computed(() => props.version * 2)
 
     const changeVersion = () => {
-      context.emit('change-version', 3)
+      context.emit('changeVersion', 3)
     }
 
     return {
