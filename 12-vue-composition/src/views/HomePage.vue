@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <div class="card">
       <h1> {{ title }}</h1>
@@ -9,6 +10,7 @@
       <hr>
 
       <button class="btn" @click="change">Изменить</button>
+
     </div>
 
     <framework-info
