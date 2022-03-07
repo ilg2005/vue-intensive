@@ -8,12 +8,16 @@
 </template>
 
 <script>
-import {computed, inject} from "vue";
+import {computed, inject, onBeforeMount, onMounted, onBeforeUpdate, onUpdated} from "vue";
 
 export default {
   emits: ['changeVersion'],
   setup(props, context) {
-    console.log(context)
+
+    onBeforeMount(() => console.log('beforeMount'))
+    onMounted(() => console.log('onMounted'))
+    onBeforeUpdate(() => console.log('onBeforeUpdate'))
+    onUpdated(() => console.log('onUpdated'))
 
     const version = inject('version')
 
