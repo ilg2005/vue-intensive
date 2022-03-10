@@ -21,8 +21,11 @@
 import {computed} from 'vue'
 import {useStore} from 'vuex'
 import AppStatus from '../components/AppStatus'
+import {useRoute} from 'vue-router'
 
-const id = defineProps(['id'])
+const route = useRoute()
+
+const id = route.params.id
 const store = useStore()
 
 const task = computed(() => store.getters.taskById(id))
