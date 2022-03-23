@@ -11,12 +11,15 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
+import {useUsers} from "@/use/users";
 
 export default defineComponent({
-  setup() {
+  async setup() {
+    const {users} = await useUsers();
+
     return {
-      users: [],
-    }
+      users,
+    };
   }
 })
 </script>
