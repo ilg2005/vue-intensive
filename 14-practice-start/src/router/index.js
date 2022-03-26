@@ -5,12 +5,28 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HomeView
+    component: HomeView,
+    meta: {
+      layout: "main"
+    }
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import('../views/AboutView.vue')
+    path: '/help',
+    name: 'Help',
+    component: () => import('../views/HelpView.vue'),
+    meta: {
+      layout: "main"
+    }
+
+  },
+  {
+    path: '/auth',
+    name: 'Auth',
+    component: () => import('../views/AuthView'),
+    meta: {
+      layout: "auth"
+    }
+
   }
 ]
 
