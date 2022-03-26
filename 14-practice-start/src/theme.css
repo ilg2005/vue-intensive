@@ -237,6 +237,18 @@ h3 {
     background: #eee;
 }
 
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mt-1 {
+    margin-top: 1rem;
+}
+
+.mt-5 {
+    margin-top: 5rem;
+}
+
 .alert {
     padding: 1rem 1.5rem;
     border-left-width: .5rem;
