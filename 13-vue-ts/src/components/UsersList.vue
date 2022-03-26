@@ -17,6 +17,7 @@ export default defineComponent({
   async setup() {
     const {users} = await useUsers();
 
+
     return {
       users,
     };
