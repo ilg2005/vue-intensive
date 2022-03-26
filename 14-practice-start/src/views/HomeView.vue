@@ -1,5 +1,6 @@
 <template>
-  <div class="home">
+  <div class="home card">
+    Домашняя страница
   </div>
 </template>
 

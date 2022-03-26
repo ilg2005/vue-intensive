@@ -1,6 +1,6 @@
 <template>
 <div class="card">
-
+Страница авторизации
 </div>
 </template>
 
