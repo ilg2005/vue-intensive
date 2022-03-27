@@ -1,8 +1,13 @@
 import {useField, useForm} from "vee-validate";
 import {computed, watch} from "vue";
 import * as yup from "yup";
+import {useStore} from "vuex";
+import {useRouter} from "vue-router";
 
 export function useLoginForm() {
+    const store = useStore();
+    const router = useRouter();
+
     /*const schema = {
       email: yup.string().required().email(),
       password: yup.string().required().min(8),
@@ -32,7 +37,13 @@ export function useLoginForm() {
         .min(MIN_LENGTH, `Пароль дожен содержать не менее ${MIN_LENGTH} символов.`)
     );
 
-    const onSubmit = handleSubmit((values) => console.log(values));
+
+
+    const onSubmit = handleSubmit(async values => {
+        console.log(values);
+        await store.dispatch('auth/login', values);
+        await router.push('/');
+    });
 
     return {
         email, emailError, emailBlur,
