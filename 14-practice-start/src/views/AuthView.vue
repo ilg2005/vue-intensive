@@ -30,10 +30,22 @@
 <script>
 import { Field} from 'vee-validate';
 import {useLoginForm} from "@/use/login-form";
+import {useRoute} from "vue-router";
+import {error} from "@/utils/error";
+import {useStore} from "vuex";
 
 export default {
   components: {Field},
   setup() {
+    const route = useRoute();
+    const store = useStore();
+    if (route.query.message) {
+      store.dispatch('setMessage', {
+        value: error(route.query.message),
+        type: 'warning',
+      })
+
+    }
     const {...login} = useLoginForm()
 
     return login;

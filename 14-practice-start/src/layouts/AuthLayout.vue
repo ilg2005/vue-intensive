@@ -1,13 +1,12 @@
 <template>
   <div class="container">
+    <AppMessage/>
     <router-view/>
   </div>
 </template>
 
-<script>
-export default {
-  name: "AuthLayout"
-}
+<script setup>
+import AppMessage from "../components/ui/AppMessage";
 </script>
 
 <style scoped>

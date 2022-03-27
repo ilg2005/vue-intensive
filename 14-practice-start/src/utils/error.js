@@ -2,6 +2,7 @@ const ERROR_CODES = {
     EMAIL_NOT_FOUND: 'Пользователь с таким email не был найден',
     INVALID_PASSWORD: 'Неправильный пароль',
     'API key not valid. Please pass a valid API key.': 'Неверный API_KEY',
+    auth: 'Пожалуйста, войдите в систему!'
 }
 
 export function error(code) {
