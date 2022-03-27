@@ -29,7 +29,7 @@ export function useLoginForm() {
         .string()
         .trim()
         .required('Это поле должно быть заполнено')
-        .min(MIN_LENGTH, `Пароль дожен содержать не менее ${MIN_LENGTH} символов. Вы ввели символов`)
+        .min(MIN_LENGTH, `Пароль дожен содержать не менее ${MIN_LENGTH} символов.`)
     );
 
     const onSubmit = handleSubmit((values) => console.log(values));
