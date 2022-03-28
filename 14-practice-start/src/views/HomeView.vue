@@ -1,11 +1,25 @@
 <template>
-  <div class="home card">
-    Домашняя страница
-  </div>
+  <app-page title="Список заявок">
+    <template #header>
+      <button class="btn primary" @click="modal = true">Создать</button>
+    </template>
+
+    <RequestTable  :requests="[]"/>
+
+    <teleport to="body">
+      <app-modal v-if="modal" title="Создать заявку" @click="modal = true" @close="modal = false">
+        <RequestModal/>
+      </app-modal>
+    </teleport>
+  </app-page>
 </template>
 
-<script>
-export default {
-  name: 'HomeView',
-}
+<script setup>
+import {ref} from 'vue';
+import AppPage from "@/components/ui/AppPage";
+import RequestTable from "@/components/request/RequestTable";
+import AppModal from "@/components/ui/AppModal";
+import RequestModal from "@/components/request/RequestModal";
+
+const modal = ref(false);
 </script>
