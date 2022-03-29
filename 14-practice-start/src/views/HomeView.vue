@@ -7,9 +7,9 @@
     <RequestTable  :requests="[]"/>
 
     <teleport to="body">
-      <app-modal v-if="modal" title="Создать заявку" @click="modal = true" @close="modal = false">
-        <RequestModal/>
-      </app-modal>
+      <AppModal v-if="modal" title="Создать заявку" @click="modal = true" @close="modal = false">
+        <RequestModal @close="modal = false"/>
+      </AppModal>
     </teleport>
   </app-page>
 </template>

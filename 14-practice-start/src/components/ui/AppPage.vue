@@ -17,6 +17,7 @@ const props = defineProps({
     required: true,
   }
 });
+
 document.title = `${props.title} | Клон Банка`;
 
 </script>
