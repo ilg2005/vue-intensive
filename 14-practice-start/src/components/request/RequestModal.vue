@@ -92,13 +92,13 @@ const {value: sum, errorMessage: sumError, handleBlur: sumBlur} = useField('sum'
 
 const {value: state} = useField('state');
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'create']);
 
 const submitting = handleSubmit(values => {
   console.log(values);
   store.commit('request/SET_GETTERS', values);
 
-
+  emit('create', values);
   emit('close');
 
 });

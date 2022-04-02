@@ -4,11 +4,15 @@
       <button class="btn primary" @click="modal = true">Создать</button>
     </template>
 
-    <RequestTable  :requests="requests"/>
-
+    <Suspense>
+      <RequestTable  :requests="requests"/>
+      <template #fallback>
+        Loading...
+      </template>
+    </Suspense>
     <teleport to="body">
       <AppModal v-if="modal" title="Создать заявку" @close="modal = false">
-        <RequestModal @close="modal = false"/>
+        <RequestModal @close="modal = false" @create="postRequest"/>
       </AppModal>
     </teleport>
   </app-page>
@@ -22,8 +26,11 @@ import AppModal from "@/components/ui/AppModal";
 import RequestModal from "@/components/request/RequestModal";
 import {useStore} from "vuex";
 
-const store = useStore()
+const store = useStore();
 
 const requests = store.getters['request/REQUESTS'];
 const modal = ref(false);
+const postRequest = request => {
+  store.dispatch('request/postRequest', request);
+};
 </script>

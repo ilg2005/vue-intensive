@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default {
     namespaced: true,
     state() {
@@ -25,6 +27,17 @@ export default {
         }
     },
     actions: {
+        async postRequest(_, payload) {
+            const requestsUrl = process.env.VUE_APP_FIREBASE_URL + '/requests.json'
+            try {
+                const res = await axios.post(requestsUrl, payload);
+                console.log(res);
+            } catch (e) {
+                console.log(e);
+            }
 
+
+
+        }
     }
 }
