@@ -12,22 +12,30 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+
+    <tr v-for="(request, i) in requests"
+        :key="request"
+    >
+      <td>{{ i + 1 }}</td>
+      <td>{{ request.fullName }}</td>
+      <td>{{ request.tel }}</td>
+      <td>{{ request.sum }}</td>
+      <td>{{ stateMap[request.state] }}</td>
+      <td>{{ request.action }}</td>
     </tr>
+
     </tbody>
   </table>
 </template>
 
 <script setup>
 import {defineProps} from "vue";
+import {useStore} from "vuex";
 
+const store = useStore();
+const stateMap = store.getters['request/STATE_MAP'];
 defineProps(['requests']);
+
 
 </script>
 

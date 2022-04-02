@@ -42,11 +42,12 @@
           id="state"
           name="state"
           v-model="state"
+
       >
-        <option value="done">завершена</option>
-        <option value="cancelled">отменена</option>
-        <option value="active">активна</option>
-        <option value="pending">выполняется</option>
+        <option v-for="(status, item) in StateMap"
+                :key="item"
+                :value=item>{{ status }}
+        </option>
       </select>
     </div>
 
@@ -58,8 +59,13 @@
 import {useField, useForm} from "vee-validate";
 import * as yup from "yup";
 import {defineEmits} from "vue";
+import {useStore} from "vuex";
 
-const {handleSubmit, isSubmitting, } = useForm( {
+const store = useStore();
+
+const StateMap = store.getters['request/STATE_MAP'];
+
+const {handleSubmit, isSubmitting,} = useForm({
   initialValues: {
     state: 'active',
   }
@@ -88,8 +94,11 @@ const {value: state} = useField('state');
 
 const emit = defineEmits(['close']);
 
-const submitting = handleSubmit( values => {
+const submitting = handleSubmit(values => {
   console.log(values);
+  store.commit('request/SET_GETTERS', values);
+
+
   emit('close');
 
 });
