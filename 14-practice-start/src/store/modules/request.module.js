@@ -27,6 +27,12 @@ export default {
         SET_REQUESTS(state, payload) {
              state.requests = payload;
         },
+        ADD_REQUEST(state, payload) {
+            state.requests['new'] = payload;
+        },
+        REMOVE_REQUEST(state, payload) {
+            delete state.requests[payload];
+        }
     },
     actions: {
         async getRequests({commit}) {
@@ -37,20 +43,19 @@ export default {
                console.log(e);
            }
         },
-        async postRequest({commit}, payload) {
+        async postRequest(context, payload) {
             try {
                 await axios.post(`${requestsUrl}/requests.json`, payload);
-                const res = await axios.get(`${requestsUrl}/requests.json`);
-                commit('SET_REQUESTS', res.data);
+                context.commit('ADD_REQUEST', payload);
             } catch (e) {
                 console.log(e);
             }
         },
-        async removeRequest({commit}, id) {
+        async removeRequest({commit}, {id, index}) {
             try {
                 await axios.delete(`${requestsUrl}/requests/${id}.json`);
-                const res = await axios.get(`${requestsUrl}/requests.json`);
-                commit('SET_REQUESTS', res.data);
+                commit('REMOVE_REQUEST', index);
+                console.log(index);
             } catch (e) {
                 console.log(e);
             }

@@ -21,7 +21,7 @@
         <td>{{ request.sum }}</td>
         <td>{{ stateMap[request.state] }}</td>
         <td>
-          <button class="btn danger" @click="removeRequest(id)">удалить</button>
+          <button class="btn danger" @click="removeRequest(id, index)">удалить</button>
         </td>
       </tr>
     </tbody>
@@ -43,8 +43,8 @@ onBeforeMount(() => {
 
 let requests = computed(() => store.getters['request/REQUESTS']);
 
-const removeRequest = (id) => {
-  store.dispatch('request/removeRequest', id);
+const removeRequest = (id, index) => {
+  store.dispatch('request/removeRequest', {id, index});
 }
 
 </script>
