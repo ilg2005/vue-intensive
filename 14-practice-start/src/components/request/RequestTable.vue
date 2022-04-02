@@ -1,5 +1,5 @@
 <template>
-<h4 v-if="requests.length === 0" class="text-center">Заявок пока нет</h4>
+  <h4 v-if="!requests" class="text-center">Заявок пока нет</h4>
   <table v-else class="table">
     <thead>
     <tr>
@@ -12,33 +12,39 @@
     </tr>
     </thead>
     <tbody>
-
-    <tr v-for="(request, id, index) in requests"
-        :key="request"
-    >
-      <td>{{ index + 1 }}</td>
-      <td>{{ request.fullName }}</td>
-      <td>{{ request.tel }}</td>
-      <td>{{ request.sum }}</td>
-      <td>{{ stateMap[request.state] }}</td>
-      <td><button class="btn danger" @click="removeRequest(id)">удалить</button></td>
-    </tr>
-
+      <tr v-for="(request, id, index) in requests"
+          :key="request"
+      >
+        <td>{{ index + 1 }}</td>
+        <td>{{ request.fullName }}</td>
+        <td>{{ request.tel }}</td>
+        <td>{{ request.sum }}</td>
+        <td>{{ stateMap[request.state] }}</td>
+        <td>
+          <button class="btn danger" @click="removeRequest(id)">удалить</button>
+        </td>
+      </tr>
     </tbody>
   </table>
 </template>
 
 <script setup>
-import {defineProps} from "vue";
 import {useStore} from "vuex";
+import {computed, onBeforeMount} from "vue";
 
 const store = useStore();
 const stateMap = store.getters['request/STATE_MAP'];
-defineProps(['requests']);
+
+onBeforeMount(() => {
+  store.dispatch('request/getRequests');
+});
+
+
+
+let requests = computed(() => store.getters['request/REQUESTS']);
 
 const removeRequest = (id) => {
   store.dispatch('request/removeRequest', id);
-  store.dispatch('request/getRequests');
 }
 
 </script>

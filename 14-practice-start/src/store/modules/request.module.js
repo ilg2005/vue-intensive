@@ -25,34 +25,35 @@ export default {
     },
     mutations: {
         SET_REQUESTS(state, payload) {
-            state.requests = payload;
+             state.requests = payload;
         },
-
     },
     actions: {
-        async postRequest(_, payload) {
-            try {
-                const res = await axios.post(`${requestsUrl}/requests.json`, payload);
-                console.log(res);
-            } catch (e) {
-                console.log(e);
-            }
+        async getRequests({commit}) {
+           try {
+             const res = await axios.get(`${requestsUrl}/requests.json`);
+             commit('SET_REQUESTS', res.data);
+           } catch (e) {
+               console.log(e);
+           }
         },
-        async getRequests(context) {
+        async postRequest({commit}, payload) {
             try {
+                await axios.post(`${requestsUrl}/requests.json`, payload);
                 const res = await axios.get(`${requestsUrl}/requests.json`);
-                context.commit('SET_REQUESTS', res.data);
+                commit('SET_REQUESTS', res.data);
             } catch (e) {
                 console.log(e);
             }
         },
-        async removeRequest(context, id) {
+        async removeRequest({commit}, id) {
             try {
                 await axios.delete(`${requestsUrl}/requests/${id}.json`);
+                const res = await axios.get(`${requestsUrl}/requests.json`);
+                commit('SET_REQUESTS', res.data);
             } catch (e) {
                 console.log(e);
             }
-
         }
     }
 }
