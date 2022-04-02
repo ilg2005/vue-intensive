@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {computed, onBeforeMount, ref} from 'vue';
 import AppPage from "@/components/ui/AppPage";
 import RequestTable from "@/components/request/RequestTable";
 import AppModal from "@/components/ui/AppModal";
@@ -28,7 +28,15 @@ import {useStore} from "vuex";
 
 const store = useStore();
 
-const requests = store.getters['request/REQUESTS'];
+onBeforeMount(() => {
+  store.dispatch('request/getRequests');
+})
+
+
+const requests = computed(() => store.getters['request/REQUESTS']);
+
+
+
 const modal = ref(false);
 const postRequest = request => {
   store.dispatch('request/postRequest', request);

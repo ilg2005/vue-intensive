@@ -96,7 +96,6 @@ const emit = defineEmits(['close', 'create']);
 
 const submitting = handleSubmit(values => {
   console.log(values);
-  store.commit('request/SET_GETTERS', values);
 
   emit('create', values);
   emit('close');

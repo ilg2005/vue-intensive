@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const requestsUrl = process.env.VUE_APP_FIREBASE_URL;
+
 export default {
     namespaced: true,
     state() {
@@ -22,21 +24,34 @@ export default {
         }
     },
     mutations: {
-        SET_GETTERS(state, payload) {
-            state.requests.push(payload);
-        }
+        SET_REQUESTS(state, payload) {
+            state.requests = payload;
+        },
+
     },
     actions: {
         async postRequest(_, payload) {
-            const requestsUrl = process.env.VUE_APP_FIREBASE_URL + '/requests.json'
             try {
-                const res = await axios.post(requestsUrl, payload);
+                const res = await axios.post(`${requestsUrl}/requests.json`, payload);
                 console.log(res);
             } catch (e) {
                 console.log(e);
             }
-
-
+        },
+        async getRequests(context) {
+            try {
+                const res = await axios.get(`${requestsUrl}/requests.json`);
+                context.commit('SET_REQUESTS', res.data);
+            } catch (e) {
+                console.log(e);
+            }
+        },
+        async removeRequest(context, id) {
+            try {
+                await axios.delete(`${requestsUrl}/requests/${id}.json`);
+            } catch (e) {
+                console.log(e);
+            }
 
         }
     }

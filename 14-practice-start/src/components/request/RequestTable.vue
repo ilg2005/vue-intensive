@@ -1,5 +1,5 @@
 <template>
-  <h4 v-if="requests.length === 0" class="text-center">Заявок пока нет</h4>
+<h4 v-if="requests.length === 0" class="text-center">Заявок пока нет</h4>
   <table v-else class="table">
     <thead>
     <tr>
@@ -13,15 +13,15 @@
     </thead>
     <tbody>
 
-    <tr v-for="(request, i) in requests"
+    <tr v-for="(request, id, index) in requests"
         :key="request"
     >
-      <td>{{ i + 1 }}</td>
+      <td>{{ index + 1 }}</td>
       <td>{{ request.fullName }}</td>
       <td>{{ request.tel }}</td>
       <td>{{ request.sum }}</td>
       <td>{{ stateMap[request.state] }}</td>
-      <td>{{ request.action }}</td>
+      <td><button class="btn danger" @click="removeRequest(id)">удалить</button></td>
     </tr>
 
     </tbody>
@@ -36,6 +36,10 @@ const store = useStore();
 const stateMap = store.getters['request/STATE_MAP'];
 defineProps(['requests']);
 
+const removeRequest = (id) => {
+  store.dispatch('request/removeRequest', id);
+  store.dispatch('request/getRequests');
+}
 
 </script>
 
