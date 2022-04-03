@@ -57,7 +57,12 @@ export default {
                     commit('SET_REQUESTS', data);
                 }
             } catch (e) {
-                console.log(e);
+                await store.dispatch('setMessage',
+                    {
+                        value: e.message,
+                        type: 'danger'
+                    },
+                    {root: true});
             }
         },
         async postRequest(context, payload) {

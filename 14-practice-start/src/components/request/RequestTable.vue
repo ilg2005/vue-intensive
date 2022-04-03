@@ -1,5 +1,6 @@
 <template>
-  <h4 v-if="!Object.keys(requests).length" class="text-center">Заявок пока нет</h4>
+  <AppLoader v-if="loading" />
+  <h4 v-else-if="!Object.keys(requests).length" class="text-center">Заявок пока нет</h4>
   <table v-else class="table">
     <thead>
     <tr>
@@ -30,13 +31,18 @@
 
 <script setup>
 import {useStore} from "vuex";
-import {computed, onBeforeMount} from "vue";
+import {computed, onBeforeMount, ref} from "vue";
+import AppLoader from "@/components/ui/AppLoader";
 
 const store = useStore();
 const stateMap = store.getters['request/STATE_MAP'];
 
-onBeforeMount(() => {
-  store.dispatch('request/getRequests');
+const loading = ref(false);
+
+onBeforeMount(async () => {
+  loading.value = true;
+  await store.dispatch('request/getRequests');
+  loading.value = false;
 });
 
 
