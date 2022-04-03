@@ -44,9 +44,9 @@
           v-model="state"
 
       >
-        <option v-for="(status, item) in StateMap"
-                :key="item"
-                :value=item>{{ status }}
+        <option v-for="(value, state) in TextMap"
+                :key="state"
+                :value=state>{{ value }}
         </option>
       </select>
     </div>
@@ -60,10 +60,13 @@ import {useField, useForm} from "vee-validate";
 import * as yup from "yup";
 import {defineEmits} from "vue";
 import {useStore} from "vuex";
+import {TextMap} from "@/components/ui/AppStatus";
 
 const store = useStore();
 
-const StateMap = store.getters['request/STATE_MAP'];
+/*const states = [
+    'active', 'pending', 'done', 'cancelled'
+]*/
 
 const {handleSubmit, isSubmitting,} = useForm({
   initialValues: {
