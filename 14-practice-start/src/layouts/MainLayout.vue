@@ -1,17 +1,14 @@
 <template>
   <the-navbar></the-navbar>
   <div class="container with-nav">
+    <AppMessage/>
     <router-view/>
   </div>
 </template>
 
-<script>
+<script setup>
 import TheNavbar from "../components/TheNavbar";
-
-export default {
-  name: "MainLayout",
-  components: {TheNavbar}
-}
+import AppMessage from "../components/ui/AppMessage";
 
 
 </script>

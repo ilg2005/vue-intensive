@@ -54,6 +54,12 @@ export default {
                 const token = store.getters['auth/token'];
                 await axios.put(`${firebaseUrl}/requests/${payload.id}.json?auth=${token}`, payload);
                 context.commit('ADD_REQUEST', payload);
+                await store.dispatch('setMessage',
+                    {
+                        value: 'Заявка успешно создана!',
+                        type: 'primary'
+                    },
+                    {root: true})
             } catch (e) {
                 console.log(e);
             }
