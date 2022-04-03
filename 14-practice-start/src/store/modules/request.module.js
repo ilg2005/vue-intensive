@@ -1,7 +1,18 @@
 import axios from 'axios';
 import store from '../index';
+import router from "@/router";
 
 const firebaseUrl = process.env.VUE_APP_FIREBASE_URL;
+
+// Add a response interceptor
+axios.interceptors.response.use(null, error => {
+    if (error.response.status === 401) {
+        router.push('/auth?message=auth');
+    }
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+});
 
 export default {
     namespaced: true,
