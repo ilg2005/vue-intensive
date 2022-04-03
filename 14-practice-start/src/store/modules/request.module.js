@@ -1,7 +1,7 @@
 import axios from 'axios';
+import store from '../index';
 
 const firebaseUrl = process.env.VUE_APP_FIREBASE_URL;
-
 
 export default {
     namespaced: true,
@@ -26,7 +26,7 @@ export default {
     },
     mutations: {
         SET_REQUESTS(state, payload) {
-             state.requests = payload;
+            state.requests = payload;
         },
         ADD_REQUEST(state, payload) {
             state.requests[payload.id] = payload;
@@ -36,20 +36,23 @@ export default {
         }
     },
     actions: {
+
         async getRequests({commit}) {
-           try {
-             const res = await axios.get(`${firebaseUrl}/requests.json`);
-             if (res.data) {
-                // const resArray = Object.values(res.data);
-                 commit('SET_REQUESTS', res.data);
-             }
-           } catch (e) {
-               console.log(e);
-           }
+            try {
+                const token = store.getters['auth/token'];
+                const res = await axios.get(`${firebaseUrl}/requests.json?auth=${token}`);
+                if (res.data) {
+                    // const resArray = Object.values(res.data);
+                    commit('SET_REQUESTS', res.data);
+                }
+            } catch (e) {
+                console.log(e);
+            }
         },
         async postRequest(context, payload) {
             try {
-                await axios.put(`${firebaseUrl}/requests/${payload.id}.json`, payload);
+                const token = store.getters['auth/token'];
+                await axios.put(`${firebaseUrl}/requests/${payload.id}.json?auth=${token}`, payload);
                 context.commit('ADD_REQUEST', payload);
             } catch (e) {
                 console.log(e);
@@ -57,7 +60,8 @@ export default {
         },
         async removeRequest({commit}, name) {
             try {
-                await axios.delete(`${firebaseUrl}/requests/${name}.json`);
+                const token = store.getters['auth/token'];
+                await axios.delete(`${firebaseUrl}/requests/${name}.json?auth=${token}`);
                 commit('REMOVE_REQUEST', name);
             } catch (e) {
                 console.log(e);
