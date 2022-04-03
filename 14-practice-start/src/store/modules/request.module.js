@@ -2,11 +2,12 @@ import axios from 'axios';
 
 const firebaseUrl = process.env.VUE_APP_FIREBASE_URL;
 
+
 export default {
     namespaced: true,
     state() {
         return {
-            requests: [],
+            requests: {},
             stateMap: {
                 active: 'активна',
                 cancelled: 'отменена',
@@ -28,10 +29,10 @@ export default {
              state.requests = payload;
         },
         ADD_REQUEST(state, payload) {
-            state.requests.push(payload);
+            state.requests[payload.id] = payload;
         },
         REMOVE_REQUEST(state, payload) {
-            state.requests = state.requests.filter(request => request.id !== payload);
+            delete state.requests[payload];
         }
     },
     actions: {
@@ -48,18 +49,16 @@ export default {
         },
         async postRequest(context, payload) {
             try {
-                await axios.post(`${firebaseUrl}/requests.json`, payload);
+                await axios.put(`${firebaseUrl}/requests/${payload.id}.json`, payload);
                 context.commit('ADD_REQUEST', payload);
             } catch (e) {
                 console.log(e);
             }
         },
-        async removeRequest({commit}, {id, name}) {
+        async removeRequest({commit}, name) {
             try {
-                console.log(name);
                 await axios.delete(`${firebaseUrl}/requests/${name}.json`);
-                console.log('id::', id);
-                commit('REMOVE_REQUEST', id);
+                commit('REMOVE_REQUEST', name);
             } catch (e) {
                 console.log(e);
             }

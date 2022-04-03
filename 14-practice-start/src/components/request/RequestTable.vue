@@ -1,5 +1,5 @@
 <template>
-  <h4 v-if="!requests" class="text-center">Заявок пока нет</h4>
+  <h4 v-if="!Object.keys(requests).length" class="text-center">Заявок пока нет</h4>
   <table v-else class="table">
     <thead>
     <tr>
@@ -21,7 +21,7 @@
         <td>{{ request.sum }}</td>
         <td>{{ stateMap[request.state] }}</td>
         <td>
-          <button class="btn danger" @click="removeRequest(request.id, name)">удалить</button>
+          <button class="btn danger" @click="removeRequest(name)">удалить</button>
         </td>
       </tr>
     </tbody>
@@ -43,9 +43,8 @@ onBeforeMount(() => {
 
 let requests = computed(() => store.getters['request/REQUESTS']);
 
-const removeRequest = (id, name) => {
-  console.log('id::', id);
-  store.dispatch('request/removeRequest', {id, name});
+const removeRequest = (name) => {
+  store.dispatch('request/removeRequest', name);
 }
 
 </script>
