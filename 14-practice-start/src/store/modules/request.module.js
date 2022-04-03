@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const requestsUrl = process.env.VUE_APP_FIREBASE_URL;
+const firebaseUrl = process.env.VUE_APP_FIREBASE_URL;
 
 export default {
     namespaced: true,
@@ -28,34 +28,38 @@ export default {
              state.requests = payload;
         },
         ADD_REQUEST(state, payload) {
-            state.requests['new'] = payload;
+            state.requests.push(payload);
         },
         REMOVE_REQUEST(state, payload) {
-            delete state.requests[payload];
+            state.requests = state.requests.filter(request => request.id !== payload);
         }
     },
     actions: {
         async getRequests({commit}) {
            try {
-             const res = await axios.get(`${requestsUrl}/requests.json`);
-             commit('SET_REQUESTS', res.data);
+             const res = await axios.get(`${firebaseUrl}/requests.json`);
+             if (res.data) {
+                // const resArray = Object.values(res.data);
+                 commit('SET_REQUESTS', res.data);
+             }
            } catch (e) {
                console.log(e);
            }
         },
         async postRequest(context, payload) {
             try {
-                await axios.post(`${requestsUrl}/requests.json`, payload);
+                await axios.post(`${firebaseUrl}/requests.json`, payload);
                 context.commit('ADD_REQUEST', payload);
             } catch (e) {
                 console.log(e);
             }
         },
-        async removeRequest({commit}, {id, index}) {
+        async removeRequest({commit}, {id, name}) {
             try {
-                await axios.delete(`${requestsUrl}/requests/${id}.json`);
-                commit('REMOVE_REQUEST', index);
-                console.log(index);
+                console.log(name);
+                await axios.delete(`${firebaseUrl}/requests/${name}.json`);
+                console.log('id::', id);
+                commit('REMOVE_REQUEST', id);
             } catch (e) {
                 console.log(e);
             }

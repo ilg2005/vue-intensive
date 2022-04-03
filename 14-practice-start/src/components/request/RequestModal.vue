@@ -95,6 +95,7 @@ const {value: state} = useField('state');
 const emit = defineEmits(['close']);
 
 const submitting = handleSubmit(values => {
+  values['id'] = Date.now();
   console.log(values);
   store.dispatch('request/postRequest', values);
   emit('close');

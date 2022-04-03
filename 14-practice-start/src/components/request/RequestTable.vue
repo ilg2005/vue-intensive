@@ -12,8 +12,8 @@
     </tr>
     </thead>
     <tbody>
-      <tr v-for="(request, id, index) in requests"
-          :key="request"
+      <tr v-for="(request, name, index) in requests"
+          :key="request.id"
       >
         <td>{{ index + 1 }}</td>
         <td>{{ request.fullName }}</td>
@@ -21,7 +21,7 @@
         <td>{{ request.sum }}</td>
         <td>{{ stateMap[request.state] }}</td>
         <td>
-          <button class="btn danger" @click="removeRequest(id, index)">удалить</button>
+          <button class="btn danger" @click="removeRequest(request.id, name)">удалить</button>
         </td>
       </tr>
     </tbody>
@@ -43,8 +43,9 @@ onBeforeMount(() => {
 
 let requests = computed(() => store.getters['request/REQUESTS']);
 
-const removeRequest = (id, index) => {
-  store.dispatch('request/removeRequest', {id, index});
+const removeRequest = (id, name) => {
+  console.log('id::', id);
+  store.dispatch('request/removeRequest', {id, name});
 }
 
 </script>
