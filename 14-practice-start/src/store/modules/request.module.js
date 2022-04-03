@@ -40,10 +40,10 @@ export default {
         async getRequests({commit}) {
             try {
                 const token = store.getters['auth/token'];
-                const res = await axios.get(`${firebaseUrl}/requests.json?auth=${token}`);
-                if (res.data) {
-                    // const resArray = Object.values(res.data);
-                    commit('SET_REQUESTS', res.data);
+                const {data} = await axios.get(`${firebaseUrl}/requests.json?auth=${token}`);
+                if (data) {
+                    // const resArray = Object.values(data);
+                    commit('SET_REQUESTS', data);
                 }
             } catch (e) {
                 console.log(e);
@@ -61,7 +61,12 @@ export default {
                     },
                     {root: true})
             } catch (e) {
-                console.log(e);
+                await store.dispatch('setMessage',
+                    {
+                        value: e.message,
+                        type: 'danger'
+                    },
+                    {root: true});
             }
         },
         async removeRequest({commit}, name) {
