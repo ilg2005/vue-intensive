@@ -19,7 +19,7 @@
         <td>{{ index + 1 }}</td>
         <td>{{ request.fullName }}</td>
         <td>{{ request.tel }}</td>
-        <td>{{ request.sum }}</td>
+        <td>{{ currency(request.sum) }}</td>
         <td>{{ stateMap[request.state] }}</td>
         <td>
           <button class="btn danger" @click="removeRequest(name)">удалить</button>
@@ -33,6 +33,7 @@
 import {useStore} from "vuex";
 import {computed, onBeforeMount, ref} from "vue";
 import AppLoader from "@/components/ui/AppLoader";
+import {currency} from "@/utils/currency";
 
 const store = useStore();
 const stateMap = store.getters['request/STATE_MAP'];
