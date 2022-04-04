@@ -64,10 +64,6 @@ import {TextMap} from "@/components/ui/AppStatus";
 
 const store = useStore();
 
-/*const states = [
-    'active', 'pending', 'done', 'cancelled'
-]*/
-
 const {handleSubmit, isSubmitting,} = useForm({
   initialValues: {
     state: 'active',

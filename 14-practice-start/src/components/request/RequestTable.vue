@@ -1,5 +1,5 @@
 <template>
-  <AppLoader v-if="loading" />
+  <AppLoader v-if="loading"/>
   <h4 v-else-if="!Object.keys(requests).length" class="text-center">Заявок пока нет</h4>
   <table v-else class="table">
     <thead>
@@ -13,20 +13,20 @@
     </tr>
     </thead>
     <tbody>
-      <tr v-for="(request, name, index) in requests"
-          :key="request.id"
-      >
-        <td>{{ index + 1 }}</td>
-        <td>{{ request.fullName }}</td>
-        <td>{{ request.tel }}</td>
-        <td>{{ currency(request.sum) }}</td>
-        <td>
-          <AppStatus :type="request.state"/>
-        </td>
-        <td>
-          <button class="btn danger" @click="removeRequest(name)">удалить</button>
-        </td>
-      </tr>
+    <tr v-for="(request, name, index) in requests"
+        :key="request.id"
+    >
+      <td>{{ index + 1 }}</td>
+      <td>{{ request.fullName }}</td>
+      <td>{{ request.tel }}</td>
+      <td>{{ currency(request.sum) }}</td>
+      <td>
+        <AppStatus :type="request.state"/>
+      </td>
+      <td>
+        <button class="btn danger" @click="removeRequest(name)">удалить</button>
+      </td>
+    </tr>
     </tbody>
   </table>
 </template>
@@ -47,7 +47,6 @@ onBeforeMount(async () => {
   await store.dispatch('request/getRequests');
   loading.value = false;
 });
-
 
 
 let requests = computed(() => store.getters['request/REQUESTS']);
