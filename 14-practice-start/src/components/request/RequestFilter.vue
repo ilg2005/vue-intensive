@@ -3,7 +3,7 @@
     <input type="text"
            class="mr-2"
            placeholder="Начните писать имя"
-           v-model="fullname"
+           v-model.trim="fullname"
            @input="$emit('filter', fullname)"
     >
 
