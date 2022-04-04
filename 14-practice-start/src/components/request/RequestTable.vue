@@ -1,5 +1,5 @@
 <template>
-  <RequestFilter/>
+  <RequestFilter @filter="filtering"/>
   <hr>
   <AppLoader v-if="loading"/>
   <h4 v-else-if="!Object.keys(requests).length" class="text-center">Заявок пока нет</h4>
@@ -53,6 +53,10 @@ onBeforeMount(async () => {
 
 
 let requests = computed(() => store.getters['request/REQUESTS']);
+
+const filtering = (payload) => {
+  console.log('filter:: ', payload);
+}
 
 const removeRequest = (name) => {
   store.dispatch('request/removeRequest', name);

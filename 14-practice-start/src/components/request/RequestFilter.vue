@@ -4,10 +4,13 @@
            class="mr-2"
            placeholder="Начните писать имя"
            v-model="fullname"
+           @input="$emit('filter', fullname)"
     >
 
     <select class="mr-2"
             v-model="state"
+            @change="$emit('filter', state)"
+
     >
       <option v-for="(value, state) in TextMap"
               :key="state"
@@ -25,7 +28,7 @@
 
 <script setup>
 import {TextMap} from '@/components/ui/AppStatus';
-import {computed, ref} from "vue";
+import {computed, ref, defineEmits} from "vue";
 
 const emits = defineEmits(['filter'])
 
@@ -36,7 +39,7 @@ const isFilterActive = computed(() => fullname.value || state.value);
 const reset = () => {
   fullname.value = null;
   state.value = null;
-  emits('filter', {fullname, state});
+  emits('filter', null);
 }
 
 </script>
