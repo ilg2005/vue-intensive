@@ -13,7 +13,13 @@ export const TextMap = {
 
 export default {
   props: {
-    type: String,
+    type: {
+      type: String,
+      required: true,
+      validator(value) {
+        return Object.keys(TextMap).includes(value);
+      }
+    }
   },
 
   setup() {
