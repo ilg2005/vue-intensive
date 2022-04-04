@@ -1,4 +1,6 @@
 <template>
+  <RequestFilter/>
+  <hr>
   <AppLoader v-if="loading"/>
   <h4 v-else-if="!Object.keys(requests).length" class="text-center">Заявок пока нет</h4>
   <table v-else class="table">
@@ -37,6 +39,7 @@ import {computed, onBeforeMount, ref} from "vue";
 import AppLoader from "@/components/ui/AppLoader";
 import {currency} from "@/utils/currency";
 import AppStatus from "@/components/ui/AppStatus";
+import RequestFilter from "@/components/request/RequestFilter";
 
 const store = useStore();
 
