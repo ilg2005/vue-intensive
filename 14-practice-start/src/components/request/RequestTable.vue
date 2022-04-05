@@ -1,12 +1,9 @@
 <template>
-
+  <RequestFilter v-model="filter"/>
+  <hr>
   <AppLoader v-if="loading"/>
   <h4 v-else-if="!Object.keys(requests).length" class="text-center">Заявок пока нет</h4>
   <div v-else>
-
-    <RequestFilter @filter="filtering"/>
-    <hr>
-
     <table class="table">
       <thead>
       <tr>
@@ -40,7 +37,7 @@
 
 <script setup>
 import {useStore} from "vuex";
-import {computed, onBeforeMount, ref} from "vue";
+import {computed, onBeforeMount, ref, watch} from "vue";
 import AppLoader from "@/components/ui/AppLoader";
 import {currency} from "@/utils/currency";
 import AppStatus from "@/components/ui/AppStatus";
@@ -56,12 +53,31 @@ onBeforeMount(async () => {
   loading.value = false;
 });
 
+const filter = ref({});
+const name = ref('');
+const status = ref('');
 
-let requests = computed(() => store.getters['request/REQUESTS']);
+watch(filter, ({fullname, state}) => {
+  name.value = fullname;
+  status.value = state;
+});
 
-const filtering = (payload) => {
-  console.log('filter:: ', payload);
-}
+
+let requests = computed(() => store.getters['request/REQUESTS']
+    .filter(request => {
+      if(name.value) {
+        return request.fullName.includes(name.value);
+      }
+      return request;
+    })
+    .filter(request => {
+      if(status.value) {
+        return request.state === status.value;
+      }
+      return request;
+    })
+);
+
 
 const removeRequest = (name) => {
   store.dispatch('request/removeRequest', name);
