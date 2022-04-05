@@ -1,36 +1,41 @@
 <template>
-  <RequestFilter @filter="filtering"/>
-  <hr>
+
   <AppLoader v-if="loading"/>
   <h4 v-else-if="!Object.keys(requests).length" class="text-center">Заявок пока нет</h4>
-  <table v-else class="table">
-    <thead>
-    <tr>
-      <th>#</th>
-      <th>ФИО</th>
-      <th>Телефон</th>
-      <th>Сумма</th>
-      <th>Статус</th>
-      <th>Действие</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr v-for="(request, name, index) in requests"
-        :key="request.id"
-    >
-      <td>{{ index + 1 }}</td>
-      <td>{{ request.fullName }}</td>
-      <td>{{ request.tel }}</td>
-      <td>{{ currency(request.sum) }}</td>
-      <td>
-        <AppStatus :type="request.state"/>
-      </td>
-      <td>
-        <button class="btn danger" @click="removeRequest(name)">удалить</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <div v-else>
+
+    <RequestFilter @filter="filtering"/>
+    <hr>
+
+    <table class="table">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>ФИО</th>
+        <th>Телефон</th>
+        <th>Сумма</th>
+        <th>Статус</th>
+        <th>Действие</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(request, i) in requests"
+          :key="request.id"
+      >
+        <td>{{ i + 1 }}</td>
+        <td>{{ request.fullName }}</td>
+        <td>{{ request.tel }}</td>
+        <td>{{ currency(request.sum) }}</td>
+        <td>
+          <AppStatus :type="request.state"/>
+        </td>
+        <td>
+          <button class="btn danger" @click="removeRequest(request.id)">удалить</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script setup>

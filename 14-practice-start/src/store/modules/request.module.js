@@ -18,7 +18,7 @@ export default {
     namespaced: true,
     state() {
         return {
-            requests: {},
+            requests: [],
         }
     },
     getters: {
@@ -31,10 +31,10 @@ export default {
             state.requests = payload;
         },
         ADD_REQUEST(state, payload) {
-            state.requests[payload.id] = payload;
+            state.requests.push(payload);
         },
-        REMOVE_REQUEST(state, payload) {
-            delete state.requests[payload];
+        REMOVE_REQUEST(state, id) {
+            state.requests = state.requests.filter(request => request.id !== id);
         }
     },
     actions: {
@@ -44,8 +44,8 @@ export default {
                 const token = store.getters['auth/token'];
                 const {data} = await axios.get(`${firebaseUrl}/requests.json?auth=${token}`);
                 if (data) {
-                    // const resArray = Object.values(data);
-                    commit('SET_REQUESTS', data);
+                    const resArray = Object.values(data);
+                    commit('SET_REQUESTS', resArray);
                 }
             } catch (e) {
                 await store.dispatch('setMessage',
@@ -76,11 +76,11 @@ export default {
                     {root: true});
             }
         },
-        async removeRequest({commit}, name) {
+        async removeRequest({commit}, id) {
             try {
                 const token = store.getters['auth/token'];
-                await axios.delete(`${firebaseUrl}/requests/${name}.json?auth=${token}`);
-                commit('REMOVE_REQUEST', name);
+                await axios.delete(`${firebaseUrl}/requests/${id}.json?auth=${token}`);
+                commit('REMOVE_REQUEST', id);
             } catch (e) {
                 console.log(e);
             }

@@ -30,7 +30,7 @@ export default createStore({
             commit('SET_MESSAGE', payload);
             setTimeout(() => {
                 commit('CLEAR_MESSAGE');
-            }, 5000);
+            }, 2000);
         }
     },
     modules: {
