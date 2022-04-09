@@ -34,6 +34,9 @@ export default {
         SET_REQUESTS(state, payload) {
             state.requests = payload;
         },
+        SET_REQUEST(state, payload) {
+            state.request = payload;
+        },
         ADD_REQUEST(state, payload) {
             state.requests.push(payload);
         },
@@ -60,6 +63,25 @@ export default {
                     {root: true});
             }
         },
+
+        async getRequest(context, id) {
+            try {
+                const token = store.getters['auth/token'];
+                const {data} = await axios.get(`${firebaseUrl}/requests/${id}.json?auth=${token}`);
+                if (data) {
+                    context.commit('SET_REQUEST', data);
+                }
+                return data;
+            } catch (e) {
+                await store.dispatch('setMessage',
+                    {
+                        value: e.message,
+                        type: 'danger'
+                    },
+                    {root: true});
+            }
+        },
+
         async postRequest(context, payload) {
             try {
                 const token = store.getters['auth/token'];
