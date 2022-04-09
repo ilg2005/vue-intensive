@@ -13,6 +13,15 @@ const routes = [
     }
   },
   {
+    path: '/request/:id',
+    name: 'Request',
+    component: () => import('@/components/request/RequestView'),
+    meta: {
+      layout: "main",
+      auth: true,
+    }
+  },
+  {
     path: '/help',
     name: 'Help',
     component: () => import('../views/HelpView.vue'),

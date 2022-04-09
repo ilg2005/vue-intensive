@@ -19,12 +19,16 @@ export default {
     state() {
         return {
             requests: [],
+            request: {},
         }
     },
     getters: {
         REQUESTS(state) {
             return state.requests;
         },
+        REQUEST(state) {
+            return state.request;
+        }
     },
     mutations: {
         SET_REQUESTS(state, payload) {

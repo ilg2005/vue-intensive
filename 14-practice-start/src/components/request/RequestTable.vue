@@ -12,7 +12,7 @@
         <th>Телефон</th>
         <th>Сумма</th>
         <th>Статус</th>
-        <th>Действие</th>
+        <th colspan="2">Действие</th>
       </tr>
       </thead>
       <tbody>
@@ -25,6 +25,12 @@
         <td>{{ currency(request.sum) }}</td>
         <td>
           <AppStatus :type="request.state"/>
+        </td>
+        <td>
+          <router-link
+              class="btn info"
+              :to="`/request/${request.id}`"
+          >открыть</router-link>
         </td>
         <td>
           <button class="btn danger" @click="removeRequest(request.id)">удалить</button>
@@ -81,7 +87,7 @@ let requests = computed(() => store.getters['request/REQUESTS']
 
 const removeRequest = (name) => {
   store.dispatch('request/removeRequest', name);
-}
+};
 
 </script>
 
