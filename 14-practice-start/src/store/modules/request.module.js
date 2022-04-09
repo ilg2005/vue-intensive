@@ -95,6 +95,26 @@ export default {
                     {root: true});
             }
         },
+
+        async updateRequest(_, payload) {
+            try {
+                const token = store.getters['auth/token'];
+                await axios.put(`${firebaseUrl}/requests/${payload.id}.json?auth=${token}`, payload);
+                await store.dispatch('setMessage',
+                    {
+                        value: 'Заявка успешно обновлена!',
+                        type: 'primary'
+                    },
+                    {root: true})
+            } catch (e) {
+                await store.dispatch('setMessage',
+                    {
+                        value: e.message,
+                        type: 'danger'
+                    },
+                    {root: true});
+            }
+        },
         async removeRequest({commit}, id) {
             try {
                 const token = store.getters['auth/token'];

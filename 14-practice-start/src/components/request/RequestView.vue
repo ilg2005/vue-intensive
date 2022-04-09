@@ -25,7 +25,12 @@
           </option>
         </select>
       </p>
-      <button class="btn" v-if="state !== request.state">Обновить</button>
+      <button class="btn"
+              v-if="state !== request.state"
+              @click="updateRequest"
+      >
+        Обновить
+      </button>
     </div>
 
   </app-page>
@@ -59,6 +64,10 @@ onBeforeMount(async () => {
   loading.value = false;
 });
 
+const updateRequest = () => {
+  request.value.state = state.value;
+  store.dispatch('request/updateRequest', request.value);
+}
 
 </script>
 
