@@ -11,8 +11,8 @@
     <div v-else-if="request">
       <p><strong>ФИО: </strong>{{ request.fullName }}</p>
       <p><strong>Телефон: </strong>{{ request.tel }}</p>
-      <p><strong>Сумма: </strong>{{ request.sum }}</p>
-      <p><strong>Статус: </strong>{{ request.state }}</p>
+      <p><strong>Сумма: </strong>{{ currency(request.sum) }}</p>
+      <p><strong>Статус: </strong><AppStatus :type="request.state"/></p>
     </div>
 
   </app-page>
@@ -23,10 +23,12 @@
 <script setup>
 
 import AppPage from '@/components/ui/AppPage';
+import AppStatus from '@/components/ui/AppStatus';
 import {useRoute} from "vue-router";
 import {useStore} from "vuex";
 import {onBeforeMount, ref} from "vue";
 import AppLoader from "@/components/ui/AppLoader";
+import {currency} from "@/utils/currency";
 
 const route = useRoute();
 const store = useStore();
@@ -47,5 +49,9 @@ onBeforeMount(async () => {
 <style scoped>
 .btn {
   font-size: 1rem;
+}
+
+.badge {
+  display: inline;
 }
 </style>
