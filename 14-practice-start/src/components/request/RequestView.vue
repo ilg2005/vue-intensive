@@ -1,5 +1,8 @@
 <template>
   <app-page title="Заявка">
+    <template #header>
+      <router-link class="btn primary" to="/">Назад</router-link>
+    </template>
   </app-page>
   <p><strong></strong></p>
 </template>
@@ -19,5 +22,7 @@ console.log('Заявка: ', store.getters['request/REQUEST']);
 </script>
 
 <style scoped>
-
+.btn {
+  font-size: 1rem;
+}
 </style>
