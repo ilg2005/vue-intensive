@@ -19,7 +19,6 @@ export default {
     state() {
         return {
             requests: [],
-            request: {},
         }
     },
     getters: {
@@ -33,9 +32,6 @@ export default {
     mutations: {
         SET_REQUESTS(state, payload) {
             state.requests = payload;
-        },
-        SET_REQUEST(state, payload) {
-            state.request = payload;
         },
         ADD_REQUEST(state, payload) {
             state.requests.push(payload);
@@ -68,9 +64,6 @@ export default {
             try {
                 const token = store.getters['auth/token'];
                 const {data} = await axios.get(`${firebaseUrl}/requests/${id}.json?auth=${token}`);
-                if (data) {
-                    context.commit('SET_REQUEST', data);
-                }
                 return data;
             } catch (e) {
                 await store.dispatch('setMessage',
