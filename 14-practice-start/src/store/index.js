@@ -10,6 +10,7 @@ export default createStore({
     state() {
         return {
             message: null,
+            sidebar: false,
         }
     },
     getters: {
@@ -23,7 +24,13 @@ export default createStore({
         },
         CLEAR_MESSAGE(state) {
             state.message = null;
-        }
+        },
+        OPEN_SIDEBAR(state) {
+            state.sidebar = true;
+        },
+        CLOSE_SIDEBAR(state) {
+            state.sidebar = false;
+        },
     },
     actions: {
         setMessage({commit}, payload) {

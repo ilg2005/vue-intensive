@@ -92,5 +92,7 @@ const removeRequest = (name) => {
 </script>
 
 <style scoped>
-
+.btn {
+  font-size: 12px;
+}
 </style>

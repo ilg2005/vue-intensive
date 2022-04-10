@@ -10,7 +10,7 @@
         <router-link to="/help">Помощь</router-link>
       </li>
       <li>
-        <a href="#">Сообщения</a>
+        <a href="#" @click.prevent="openSidebar">Сообщения</a>
       </li>
       <li>
         <a href="#" @click.prevent="logout">Выход</a>
@@ -19,23 +19,18 @@
   </nav>
 </template>
 
-<script>
+<script setup>
 import {useRouter} from "vue-router";
 import {useStore} from "vuex";
 
-export default {
-  name: "TheNavbar",
-  setup() {
-    const router = useRouter();
-    const store = useStore();
+const router = useRouter();
+const store = useStore();
 
-    return {
-      logout: () => {
-        store.commit('auth/LOGOUT');
-        router.push('/auth');
-      }
-    }
-  }
+const openSidebar = () => store.commit('OPEN_SIDEBAR');
+
+const logout = () => {
+  store.commit('auth/LOGOUT');
+  router.push('/auth');
 }
 </script>
 
