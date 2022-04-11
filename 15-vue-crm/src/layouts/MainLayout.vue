@@ -1,19 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link rel="stylesheet" href="../assets/index.css">
-  <title>Document</title>
-</head>
-
-
-<body>
-<div>
+<template>
   <div class="app-main-layout">
     <nav class="navbar orange lighten-1">
       <div class="nav-wrapper">
@@ -74,41 +59,26 @@
     <main class="app-content">
       <div class="app-page">
 
-<div>
-  <div class="page-title">
-    <h3>Профиль</h3>
+        <router-view/>
+
+      </div>
+    </main>
+
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large blue" href="#">
+        <i class="large material-icons">add</i>
+      </a>
+    </div>
   </div>
 
-  <form class="form">
-    <div class="input-field">
-      <input
-          id="description"
-          type="text"
-      >
-      <label for="description">Имя</label>
-      <span
-            class="helper-text invalid">name</span>
-    </div>
+</template>
 
-    <button class="btn waves-effect waves-light" type="submit">
-      Обновить
-      <i class="material-icons right">send</i>
-    </button>
-  </form>
-</div>
+<script>
+export default {
+  name: "MainLayout"
+}
+</script>
 
-</div>
-</main>
+<style scoped>
 
-<div class="fixed-action-btn">
-  <a class="btn-floating btn-large blue" href="#">
-    <i class="large material-icons">add</i>
-  </a>
-</div>
-</div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-</body>
-</html>
-
+</style>
