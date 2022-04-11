@@ -41,6 +41,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "planning" */ '../views/PlanningView.vue'),
     meta: {layout: 'main'}
   },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue'),
+    meta: {layout: 'main'}
+  },
 ]
 
 const router = createRouter({
