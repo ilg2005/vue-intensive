@@ -22,7 +22,13 @@ const routes = [
     name: 'categories',
     component: () => import(/* webpackChunkName: "categories" */ '../views/CategoriesView.vue'),
     meta: {layout: 'main'}
-  }
+  },
+  {
+    path: '/detail',
+    name: 'detail',
+    component: () => import(/* webpackChunkName: "detail" */ '../views/DetailRecordView.vue'),
+    meta: {layout: 'main'}
+  },
 ]
 
 const router = createRouter({
