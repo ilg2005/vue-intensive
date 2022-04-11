@@ -29,6 +29,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "detail" */ '../views/DetailRecordView.vue'),
     meta: {layout: 'main'}
   },
+  {
+    path: '/history',
+    name: 'history',
+    component: () => import(/* webpackChunkName: "history" */ '../views/HistoryView.vue'),
+    meta: {layout: 'main'}
+  },
 ]
 
 const router = createRouter({
