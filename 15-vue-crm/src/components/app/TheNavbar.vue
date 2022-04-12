@@ -8,9 +8,10 @@
         <span class="black-text">{{ date }}</span>
       </div>
 
+
       <ul class="right hide-on-small-and-down">
         <li>
-          <a
+          <a  ref="dropdown"
               class="dropdown-trigger black-text"
               href="#"
               data-target="dropdown"
@@ -21,13 +22,13 @@
 
           <ul id='dropdown' class='dropdown-content'>
             <li>
-              <a href="#" class="black-text">
+              <router-link to="/profile" class="black-text">
                 <i class="material-icons">account_circle</i>Профиль
-              </a>
+              </router-link>
             </li>
             <li class="divider" tabindex="-1"></li>
             <li>
-              <a href="#" class="black-text">
+              <a href="#" class="black-text" @click.prevent="logout">
                 <i class="material-icons">assignment_return</i>Выйти
               </a>
             </li>
@@ -40,21 +41,39 @@
 </template>
 
 <script setup>
-import {onBeforeUnmount, ref} from "vue";
+import {onBeforeUnmount, onMounted, ref} from "vue";
+import {useRouter} from 'vue-router';
+import M from 'materialize-css';
+
+const router = useRouter();
+const dropdown = ref();
+let dropdownInstance = ref();
 
 const date = ref();
 const interval = ref();
-interval.value = setInterval(() => date.value = new Intl.DateTimeFormat('ru-RU', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  second: 'numeric',
-}).format(new Date()), 1000);
+
+const logout = () => {
+  router.push('/login?message=logout');
+}
+
+onMounted( () => {
+  dropdownInstance.value = M.Dropdown.init(dropdown.value, {constrainWidth: false});
+
+  interval.value = setInterval(() => date.value = new Intl.DateTimeFormat('ru-RU', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  }).format(new Date()), 1000);
+})
 
 onBeforeUnmount(() => {
-  interval.value = null;
+  clearInterval(interval.value);
+  if (dropdownInstance.value && dropdownInstance.value.destroy) {
+    dropdownInstance.value.destroy();
+  }
 })
 </script>
 
