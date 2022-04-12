@@ -5,7 +5,7 @@
         <a href="#">
           <i class="material-icons black-text" @click="$emit('sidebar-state')">dehaze</i>
         </a>
-        <span class="black-text">12.12.12</span>
+        <span class="black-text">{{ date }}</span>
       </div>
 
       <ul class="right hide-on-small-and-down">
@@ -39,10 +39,23 @@
 
 </template>
 
-<script>
-export default {
-  name: "TheNavbar"
-}
+<script setup>
+import {onBeforeUnmount, ref} from "vue";
+
+const date = ref();
+const interval = ref();
+interval.value = setInterval(() => date.value = new Intl.DateTimeFormat('ru-RU', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+}).format(new Date()), 1000);
+
+onBeforeUnmount(() => {
+  interval.value = null;
+})
 </script>
 
 <style scoped>
