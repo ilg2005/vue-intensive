@@ -1,24 +1,28 @@
 <template>
-  <form class="card auth-card">
+  <form class="card auth-card" @submit.prevent="submitHandler">
     <div class="card-content">
       <span class="card-title">Домашняя бухгалтерия</span>
       <div class="input-field">
         <input
-            id="email"
+            id="login-email"
             type="text"
-            class="validate"
+            :class="{invalid: emailError && emailMeta.touched}"
+            v-model.trim="email"
+            @blur="emailBlur"
         >
-        <label for="email">Email</label>
-        <small class="helper-text invalid">Email</small>
+        <label for="login-email">Email</label>
+        <small class="helper-text invalid" v-if="emailError && emailMeta.touched">{{ emailError }}</small>
       </div>
       <div class="input-field">
         <input
-            id="password"
+            id="login-password"
             type="password"
-            class="validate"
+            :class="{invalid: passwordError && passwordMeta.touched}"
+            v-model.trim="password"
+            @blur="passwordBlur"
         >
-        <label for="password">Пароль</label>
-        <small class="helper-text invalid">Password</small>
+        <label for="login-password">Пароль</label>
+        <small class="helper-text invalid" v-if="passwordError && passwordMeta.touched">{{ passwordError }}</small>
       </div>
     </div>
     <div class="card-action">
@@ -34,8 +38,54 @@
 
       <p class="center">
         Нет аккаунта?
-        <a href="/">Зарегистрироваться</a>
+        <router-link to="/register">Зарегистрироваться</router-link>
       </p>
     </div>
   </form>
 </template>
+
+<script setup>
+import { useForm, useField } from 'vee-validate';
+import * as yup from 'yup';
+import {computed} from "vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
+
+// Define a validation schema
+const MIN_LENGTH = 8;
+const schema = computed(() => {
+  return yup.object({
+    email: yup
+        .string()
+        .required('Это поле должно быть заполнено')
+        .email('Введите валидный email'),
+    password: yup
+        .string()
+        .required('Это поле должно быть заполнено')
+        .min(MIN_LENGTH, `Пароль должен содержать не менее ${MIN_LENGTH} символов.`),
+  });
+});
+
+// Create a form context with the validation schema
+const {handleSubmit} = useForm({
+  validationSchema: schema,
+});
+
+// No need to define rules for fields
+const { value: email, errorMessage: emailError, meta: emailMeta, handleBlur: emailBlur } = useField('email');
+const { value: password, errorMessage: passwordError, meta: passwordMeta, handleBlur: passwordBlur } = useField('password');
+
+const submitHandler = handleSubmit(async values => {
+  try {
+    const formData = values;
+    console.log(formData);
+    await router.push('/');
+  } catch (e) {
+    console.log(e);
+  }
+
+});
+
+</script>
+
