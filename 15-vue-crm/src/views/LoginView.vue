@@ -47,9 +47,17 @@
 <script setup>
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup';
-import {computed} from "vue";
-import {useRouter} from "vue-router";
+import {computed, onMounted} from "vue";
+import {useRouter, useRoute} from "vue-router";
+import {toast} from "@/utils/toast";
 
+onMounted(() => {
+  if (route.query.message === 'logout') {
+    toast('Вы вышли из системы');
+  }
+});
+
+const route = useRoute();
 const router = useRouter();
 
 // Define a validation schema
