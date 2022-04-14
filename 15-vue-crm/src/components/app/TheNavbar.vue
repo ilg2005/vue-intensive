@@ -44,6 +44,7 @@
 import {onBeforeUnmount, onMounted, ref} from "vue";
 import {useRouter} from 'vue-router';
 import M from 'materialize-css';
+import {useStore} from "vuex";
 
 const router = useRouter();
 const dropdown = ref();
@@ -52,8 +53,11 @@ let dropdownInstance = ref();
 const date = ref();
 const interval = ref();
 
-const logout = () => {
-  router.push('/login?message=logout');
+const store = useStore();
+
+const logout = async () => {
+  await store.dispatch('logout');
+  await router.push('/login?message=logout');
 }
 
 onMounted( () => {

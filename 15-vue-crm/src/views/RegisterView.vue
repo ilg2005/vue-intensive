@@ -66,12 +66,15 @@
 </template>
 
 <script setup>
-import { useForm, useField } from 'vee-validate';
+import {useForm, useField} from 'vee-validate';
 import * as yup from 'yup';
 import {computed} from "vue";
 import {useRouter} from "vue-router";
+import {useStore} from "vuex";
+import {toast} from "@/utils/toast";
 
 const router = useRouter();
+const store = useStore();
 
 // Define a validation schema
 const MIN_LENGTH = 8;
@@ -89,8 +92,8 @@ const schema = computed(() => {
         .string()
         .required('Это поле должно быть заполнено'),
     agree: yup
-    .bool()
-    .required('Выберите для регистрации')
+        .bool()
+        .required('Выберите для регистрации')
   });
 });
 
@@ -100,18 +103,27 @@ const {handleSubmit} = useForm({
 });
 
 // No need to define rules for fields
-const { value: email, errorMessage: emailError, meta: emailMeta, handleBlur: emailBlur } = useField('email');
-const { value: password, errorMessage: passwordError, meta: passwordMeta, handleBlur: passwordBlur } = useField('password');
-const { value: username, errorMessage: usernameError, meta: usernameMeta, handleBlur: usernameBlur } = useField('username');
-const { value: agree, errorMessage: agreeError, } = useField('agree');
+const {value: email, errorMessage: emailError, meta: emailMeta, handleBlur: emailBlur} = useField('email');
+const {
+  value: password,
+  errorMessage: passwordError,
+  meta: passwordMeta,
+  handleBlur: passwordBlur
+} = useField('password');
+const {
+  value: username,
+  errorMessage: usernameError,
+  meta: usernameMeta,
+  handleBlur: usernameBlur
+} = useField('username');
+const {value: agree, errorMessage: agreeError,} = useField('agree');
 
 const submitHandler = handleSubmit(async values => {
   try {
-    const formData = values;
-    console.log(formData);
+    await store.dispatch('register', values);
     await router.push('/');
   } catch (e) {
-    console.log(e);
+    toast(e.message, e);
   }
 
 });
