@@ -50,6 +50,7 @@ import * as yup from 'yup';
 import {computed, onMounted} from "vue";
 import {useRouter, useRoute} from "vue-router";
 import {toast} from "@/utils/toast";
+import {useStore} from "vuex";
 
 onMounted(() => {
   if (route.query.message === 'logout') {
@@ -59,6 +60,8 @@ onMounted(() => {
 
 const route = useRoute();
 const router = useRouter();
+
+const store = useStore();
 
 // Define a validation schema
 const MIN_LENGTH = 8;
@@ -86,11 +89,10 @@ const { value: password, errorMessage: passwordError, meta: passwordMeta, handle
 
 const submitHandler = handleSubmit(async values => {
   try {
-    const formData = values;
-    console.log(formData);
+    await store.dispatch('login', values);
     await router.push('/');
   } catch (e) {
-    console.log(e);
+    toast(e.message, e);
   }
 
 });
