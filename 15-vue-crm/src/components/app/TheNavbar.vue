@@ -16,7 +16,7 @@
               href="#"
               data-target="dropdown"
           >
-            USER NAME
+            {{ username }}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
 
@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import {onBeforeUnmount, onMounted, ref} from "vue";
+import {onBeforeUnmount, onMounted, ref, defineProps} from "vue";
 import {useRouter} from 'vue-router';
 import M from 'materialize-css';
 import {useStore} from "vuex";
@@ -52,6 +52,8 @@ let dropdownInstance = ref();
 
 const date = ref();
 const interval = ref();
+
+defineProps(['username']);
 
 const store = useStore();
 

@@ -1,7 +1,8 @@
 <template>
   <div class="app-main-layout">
 
-    <TheNavbar @sidebar-state="isOpen = !isOpen"/>
+
+    <TheNavbar @sidebar-state="isOpen = !isOpen" :username="username"/>
 
     <TheSidebar :state="isOpen"/>
 
@@ -19,15 +20,31 @@
       </router-link>
     </div>
   </div>
-
 </template>
 
 <script setup>
 import TheNavbar from "@/components/app/TheNavbar";
 import TheSidebar from "@/components/app/TheSidebar";
-import {ref} from "vue";
+import {computed, onMounted, ref, watch,} from "vue";
+import {useStore} from "vuex";
 
 const isOpen = ref(true);
+
+const store = useStore();
+const loading = ref(true);
+
+const username = computed(() => store.getters.USER ? store.getters.USER.info.username : '');
+
+watch(username, (nv) => nv);
+
+
+
+
+onMounted(async () => {
+  await store.dispatch('fetchInfo');
+  loading.value = false;
+
+});
 
 </script>
 
