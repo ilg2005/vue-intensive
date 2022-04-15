@@ -71,7 +71,6 @@ import * as yup from 'yup';
 import {computed} from "vue";
 import {useRouter} from "vue-router";
 import {useStore} from "vuex";
-import {toast} from "@/utils/toast";
 
 const router = useRouter();
 const store = useStore();
@@ -123,7 +122,7 @@ const submitHandler = handleSubmit(async values => {
     await store.dispatch('register', values);
     await router.push('/');
   } catch (e) {
-    toast(e.message, e);
+    console.log(e.message);
   }
 
 });

@@ -11,11 +11,11 @@ const database = getDatabase(firebase);
 
 export default {
     actions: {
-        async login(_, {email, password}) {
+        async login({commit}, {email, password}) {
             try {
                 await signInWithEmailAndPassword(auth, email, password);
             } catch (e) {
-                console.log(e);
+                commit('SET_ERROR', e);
                 throw e;
             }
         },
@@ -27,7 +27,7 @@ export default {
                 throw e;
             }
         },
-        async register({dispatch}, {email, password, username}) {
+        async register({commit, dispatch}, {email, password, username}) {
             try {
                 await createUserWithEmailAndPassword(auth, email, password);
                 const uid = await dispatch('getUid');
@@ -36,7 +36,7 @@ export default {
                     username
                 });
             } catch (e) {
-                console.log(e);
+                commit('SET_ERROR', e);
                 throw e;
             }
         },

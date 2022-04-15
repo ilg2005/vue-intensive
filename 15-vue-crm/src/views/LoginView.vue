@@ -64,7 +64,6 @@ const router = useRouter();
 const store = useStore();
 
 // Define a validation schema
-const MIN_LENGTH = 8;
 const schema = computed(() => {
   return yup.object({
     email: yup
@@ -73,8 +72,7 @@ const schema = computed(() => {
         .email('Введите валидный email'),
     password: yup
         .string()
-        .required('Это поле должно быть заполнено')
-        .min(MIN_LENGTH, `Пароль должен содержать не менее ${MIN_LENGTH} символов.`),
+        .required('Это поле должно быть заполнено'),
   });
 });
 
@@ -92,7 +90,7 @@ const submitHandler = handleSubmit(async values => {
     await store.dispatch('login', values);
     await router.push('/');
   } catch (e) {
-    toast(e.message, e);
+    console.log(e.message);
   }
 
 });
