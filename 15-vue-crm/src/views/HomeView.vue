@@ -31,7 +31,7 @@ import {useStore} from "vuex";
 const store = useStore();
 
 const loading = ref(false);
-const refresh = async () => {
+const refresh =  () => {
   loading.value = true;
   setTimeout(async () => {
     await store.dispatch('fetchInfo');
