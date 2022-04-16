@@ -29,8 +29,11 @@ const store = useStore();
 
 
 const refresh = async () => {
+  await location.reload();
+/*
   await store.dispatch('fetchInfo');
   await store.dispatch('fetchCurrency');
+*/
 }
 
 onMounted(async () => {
