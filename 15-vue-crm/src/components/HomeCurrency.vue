@@ -42,12 +42,11 @@ const currencies = ['RUB', 'EUR', 'USD'];
 
 const rates = computed(() => store.getters.RATES);
 const date = computed(() => {
-  const curDate = store.getters.CURRENCY.date;
   return new Intl.DateTimeFormat('ru-RU', {
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
-  }).format(new Date(curDate));
+  }).format(new Date());
 });
 loading.value = false;
 

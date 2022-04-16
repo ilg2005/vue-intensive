@@ -55,8 +55,7 @@ export default createStore({
       }
     },
     async fetchCurrency(context) {
-        const key = process.env.VUE_APP_FIXER;
-        const res = await fetch(`http://data.fixer.io/api/latest?access_key=${key}&symbols=USD,EUR,RUB&format=1`);
+        const res = await fetch(`https://cdn.cur.su/api/latest.json`);
         const currency = await res.json();
         context.commit('SET_RATES', currency.rates);
         context.commit('SET_CURRENCY', currency);
