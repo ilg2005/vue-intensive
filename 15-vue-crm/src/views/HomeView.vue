@@ -8,7 +8,9 @@
       </button>
     </div>
 
-    <div class="row">
+    <AppLoader v-show="loading"/>
+
+    <div class="row" v-show="!loading">
 
       <HomeBill/>
 
@@ -22,18 +24,22 @@
 
 import HomeBill from "@/components/HomeBill";
 import HomeCurrency from "@/components/HomeCurrency";
-import {onMounted} from "vue";
+import AppLoader from "@/components/app/AppLoader";
+import {onMounted, ref} from "vue";
 import {useStore} from "vuex";
 
 const store = useStore();
 
-
+const loading = ref(false);
 const refresh = async () => {
-  await location.reload();
-/*
-  await store.dispatch('fetchInfo');
-  await store.dispatch('fetchCurrency');
-*/
+  loading.value = true;
+  setTimeout(async () => {
+    await store.dispatch('fetchInfo');
+    await store.dispatch('fetchCurrency');
+    loading.value = false;
+  }, 1000);
+
+
 }
 
 onMounted(async () => {

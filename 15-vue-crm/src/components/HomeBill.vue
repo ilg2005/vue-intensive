@@ -39,10 +39,12 @@ const user = computed(() => store.getters.USER);
 
 const rates = computed(() => store.getters.RATES);
 
-watch(rates, () => {
-  const base = computed(() => user.value.info.bill / rates.value.RUB / rates.value.USD);
-  amount.value = base.value;
-  loading.value = false;
+watch([user, rates], ([newUser]) => {
+  if (newUser) {
+    const base = computed(() => user.value.info.bill / rates.value.RUB / rates.value.USD);
+    amount.value = base.value;
+    loading.value = false;
+  }
 });
 
 </script>

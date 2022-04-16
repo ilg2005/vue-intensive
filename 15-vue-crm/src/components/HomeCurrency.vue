@@ -51,7 +51,7 @@ const date = computed(() => {
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
-  }).format(new Date());
+  }).format(new Date(store.getters.CURRENCY.lastupdate));
 });
 
 
