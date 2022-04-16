@@ -21,7 +21,7 @@
 
 <script setup>
 import {useStore} from "vuex";
-import {computed, onMounted, ref, watch,} from "vue";
+import {computed, ref, watch,} from "vue";
 import AppLoader from "@/components/app/AppLoader";
 
 const store = useStore();
@@ -37,29 +37,13 @@ const getCurrency = currency => Math.floor(amount.value * rates.value[currency])
 const user = computed(() => store.getters.USER);
 watch(user, nv => {
   if(nv) {
-    console.log('userinfo: ', nv.info);
     const base = computed(() => nv.info.bill / rates.value.RUB / rates.value.EUR);
-    console.log('base: ', base.value);
     amount.value = base.value;
+    loading.value = false;
   }
-
 });
 
 const rates = computed(() => store.getters.RATES);
-console.log('rates: ', rates.value);
-
-
-
-
-onMounted(async () => {
-  await store.dispatch('fetchCurrency');
-  await store.dispatch('fetchInfo');
-  loading.value = false;
-
-
-
-});
-
 
 </script>
 
