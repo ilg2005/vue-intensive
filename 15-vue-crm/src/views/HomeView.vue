@@ -10,7 +10,7 @@
 
     <div class="row">
 
-      <HomeBill />
+      <HomeBill/>
 
       <HomeCurrency/>
 
@@ -27,8 +27,10 @@ import {useStore} from "vuex";
 
 const store = useStore();
 
-const refresh = () => {
-  console.log('refreshing');
+
+const refresh = async () => {
+  await store.dispatch('fetchInfo');
+  await store.dispatch('fetchCurrency');
 }
 
 onMounted(async () => {
