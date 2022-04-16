@@ -11,7 +11,7 @@
            v-for="currency in currencies"
            :key="currency"
         >
-          <span>{{ getCurrency(currency) }} {{ currency }}</span>
+          <span>{{ currencyFilter(getCurrency(currency), currency) }}</span>
         </p>
       </div>
     </div>
@@ -23,6 +23,7 @@
 import {useStore} from "vuex";
 import {computed, ref, watch,} from "vue";
 import AppLoader from "@/components/app/AppLoader";
+import currencyFilter from "@/components/filters/currencyFilter";
 
 const store = useStore();
 
