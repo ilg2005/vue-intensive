@@ -6,11 +6,11 @@
 
     <TheSidebar :state="isOpen"/>
 
+
     <main :class="['app-content', {full: !isOpen}]">
-      <div class="app-page">
-
+      <AppLoader v-if="loading"/>
+      <div class="app-page" v-else>
         <router-view/>
-
       </div>
     </main>
 
@@ -27,6 +27,7 @@ import TheNavbar from "@/components/app/TheNavbar";
 import TheSidebar from "@/components/app/TheSidebar";
 import {computed, onMounted, ref, watch,} from "vue";
 import {useStore} from "vuex";
+import AppLoader from "@/components/app/AppLoader";
 
 const isOpen = ref(true);
 
@@ -37,13 +38,13 @@ const user = computed(() => store.getters.USER);
 
 const username = computed(() => user.value ? user.value.info.username : '');
 
-watch(username, (nv) => nv);
+watch(username, () => {
+  loading.value = false;
+});
 
 
 onMounted(async () => {
   await store.dispatch('fetchInfo');
-  loading.value = false;
-
 });
 
 </script>

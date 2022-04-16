@@ -36,15 +36,14 @@ const amount = ref();
 const getCurrency = currency => Math.floor(amount.value * rates.value[currency]);
 
 const user = computed(() => store.getters.USER);
-watch(user, nv => {
-  if(nv) {
-    const base = computed(() => nv.info.bill / rates.value.RUB / rates.value.USD);
-    amount.value = base.value;
-    loading.value = false;
-  }
-});
 
 const rates = computed(() => store.getters.RATES);
+
+watch(rates, () => {
+  const base = computed(() => user.value.info.bill / rates.value.RUB / rates.value.USD);
+  amount.value = base.value;
+  loading.value = false;
+});
 
 </script>
 

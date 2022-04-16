@@ -33,7 +33,7 @@
 
 <script setup>
 import AppLoader from '@/components/app/AppLoader';
-import {computed, ref } from "vue";
+import {computed, ref, watch } from "vue";
 import {useStore} from "vuex";
 
 const store = useStore();
@@ -41,6 +41,11 @@ const loading = ref(true);
 const currencies = ['RUB', 'EUR', 'USD'];
 
 const rates = computed(() => store.getters.RATES);
+
+watch(rates, () => {
+  loading.value = false;
+});
+
 const date = computed(() => {
   return new Intl.DateTimeFormat('ru-RU', {
     year: 'numeric',
@@ -48,7 +53,7 @@ const date = computed(() => {
     day: 'numeric',
   }).format(new Date());
 });
-loading.value = false;
+
 
 </script>
 
