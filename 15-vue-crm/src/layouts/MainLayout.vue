@@ -33,11 +33,11 @@ const isOpen = ref(true);
 const store = useStore();
 const loading = ref(true);
 
-const username = computed(() => store.getters.USER ? store.getters.USER.info.username : '');
+const user = computed(() => store.getters.USER);
+
+const username = computed(() => user.value ? user.value.info.username : '');
 
 watch(username, (nv) => nv);
-
-
 
 
 onMounted(async () => {

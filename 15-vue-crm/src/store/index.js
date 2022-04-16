@@ -15,10 +15,12 @@ export default createStore({
   state: {
     error: null,
     user: null,
+    rates: null,
   },
   getters: {
-    ERROR : state => state.error,
-    USER : state => state.user
+    ERROR: state => state.error,
+    USER: state => state.user,
+    RATES: state => state.rates,
   },
   mutations: {
     SET_ERROR(state, error) {
@@ -29,6 +31,9 @@ export default createStore({
     },
     SET_USER(state, user) {
       state.user = user;
+    },
+    SET_RATES(state, rates) {
+      state.rates = rates;
     }
   },
   actions: {
@@ -37,11 +42,18 @@ export default createStore({
         const userId = auth.currentUser.uid;
         await onValue(ref(database, '/users/' + userId), (snapshot) => {
           commit('SET_USER', snapshot.val());
+          return snapshot.val();
         }, {
-          onlyOnce: true
+          onlyOnce: false
         });
 
       }
+    },
+    async fetchCurrency(context) {
+        const key = process.env.VUE_APP_FIXER;
+        const res = await fetch(`http://data.fixer.io/api/latest?access_key=${key}&symbols=USD,EUR,RUB&format=1`);
+        const currency = await res.json();
+        context.commit('SET_RATES', currency.rates);
     }
   },
   modules: {
