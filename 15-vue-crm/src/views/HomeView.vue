@@ -3,7 +3,7 @@
     <div class="page-title">
       <h3>Счет</h3>
 
-      <button class="btn waves-effect waves-light btn-small">
+      <button class="btn waves-effect waves-light btn-small" @click="refresh">
         <i class="material-icons">refresh</i>
       </button>
     </div>
@@ -13,7 +13,7 @@
 
       <HomeBill />
 
-      <HomeCurrency></HomeCurrency>
+      <HomeCurrency/>
 
     </div>
   </div>
@@ -29,6 +29,11 @@ import {useStore} from "vuex";
 let loading = ref(true);
 
 const store = useStore();
+
+const refresh = () => {
+  console.log('refreshing');
+}
+
 onMounted(async () => {
   await store.dispatch('fetchCurrency');
   loading.value = false;

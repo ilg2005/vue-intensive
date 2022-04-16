@@ -5,7 +5,8 @@
         <div class="card-header">
           <span class="card-title">Курс валют</span>
         </div>
-        <table>
+        <AppLoader v-if="loading"/>
+        <table v-else>
           <thead>
           <tr>
             <th>Валюта</th>
@@ -15,10 +16,12 @@
           </thead>
 
           <tbody>
-          <tr>
-            <td>руб</td>
-            <td>12121</td>
-            <td>12.12.12</td>
+          <tr v-for="currency in currencies"
+              :key="currency"
+          >
+            <td>{{ currency }}</td>
+            <td>{{ rates[currency].toFixed(2) }}</td>
+            <td>{{ date }}</td>
           </tr>
           </tbody>
         </table>
@@ -28,10 +31,26 @@
 
 </template>
 
-<script>
-export default {
-  name: "HomeCurrency"
-}
+<script setup>
+import AppLoader from '@/components/app/AppLoader';
+import {computed, ref } from "vue";
+import {useStore} from "vuex";
+
+const store = useStore();
+const loading = ref(true);
+const currencies = ['RUB', 'EUR', 'USD'];
+
+const rates = computed(() => store.getters.RATES);
+const date = computed(() => {
+  const curDate = store.getters.CURRENCY.date;
+  return new Intl.DateTimeFormat('ru-RU', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  }).format(new Date(curDate));
+});
+loading.value = false;
+
 </script>
 
 <style scoped>

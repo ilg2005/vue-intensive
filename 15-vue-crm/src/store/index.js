@@ -16,11 +16,13 @@ export default createStore({
     error: null,
     user: null,
     rates: null,
+    currency: null,
   },
   getters: {
     ERROR: state => state.error,
     USER: state => state.user,
     RATES: state => state.rates,
+    CURRENCY: state => state.currency,
   },
   mutations: {
     SET_ERROR(state, error) {
@@ -34,6 +36,9 @@ export default createStore({
     },
     SET_RATES(state, rates) {
       state.rates = rates;
+    },
+    SET_CURRENCY(state, currency) {
+      state.currency = currency;
     }
   },
   actions: {
@@ -54,6 +59,7 @@ export default createStore({
         const res = await fetch(`http://data.fixer.io/api/latest?access_key=${key}&symbols=USD,EUR,RUB&format=1`);
         const currency = await res.json();
         context.commit('SET_RATES', currency.rates);
+        context.commit('SET_CURRENCY', currency);
     }
   },
   modules: {
