@@ -22,8 +22,8 @@
 
 <script setup>
 
-import HomeBill from "@/components/HomeBill";
-import HomeCurrency from "@/components/HomeCurrency";
+import HomeBill from "@/components/home/HomeBill";
+import HomeCurrency from "@/components/home/HomeCurrency";
 import AppLoader from "@/components/app/AppLoader";
 import {onMounted, ref} from "vue";
 import {useStore} from "vuex";

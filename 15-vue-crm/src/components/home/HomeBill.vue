@@ -23,7 +23,7 @@
 import {useStore} from "vuex";
 import {computed, ref, watch,} from "vue";
 import AppLoader from "@/components/app/AppLoader";
-import currencyFilter from "@/components/filters/currencyFilter";
+import currencyFilter from "@/utils/currencyFilter";
 
 const store = useStore();
 
