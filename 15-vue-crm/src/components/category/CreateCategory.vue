@@ -5,7 +5,7 @@
         <h4>Создать</h4>
       </div>
 
-      <form @submit.prevent="submitHandler">
+      <form @submit.prevent="submitHandler" novalidate>
         <div class="input-field">
           <input
               id="create_category_name"
@@ -14,7 +14,7 @@
               :class="{invalid: nameError && nameMeta.touched}"
               @blur="nameBlur"
           >
-          <label for="create_category_name">Название</label>
+          <label for="create_category_name">Название категории</label>
           <span class="helper-text invalid" v-if="nameError && nameMeta.touched">{{ nameError }}</span>
         </div>
 
@@ -26,6 +26,7 @@
               @input="limit = $event.target.value"
               :class="{invalid: limitError && limitMeta.touched}"
               @blur="limitBlur"
+              :min="MIN"
 
           >
           <label for="create_category_limit" class="active">Лимит</label>
@@ -55,11 +56,12 @@ const schema = computed(() => {
   return yup.object({
     name: yup
         .string()
-        .required('Введите имя'),
+        .required('Введите название категории'),
     limit: yup
         .number()
+        .integer()
         .required('Это поле должно быть заполнено')
-        .min(MIN, `Не менее ${MIN} рублей.`),
+        .min(499, `Не менее ${MIN} рублей.`),
   });
 });
 // Create a form context with the validation schema
@@ -79,6 +81,8 @@ const {
 const submitHandler = handleSubmit(async values => {
   try {
     await store.dispatch('createCategory', values);
+    await store.dispatch('setMessage', `Создана категория "${values.name}"`)
+    values = null;
   } catch (e) {
     console.log(e.message);
   }
