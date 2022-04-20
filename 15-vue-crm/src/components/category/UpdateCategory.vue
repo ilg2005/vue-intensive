@@ -6,9 +6,12 @@
       </div>
 
       <form>
-        <div class="input-field" >
-          <select>
-            <option>Category</option>
+        <div class="input-field">
+          <select ref="select">
+            <option value="" disabled selected>Choose your option</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
           </select>
           <label>Выберите категорию</label>
         </div>
@@ -38,6 +41,10 @@
 </template>
 
 <script setup>
+import {ref} from 'vue';
+
+const select = ref(null);
+
 </script>
 
 <style scoped>

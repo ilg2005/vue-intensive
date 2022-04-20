@@ -45,7 +45,7 @@
 <script setup>
 import {useForm, useField} from 'vee-validate';
 import * as yup from 'yup';
-import {computed, ref, defineEmits} from "vue";
+import {computed, ref, } from "vue";
 import {useStore} from "vuex";
 import {toast} from "@/utils/toast";
 
@@ -79,10 +79,10 @@ let {
 } = useField('limit');
 
 const submitHandler = handleSubmit(async values => {
-  values.limit = values.limit ?? MIN;
+  values.limit = values.limit ? +values.limit : MIN;
   try {
     await store.dispatch('createCategory', values);
-    defineEmits(['created']);
+   // defineEmits(['created']);
     toast(`Создана категория "${values.name}"`);
     form.value.reset();
   } catch (e) {
