@@ -38,7 +38,7 @@ import {useStore} from "vuex";
 
 const store = useStore();
 const loading = ref(true);
-const currencies = ['RUB', 'EUR', 'USD'];
+const currencies = ['RUB', 'USD', 'EUR'];
 
 const rates = computed(() => store.getters.RATES);
 

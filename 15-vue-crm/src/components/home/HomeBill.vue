@@ -29,11 +29,11 @@ const store = useStore();
 
 const loading = ref(true);
 
-const currencies = ['RUB', 'EUR', 'USD'];
+const currencies = ['RUB', 'USD', 'EUR'];
 
 const amount = ref();
 
-const getCurrency = currency => Math.floor(amount.value * rates.value[currency]);
+const getCurrency = currency => currency !== 'RUB' ? Math.floor(amount.value * rates.value[currency]) : (amount.value * rates.value['RUB']);
 
 const user = computed(() => store.getters.USER);
 
