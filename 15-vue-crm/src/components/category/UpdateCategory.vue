@@ -6,15 +6,12 @@
       </div>
 
       <form>
-        <div class="input-field">
           <select ref="select">
             <option value="" disabled selected>Choose your option</option>
             <option value="1">Option 1</option>
             <option value="2">Option 2</option>
             <option value="3">Option 3</option>
           </select>
-          <label>Выберите категорию</label>
-        </div>
 
         <div class="input-field">
           <input type="text" id="name">
@@ -41,9 +38,15 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 
-const select = ref(null);
+const select = ref();
+
+onMounted(() => {
+  console.log(select.value);
+
+})
+
 
 </script>
 
