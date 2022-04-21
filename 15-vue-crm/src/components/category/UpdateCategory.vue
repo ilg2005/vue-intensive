@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch} from 'vue';
+import { onMounted, ref} from 'vue';
 import M from 'materialize-css';
 import {useStore} from "vuex";
 import AppLoader from "@/components/app/AppLoader";
@@ -58,11 +58,17 @@ let cats = ref();
 onMounted(() => {
 
   setTimeout( () => {
-    watch(cats,  () => store.dispatch('fetchCategories'));
-    loading.value = false;
-  }, 500)
+    store.dispatch('fetchCategories')
+    .then((response) => {
+      cats.value = response;
+      console.log('response: ', response);
+      loading.value = false;
+    })
+    .then(() => M.FormSelect.init(select.value))
 
-  M.FormSelect.init(select.value);
+  }, 500);
+
+
 })
 
 
