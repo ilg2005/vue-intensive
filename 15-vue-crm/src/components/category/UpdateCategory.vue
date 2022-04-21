@@ -6,12 +6,14 @@
       </div>
 
       <form>
+        <div class="input-field">
           <select ref="select">
             <option value="" disabled selected>Choose your option</option>
             <option value="1">Option 1</option>
             <option value="2">Option 2</option>
             <option value="3">Option 3</option>
           </select>
+        </div>
 
         <div class="input-field">
           <input type="text" id="name">
@@ -39,12 +41,12 @@
 
 <script setup>
 import {onMounted, ref} from 'vue';
+import M from 'materialize-css';
 
 const select = ref();
 
 onMounted(() => {
-  console.log(select.value);
-
+  M.FormSelect.init(select.value);
 })
 
 
