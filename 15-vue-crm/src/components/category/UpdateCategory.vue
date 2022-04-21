@@ -1,5 +1,5 @@
 <template>
-  <div class="col s12 m6">
+  <div class="col s12 m6" v-if="cats.length">
     <div>
       <div class="page-subtitle">
         <h4>Редактировать</h4>
@@ -52,7 +52,7 @@ const store = useStore();
 const select = ref();
 const loading = ref(true);
 
-let cats = ref();
+let cats = ref([]);
 
 
 onMounted(() => {
