@@ -6,12 +6,15 @@
       </div>
 
       <form>
-        <div class="input-field">
+        <AppLoader v-show="loading"/>
+        <div class="input-field" v-show="!loading">
           <select ref="select">
             <option value="" disabled selected>Выберите категорию</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
+            <option v-for="category in cats"
+                    :key="category.id"
+                    :value="category.id"
+            >{{ category.name }}
+            </option>
           </select>
         </div>
 
@@ -42,10 +45,35 @@
 <script setup>
 import {onMounted, ref} from 'vue';
 import M from 'materialize-css';
+import {useStore} from "vuex";
+import AppLoader from "@/components/app/AppLoader";
 
+const store = useStore();
 const select = ref();
+const loading = ref(true);
 
+let cats = [
+  {
+    id: 1,
+    name: 'Test-1'
+  },
+  {
+    id: 2,
+    name: 'Test-2'
+  },
+  {
+    id: 2,
+    name: 'Test-2'
+  },
+];
 onMounted(() => {
+
+  setTimeout(async () => {
+    const categories = await store.dispatch('fetchCategories');
+    console.log(categories);
+    loading.value = false;
+  }, 1000)
+
   M.FormSelect.init(select.value);
 })
 
