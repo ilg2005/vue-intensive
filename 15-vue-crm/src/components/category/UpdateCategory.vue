@@ -56,19 +56,13 @@ let cats = ref();
 
 
 onMounted(() => {
-
-  setTimeout( () => {
     store.dispatch('fetchCategories')
     .then((response) => {
       cats.value = response;
       console.log('response: ', response);
       loading.value = false;
     })
-    .then(() => M.FormSelect.init(select.value))
-
-  }, 500);
-
-
+    .then(() => M.FormSelect.init(select.value));
 })
 
 
