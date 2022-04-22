@@ -140,7 +140,7 @@ const updateHandler = handleSubmit(async values => {
     values.id = current.value;
     await store.dispatch('updateCategory', values);
     fetchCategories();
-    toast(`Изменена категория "${values.editName}"`);
+    toast('Категория успешно изменена!');
   } catch (e) {
     console.log(e.message);
   }
