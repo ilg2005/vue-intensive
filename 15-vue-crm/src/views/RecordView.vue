@@ -154,14 +154,21 @@ let {
 } = useField('amount');
 
 
-const submitForm = handleSubmit(async values => {
-  try {
+const submitForm = handleSubmit(async (values, { resetForm }) => {
+  if (current.value === '') {
+    toast('Выберите категорию', 1);
+  } else {
     values.id = current.value;
-   // await store.dispatch('submitRecord', values);
-    console.log(values);
-    toast('Запись успешно создана!');
-  } catch (e) {
-    console.log(e.message);
+    values.created = new Date().toJSON();
+    try {
+     // await store.dispatch('createRecord', values);
+      console.log(values);
+
+      resetForm();
+      toast('Запись успешно создана!');
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 });
 
