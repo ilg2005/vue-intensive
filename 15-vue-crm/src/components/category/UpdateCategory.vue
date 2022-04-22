@@ -29,7 +29,7 @@
               :class="{invalid: editNameError && editNameMeta.touched}"
               @blur="editNameBlur"
           >
-          <label for="create_category_name"  class="active">Название категории</label>
+          <label for="create_category_name" class="active">Название категории</label>
           <span class="helper-text invalid" v-if="editNameError && editNameMeta.touched">{{ editNameError }}</span>
         </div>
 
@@ -43,7 +43,8 @@
               :min="MIN"
           >
           <label for="create_category_limit" class="active">Лимит</label>
-          <span class="helper-text invalid" v-if="editLimitError && editLimitMeta.touched && editLimit">{{ editLimitError }}</span>
+          <span class="helper-text invalid"
+                v-if="editLimitError && editLimitMeta.touched && editLimit">{{ editLimitError }}</span>
           <span class="helper-text invalid"
                 v-if="editLimitError && editLimitMeta.touched && !editLimit">Не менее {{ MIN }} рублей</span>
         </div>
@@ -79,7 +80,7 @@ const MIN = 500;
 const selectInstance = ref(null);
 const current = ref('');
 
-onMounted(() => {
+const fetchCategories = () => {
   store.dispatch('fetchCategories')
       .then((response) => {
         cats.value = response;
@@ -88,16 +89,20 @@ onMounted(() => {
       .then(() => {
         selectInstance.value = M.FormSelect.init(select.value)
       });
+}
+
+onMounted(() => {
+  fetchCategories();
 })
 
-onUnmounted( () => {
-  if(selectInstance.value && selectInstance.value.destroy) {
+onUnmounted(() => {
+  if (selectInstance.value && selectInstance.value.destroy) {
     selectInstance.value.destroy();
   }
 })
 
 const updateFields = () => {
-  if(current.value) {
+  if (current.value) {
     const category = cats.value.find(el => el.id === current.value);
     editName.value = category.name;
     editLimit.value = category.limit;
@@ -135,14 +140,7 @@ const updateHandler = handleSubmit(async values => {
   try {
     values.id = current.value;
     await store.dispatch('updateCategory', values);
-    store.dispatch('fetchCategories')
-        .then((response) => {
-          cats.value = response;
-          loading.value = false;
-        })
-        .then(() => {
-          selectInstance.value = M.FormSelect.init(select.value)
-        });
+    fetchCategories();
     toast(`Изменена категория "${values.editName}"`);
   } catch (e) {
     console.log(e.message);
