@@ -33,6 +33,7 @@
               name="type"
               type="radio"
               value="income"
+              v-model="picked"
           />
           <span>Доход</span>
         </label>
@@ -45,6 +46,7 @@
               name="type"
               type="radio"
               value="outcome"
+              v-model="picked"
           />
           <span>Расход</span>
         </label>
@@ -89,6 +91,7 @@ const select = ref();
 const selectInstance = ref(null);
 const current = ref('');
 const loading = ref(true);
+const picked = ref('income');
 
 let cats = ref([]);
 
