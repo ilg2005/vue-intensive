@@ -51,6 +51,20 @@ export default {
                 context.commit('SET_ERROR', e);
                 throw e;
             }
+        },
+        async updateCategory(context, payload) {
+            try {
+                const uid = await context.dispatch('getUid');
+                await set(ref(database, `/users/${uid}/categories/` + payload.id), {
+                    id: payload.id,
+                    name: payload.editName,
+                    limit: payload.editLimit,
+                });
+            } catch (e) {
+                context.commit('SET_ERROR', e);
+                throw e;
+            }
         }
+
     }
 }

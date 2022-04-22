@@ -133,11 +133,17 @@ let {
 const updateHandler = handleSubmit(async values => {
 
   try {
-    console.log(values, current.value);
-    //await store.dispatch('updateCategory', values);
-    // defineEmits(['created']);
-    toast(`Изменена категория "${values.name}"`);
-
+    values.id = current.value;
+    await store.dispatch('updateCategory', values);
+    store.dispatch('fetchCategories')
+        .then((response) => {
+          cats.value = response;
+          loading.value = false;
+        })
+        .then(() => {
+          selectInstance.value = M.FormSelect.init(select.value)
+        });
+    toast(`Изменена категория "${values.editName}"`);
   } catch (e) {
     console.log(e.message);
   }
