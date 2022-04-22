@@ -137,13 +137,13 @@ const updateHandler = handleSubmit(async values => {
     toast('Выберите категорию', 1);
   } else {
     values.id = current.value;
-  }
-  try {
-    await store.dispatch('updateCategory', values);
-    fetchCategories();
-    toast('Категория успешно изменена!');
-  } catch (e) {
-    console.log(e.message);
+    try {
+      await store.dispatch('updateCategory', values);
+      fetchCategories();
+      toast('Категория успешно изменена!');
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 });
 
