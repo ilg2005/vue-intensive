@@ -8,8 +8,11 @@
       <form @submit.prevent="updateHandler" ref="updateForm">
         <AppLoader v-show="loading"/>
         <div class="input-field" v-show="!loading">
-          <select ref="select">
-            <option value="" disabled selected>Выберите категорию</option>
+          <select ref="select"
+                  v-model="current"
+                  @change="updateFields"
+          >
+            <option value="" disabled>Выберите категорию</option>
             <option v-for="category in cats"
                     :key="category.id"
                     :value="category.id"
@@ -34,8 +37,7 @@
           <input
               id="create_category_limit"
               type="number"
-              :value="MIN"
-              @input="limit = $event.target.value"
+              v-model="limit"
               :class="{invalid: limitError && limitMeta.touched}"
               @blur="limitBlur"
               :min="MIN"
@@ -73,13 +75,14 @@ const updateForm = ref(null);
 let cats = ref([]);
 const MIN = 500;
 
+
 const selectInstance = ref(null);
+const current = ref('');
 
 onMounted(() => {
   store.dispatch('fetchCategories')
       .then((response) => {
         cats.value = response;
-        console.log('response: ', response);
         loading.value = false;
       })
       .then(() => {
@@ -92,6 +95,14 @@ onUnmounted( () => {
     selectInstance.value.destroy();
   }
 })
+
+const updateFields = () => {
+  if(current.value) {
+    const category = cats.value.find(el => el.id === current.value);
+    name.value = category.name;
+    limit.value = category.limit;
+  }
+}
 
 const schema = computed(() => {
   return yup.object({
@@ -122,10 +133,11 @@ let {
 const updateHandler = handleSubmit(async values => {
   values.limit = values.limit ? +values.limit : MIN;
   try {
-    await store.dispatch('updateCategory', values);
+    console.log(values, current.value);
+    //await store.dispatch('updateCategory', values);
     // defineEmits(['created']);
     toast(`Изменена категория "${values.name}"`);
-    updateForm.value.reset();
+
   } catch (e) {
     console.log(e.message);
   }
