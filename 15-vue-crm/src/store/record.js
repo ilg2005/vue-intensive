@@ -24,6 +24,17 @@ export default {
                 throw e;
             }
         },
-
+        async updateBill(context, payload) {
+            try {
+                const uid = await context.dispatch('getUid');
+                await set(ref(database, `/users/${uid}/info`), {
+                    bill: payload.amount,
+                    username: payload.username,
+                });
+            } catch (e) {
+                context.commit('SET_ERROR', e);
+                throw e;
+            }
+        }
     }
 }
