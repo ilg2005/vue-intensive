@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref, computed} from 'vue';
+import {onMounted, ref, computed, onUnmounted} from 'vue';
 import M from 'materialize-css';
 import {useStore} from "vuex";
 import AppLoader from "@/components/app/AppLoader";
@@ -73,6 +73,8 @@ const updateForm = ref(null);
 let cats = ref([]);
 const MIN = 500;
 
+const selectInstance = ref(null);
+
 onMounted(() => {
   store.dispatch('fetchCategories')
       .then((response) => {
@@ -80,7 +82,15 @@ onMounted(() => {
         console.log('response: ', response);
         loading.value = false;
       })
-      .then(() => M.FormSelect.init(select.value));
+      .then(() => {
+        selectInstance.value = M.FormSelect.init(select.value)
+      });
+})
+
+onUnmounted( () => {
+  if(selectInstance.value && selectInstance.value.destroy) {
+    selectInstance.value.destroy();
+  }
 })
 
 const schema = computed(() => {
