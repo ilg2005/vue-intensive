@@ -4,13 +4,26 @@
       <h3>Новая запись</h3>
     </div>
 
-    <form class="form">
-      <div class="input-field" >
-        <select>
-          <option
-          >name cat</option>
+    <AppLoader v-if="loading"/>
+    <p v-else-if="!cats.length">Категорий пока нет.
+      <router-link to="/categories"> Добавить новую категорию ?</router-link>
+    </p>
+    <form
+        v-else
+        class="form"
+        @submit.prevent="submitForm"
+    >
+      <div class="input-field">
+        <select ref="select"
+                v-model="current"
+        >
+          <option value="" disabled>Выберите категорию</option>
+          <option v-for="category in cats"
+                  :key="category.id"
+                  :value="category.id"
+          >{{ category.name }}
+          </option>
         </select>
-        <label>Выберите категорию</label>
       </div>
 
       <p>
@@ -65,10 +78,42 @@
 
 </template>
 
-<script>
-export default {
-  name: "RecordView"
-}
+<script setup>
+import M from "materialize-css";
+import {ref, onMounted, onUnmounted} from "vue";
+import {useStore} from "vuex";
+import AppLoader from "@/components/app/AppLoader";
+
+const store = useStore();
+const select = ref();
+const selectInstance = ref(null);
+const current = ref('');
+const loading = ref(true);
+
+let cats = ref([]);
+
+
+onMounted(() => {
+  store.dispatch('fetchCategories')
+      .then((response) => {
+        cats.value = response;
+        loading.value = false;
+      })
+      .then(() => {
+        selectInstance.value = M.FormSelect.init(select.value)
+      });
+});
+
+onUnmounted(() => {
+  if (selectInstance.value && selectInstance.value.destroy) {
+    selectInstance.value.destroy();
+  }
+})
+
+const submitForm = () => {
+  //TODO
+};
+
 </script>
 
 <style scoped>
