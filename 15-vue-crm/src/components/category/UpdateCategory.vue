@@ -25,27 +25,27 @@
           <input
               id="create_category_name"
               type="text"
-              v-model.trim="name"
-              :class="{invalid: nameError && nameMeta.touched}"
-              @blur="nameBlur"
+              v-model.trim="editName"
+              :class="{invalid: editNameError && editNameMeta.touched}"
+              @blur="editNameBlur"
           >
           <label for="create_category_name"  class="active">Название категории</label>
-          <span class="helper-text invalid" v-if="nameError && nameMeta.touched">{{ nameError }}</span>
+          <span class="helper-text invalid" v-if="editNameError && editNameMeta.touched">{{ editNameError }}</span>
         </div>
 
         <div class="input-field">
           <input
               id="create_category_limit"
               type="number"
-              v-model="limit"
-              :class="{invalid: limitError && limitMeta.touched}"
-              @blur="limitBlur"
+              v-model="editLimit"
+              :class="{invalid: editLimitError && editLimitMeta.touched}"
+              @blur="editLimitBlur"
               :min="MIN"
           >
           <label for="create_category_limit" class="active">Лимит</label>
-          <span class="helper-text invalid" v-if="limitError && limitMeta.touched && limit">{{ limitError }}</span>
+          <span class="helper-text invalid" v-if="editLimitError && editLimitMeta.touched && editLimit">{{ editLimitError }}</span>
           <span class="helper-text invalid"
-                v-if="limitError && limitMeta.touched && !limit">Не менее {{ MIN }} рублей</span>
+                v-if="editLimitError && editLimitMeta.touched && !editLimit">Не менее {{ MIN }} рублей</span>
         </div>
 
         <button class="btn waves-effect waves-light" type="submit">
@@ -99,17 +99,17 @@ onUnmounted( () => {
 const updateFields = () => {
   if(current.value) {
     const category = cats.value.find(el => el.id === current.value);
-    name.value = category.name;
-    limit.value = category.limit;
+    editName.value = category.name;
+    editLimit.value = category.limit;
   }
 }
 
 const schema = computed(() => {
   return yup.object({
-    name: yup
+    editName: yup
         .string()
-        .required('Введите название категории'),
-    limit: yup
+        .required('Введите новое название'),
+    editLimit: yup
         .number()
         .integer()
         .min(MIN, `Не менее ${MIN} рублей.`),
@@ -122,16 +122,16 @@ const {handleSubmit} = useForm({
 });
 
 // No need to define rules for fields
-let {value: name, errorMessage: nameError, meta: nameMeta, handleBlur: nameBlur} = useField('name');
+let {value: editName, errorMessage: editNameError, meta: editNameMeta, handleBlur: editNameBlur} = useField('editName');
 let {
-  value: limit,
-  errorMessage: limitError,
-  meta: limitMeta,
-  handleBlur: limitBlur,
-} = useField('limit');
+  value: editLimit,
+  errorMessage: editLimitError,
+  meta: editLimitMeta,
+  handleBlur: editLimitBlur,
+} = useField('editLimit');
 
 const updateHandler = handleSubmit(async values => {
-  values.limit = values.limit ? +values.limit : MIN;
+
   try {
     console.log(values, current.value);
     //await store.dispatch('updateCategory', values);
