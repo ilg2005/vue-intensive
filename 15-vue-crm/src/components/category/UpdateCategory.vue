@@ -136,7 +136,6 @@ let {
 } = useField('editLimit');
 
 const updateHandler = handleSubmit(async values => {
-
   try {
     values.id = current.value;
     await store.dispatch('updateCategory', values);
@@ -145,8 +144,8 @@ const updateHandler = handleSubmit(async values => {
   } catch (e) {
     console.log(e.message);
   }
-
 });
+
 </script>
 
 <style scoped>

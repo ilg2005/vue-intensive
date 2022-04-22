@@ -45,13 +45,14 @@
 <script setup>
 import {useForm, useField} from 'vee-validate';
 import * as yup from 'yup';
-import {computed, ref, } from "vue";
+import {computed, ref, defineEmits} from "vue";
 import {useStore} from "vuex";
 import {toast} from "@/utils/toast";
 
 const store = useStore();
 const MIN = 500;
 const form = ref(null);
+const emit = defineEmits(['created']);
 const schema = computed(() => {
   return yup.object({
     name: yup
@@ -82,7 +83,7 @@ const submitHandler = handleSubmit(async values => {
   values.limit = values.limit ? +values.limit : MIN;
   try {
     await store.dispatch('createCategory', values);
-   // defineEmits(['created']);
+    emit('created');
     toast(`Создана категория "${values.name}"`);
     form.value.reset();
   } catch (e) {

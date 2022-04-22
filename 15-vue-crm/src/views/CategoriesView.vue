@@ -5,8 +5,8 @@
     </div>
     <section>
       <div class="row">
-        <CreateCategory/>
-        <UpdateCategory/>
+        <CreateCategory @created="updateCategoriesList"/>
+        <UpdateCategory :key="update"/>
       </div>
     </section>
   </div>
@@ -16,6 +16,13 @@
 <script setup>
 import CreateCategory from "@/components/category/CreateCategory";
 import UpdateCategory from "@/components/category/UpdateCategory";
+import {ref} from "vue";
+
+const update = ref(0);
+
+const updateCategoriesList = () => {
+  update.value += 1;
+}
 
 </script>
 
