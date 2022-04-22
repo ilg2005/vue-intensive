@@ -28,7 +28,7 @@ export default {
             try {
                 const uid = await context.dispatch('getUid');
                 await set(ref(database, `/users/${uid}/info`), {
-                    bill: payload.amount,
+                    bill: payload.total,
                     username: payload.username,
                 });
             } catch (e) {

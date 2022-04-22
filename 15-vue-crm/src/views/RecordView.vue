@@ -56,6 +56,7 @@
       <div class="input-field mt-2">
         <input
             id="record_amount"
+            name="amount"
             type="number"
             :value="MIN"
             @input="amount = $event.target.value"
@@ -79,7 +80,9 @@
             @blur="descriptionBlur"
         >
         <label for="description">Описание</label>
-        <span class="helper-text invalid" v-if="descriptionError && descriptionMeta.touched">{{ descriptionError }}</span>
+        <span class="helper-text invalid" v-if="descriptionError && descriptionMeta.touched">{{
+            descriptionError
+          }}</span>
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">
@@ -145,7 +148,12 @@ const {handleSubmit} = useForm({
 });
 
 // No need to define rules for fields
-let {value: description, errorMessage: descriptionError, meta: descriptionMeta, handleBlur: descriptionBlur} = useField('description');
+let {
+  value: description,
+  errorMessage: descriptionError,
+  meta: descriptionMeta,
+  handleBlur: descriptionBlur
+} = useField('description');
 let {
   value: amount,
   errorMessage: amountError,
@@ -153,8 +161,19 @@ let {
   handleBlur: amountBlur,
 } = useField('amount');
 
+const makeTransaction = (type, sum) => {
+  const bill = store.getters.USER.info.bill;
+  if (type === 'income') {
+    return bill + sum;
+  } else if (sum > bill) {
+    return null;
+  } else {
+    return bill - sum;
+  }
 
-const submitForm = handleSubmit(async (values, { resetForm }) => {
+};
+
+const submitForm = handleSubmit(async (values, {resetForm}) => {
   if (current.value === '') {
     toast('Выберите категорию', 1);
   } else {
@@ -164,11 +183,15 @@ const submitForm = handleSubmit(async (values, { resetForm }) => {
     values.created = new Date().toJSON();
     try {
       await store.dispatch('createRecord', values);
-      await store.dispatch('updateBill', {amount: 777, username: 'Vladilen'});
-      console.log(values);
-
-      resetForm();
-      toast('Запись успешно создана!');
+      const updatedBill = makeTransaction(values.type, values.amount);
+      if (updatedBill) {
+        const username = store.getters.USER.info.username;
+        await store.dispatch('updateBill', {total: updatedBill, username});
+        resetForm();
+        toast('Запись успешно создана!');
+      } else {
+        toast('Недостаточно средств на счете', 1);
+      }
     } catch (e) {
       console.log(e.message);
     }
