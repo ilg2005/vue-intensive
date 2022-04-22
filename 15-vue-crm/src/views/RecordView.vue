@@ -165,12 +165,11 @@ const makeTransaction = (type, sum) => {
   const bill = store.getters.USER.info.bill;
   if (type === 'income') {
     return bill + sum;
-  } else if (sum > bill) {
-    return null;
-  } else {
+  }
+  if (type === 'outcome' && sum <= bill) {
     return bill - sum;
   }
-
+  return false;
 };
 
 const submitForm = handleSubmit(async (values, {resetForm}) => {
