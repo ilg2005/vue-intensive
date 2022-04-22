@@ -158,7 +158,9 @@ const submitForm = handleSubmit(async (values, { resetForm }) => {
   if (current.value === '') {
     toast('Выберите категорию', 1);
   } else {
-    values.id = current.value;
+    values.categoryId = current.value;
+    values.amount = values.amount ? +values.amount : MIN;
+    values.type = picked.value;
     values.created = new Date().toJSON();
     try {
      // await store.dispatch('createRecord', values);
