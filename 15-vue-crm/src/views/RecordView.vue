@@ -163,7 +163,7 @@ const submitForm = handleSubmit(async (values, { resetForm }) => {
     values.type = picked.value;
     values.created = new Date().toJSON();
     try {
-     // await store.dispatch('createRecord', values);
+      await store.dispatch('createRecord', values);
       console.log(values);
 
       resetForm();

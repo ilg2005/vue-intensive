@@ -1,6 +1,7 @@
 import { createStore } from 'vuex';
 import authModule from "@/store/auth";
 import categoryModule from "@/store/category";
+import recordModule from "@/store/record";
 import {initializeApp} from "firebase/app";
 import {firebaseConfig} from "../../firebase.config.js";
 import {getAuth} from "firebase/auth";
@@ -64,6 +65,7 @@ export default createStore({
   },
   modules: {
     authModule,
-    categoryModule
+    categoryModule,
+    recordModule,
   }
 });
