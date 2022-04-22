@@ -5,7 +5,7 @@
         <h4>Редактировать</h4>
       </div>
 
-      <form @submit.prevent="updateHandler" ref="updateForm">
+      <form @submit.prevent="updateHandler">
         <AppLoader v-show="loading"/>
         <div class="input-field" v-show="!loading">
           <select ref="select"
@@ -71,11 +71,8 @@ const store = useStore();
 const select = ref();
 const loading = ref(true);
 
-const updateForm = ref(null);
-
 let cats = ref([]);
 const MIN = 500;
-
 
 const selectInstance = ref(null);
 const current = ref('');

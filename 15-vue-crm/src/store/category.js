@@ -7,18 +7,10 @@ const database = getDatabase(firebase);
 
 export default {
     state: {
-        categories: [],
     },
     getters: {
-        CATEGORIES: state => state.categories,
     },
     mutations: {
-        SET_CATEGORIES(state, categories) {
-            state.categories = categories;
-        },
-        ADD_CATEGORY(state, {newCategoryRef, name, limit}) {
-            state.categories[state.categories.length] = {'id': newCategoryRef, name, limit};
-        },
     },
     actions: {
         async createCategory(context, {name, limit}) {
@@ -27,7 +19,6 @@ export default {
                 const categoriesListRef = await ref(database, `/users/${uid}/categories`);
                 const newCategoryRef = await push(categoriesListRef);
                 await set(newCategoryRef, {name, limit});
-                context.commit('ADD_CATEGORY', {newCategoryRef, name, limit});
             } catch (e) {
                 context.commit('SET_ERROR', e);
                 throw e;

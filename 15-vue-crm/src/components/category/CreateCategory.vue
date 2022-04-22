@@ -5,7 +5,7 @@
         <h4>Создать</h4>
       </div>
 
-      <form @submit.prevent="submitHandler" novalidate ref="form">
+      <form @submit.prevent="submitHandler" novalidate>
         <div class="input-field">
           <input
               id="create_category_name"
@@ -45,13 +45,12 @@
 <script setup>
 import {useForm, useField} from 'vee-validate';
 import * as yup from 'yup';
-import {computed, ref, defineEmits} from "vue";
+import {computed, defineEmits} from "vue";
 import {useStore} from "vuex";
 import {toast} from "@/utils/toast";
 
 const store = useStore();
 const MIN = 500;
-const form = ref(null);
 const emit = defineEmits(['created']);
 const schema = computed(() => {
   return yup.object({
@@ -85,7 +84,6 @@ const submitHandler = handleSubmit(async values => {
     await store.dispatch('createCategory', values);
     emit('created');
     toast(`Создана категория "${values.name}"`);
-    form.value.reset();
   } catch (e) {
     console.log(e.message);
   }
