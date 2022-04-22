@@ -133,8 +133,12 @@ let {
 } = useField('editLimit');
 
 const updateHandler = handleSubmit(async values => {
-  try {
+  if (current.value === '') {
+    toast('Выберите категорию', 1);
+  } else {
     values.id = current.value;
+  }
+  try {
     await store.dispatch('updateCategory', values);
     fetchCategories();
     toast('Категория успешно изменена!');

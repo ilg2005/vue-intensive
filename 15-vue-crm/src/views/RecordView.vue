@@ -12,6 +12,7 @@
         v-else
         class="form"
         @submit.prevent="submitForm"
+        novalidate
     >
       <div class="input-field">
         <select ref="select"
@@ -26,7 +27,7 @@
         </select>
       </div>
 
-      <p>
+      <p class="mt-2">
         <label>
           <input
               class="with-gap"
@@ -52,23 +53,33 @@
         </label>
       </p>
 
-      <div class="input-field">
+      <div class="input-field mt-2">
         <input
-            id="amount"
+            id="record_amount"
             type="number"
+            :value="MIN"
+            @input="amount = $event.target.value"
+            :class="{invalid: amountError && amountMeta.touched}"
+            @blur="amountBlur"
+            :min="MIN"
         >
-        <label for="amount">Сумма</label>
-        <span class="helper-text invalid">amount пароль</span>
+        <label for="record_amount" class="active">Сумма</label>
+        <span class="helper-text invalid"
+              v-if="amountError && amountMeta.touched && amount">{{ amountError }}</span>
+        <span class="helper-text invalid"
+              v-if="amountError && amountMeta.touched && !amount">Не менее {{ MIN }} рубля</span>
       </div>
 
       <div class="input-field">
         <input
             id="description"
             type="text"
+            v-model.trim="description"
+            :class="{invalid: descriptionError && descriptionMeta.touched}"
+            @blur="descriptionBlur"
         >
         <label for="description">Описание</label>
-        <span
-            class="helper-text invalid">description пароль</span>
+        <span class="helper-text invalid" v-if="descriptionError && descriptionMeta.touched">{{ descriptionError }}</span>
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">
@@ -82,9 +93,12 @@
 
 <script setup>
 import M from "materialize-css";
-import {ref, onMounted, onUnmounted} from "vue";
+import {ref, computed, onMounted, onUnmounted} from "vue";
 import {useStore} from "vuex";
 import AppLoader from "@/components/app/AppLoader";
+import * as yup from "yup";
+import {useField, useForm} from "vee-validate";
+import {toast} from "@/utils/toast";
 
 const store = useStore();
 const select = ref();
@@ -92,9 +106,9 @@ const selectInstance = ref(null);
 const current = ref('');
 const loading = ref(true);
 const picked = ref('income');
+const MIN = 1;
 
 let cats = ref([]);
-
 
 onMounted(() => {
   store.dispatch('fetchCategories')
@@ -113,12 +127,48 @@ onUnmounted(() => {
   }
 })
 
-const submitForm = () => {
-  //TODO
-};
+const schema = computed(() => {
+  return yup.object({
+    description: yup
+        .string()
+        .required('Введите описание'),
+    amount: yup
+        .number()
+        .integer()
+        .min(MIN, `Не менее ${MIN} рубля.`),
+  });
+});
+
+// Create a form context with the validation schema
+const {handleSubmit} = useForm({
+  validationSchema: schema,
+});
+
+// No need to define rules for fields
+let {value: description, errorMessage: descriptionError, meta: descriptionMeta, handleBlur: descriptionBlur} = useField('description');
+let {
+  value: amount,
+  errorMessage: amountError,
+  meta: amountMeta,
+  handleBlur: amountBlur,
+} = useField('amount');
+
+
+const submitForm = handleSubmit(async values => {
+  try {
+    values.id = current.value;
+   // await store.dispatch('submitRecord', values);
+    console.log(values);
+    toast('Запись успешно создана!');
+  } catch (e) {
+    console.log(e.message);
+  }
+});
 
 </script>
 
 <style scoped>
-
+.mt-2 {
+  margin-top: 2rem;
+}
 </style>
