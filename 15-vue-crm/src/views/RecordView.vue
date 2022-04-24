@@ -181,9 +181,9 @@ const submitForm = handleSubmit(async (values, {resetForm}) => {
     values.type = picked.value;
     values.created = new Date().toJSON();
     try {
-      await store.dispatch('createRecord', values);
       const updatedBill = makeTransaction(values.type, values.amount);
-      if (updatedBill) {
+      if (updatedBill !== false) {
+        await store.dispatch('createRecord', values);
         const username = store.getters.USER.info.username;
         await store.dispatch('updateBill', {total: updatedBill, username});
         resetForm();
