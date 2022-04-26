@@ -28,6 +28,8 @@ import TheSidebar from "@/components/app/TheSidebar";
 import {computed, onMounted, ref, watch,} from "vue";
 import {useStore} from "vuex";
 import AppLoader from "@/components/app/AppLoader";
+import messages from "@/utils/messages";
+import {toast} from "@/utils/toast";
 
 const isOpen = ref(true);
 
@@ -38,6 +40,15 @@ const isLoading = ref(true);
 const user = computed(() => store.getters.USER);
 
 const username = computed(() => user.value ? user.value.info.username : '');
+
+const error = computed(() => store.getters.ERROR);
+watch(error, (newError) => {
+  if (messages[newError.code]) {
+    return toast(messages[newError.code], newError);
+  } else {
+    return toast(newError.message, newError);
+  }
+});
 
 watch(username, () => {
   isLoading.value = false;
