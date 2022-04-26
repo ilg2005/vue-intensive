@@ -1,6 +1,6 @@
 import {initializeApp} from "firebase/app";
 import {firebaseConfig} from "../../firebase.config.js";
-import {getDatabase, ref, push, set} from "firebase/database";
+import {getDatabase, ref, push, set, onValue} from "firebase/database";
 
 const firebase = initializeApp(firebaseConfig);
 const database = getDatabase(firebase);
@@ -35,6 +35,26 @@ export default {
                 context.commit('SET_ERROR', e);
                 throw e;
             }
-        }
+        },
+        async fetchRecords(context) {
+            try {
+                const uid = await context.dispatch('getUid');
+                const recordsRef = ref(database, `/users/${uid}/records`);
+
+                let records = [];
+                onValue(recordsRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if(data) {
+                        const res =  Object.keys(data).map(key => ({...data[key], id: key}));
+                        records.push(...res);
+                    }
+                });
+                return records;
+            } catch (e) {
+                context.commit('SET_ERROR', e);
+                throw e;
+            }
+        },
+
     }
 }
