@@ -9,6 +9,7 @@ import '@/assets/index.css';
 import {initializeApp} from "firebase/app";
 import {firebaseConfig} from "../firebase.config.js";
 import { getAuth } from "firebase/auth";
+import tooltipDirective from "@/utils/tooltip.js";
 
 const firebase = initializeApp(firebaseConfig);
 const auth = getAuth(firebase);
@@ -17,7 +18,7 @@ let app;
 
 auth.onAuthStateChanged(() => {
     if (!app) {
-        app = createApp(App).use(router).use(store).mount('#app');
+        app = createApp(App).use(router).use(store).directive('tooltip',tooltipDirective).mount('#app');
     }
 })
 

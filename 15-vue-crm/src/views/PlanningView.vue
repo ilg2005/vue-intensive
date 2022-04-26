@@ -12,6 +12,7 @@
     <section>
       <div v-for="category in categories"
            :key="category.id"
+           v-tooltip="category.rest"
       >
         <p>
           <strong>{{ category.name }}:</strong>
@@ -59,6 +60,8 @@ onMounted(async () => {
         element.spent = spentAmount;
 
         element.percent = spentAmount * 100 / element.limit;
+        const tooltipValue = element.limit - spentAmount;
+        element.rest = tooltipValue < 0 ? `Перерасход на ${currencyFilter(Math.abs(tooltipValue), 'RUB')}` : `Осталось ${currencyFilter(Math.abs(tooltipValue), 'RUB')}`;
       });
     categories.value = cats;
     isLoading.value = false;
