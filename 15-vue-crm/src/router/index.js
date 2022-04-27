@@ -44,7 +44,7 @@ const routes = [
     meta: {layout: 'main', auth: true}
   },
   {
-    path: '/detail',
+    path: '/detail/:id',
     name: 'detail',
     component: () => import(/* webpackChunkName: "detail" */ '../views/DetailRecordView.vue'),
     meta: {layout: 'main', auth: true}

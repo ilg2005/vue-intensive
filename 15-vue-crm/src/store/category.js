@@ -55,7 +55,24 @@ export default {
                 context.commit('SET_ERROR', e);
                 throw e;
             }
-        }
+        },
+        async fetchCategoryById(context, id) {
+            try {
+                const uid = await context.dispatch('getUid');
+                const categoryRef = ref(database, `/users/${uid}/categories/${id}`);
+
+                let category;
+                onValue(categoryRef, snapshot => {
+                    const data = snapshot.val();
+                    category = data ? {...data, id} : false;
+                });
+                return category;
+            } catch (e) {
+                context.commit('SET_ERROR', e);
+                throw e;
+            }
+        },
+
 
     }
 }

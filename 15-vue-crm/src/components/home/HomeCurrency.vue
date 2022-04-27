@@ -35,6 +35,7 @@
 import AppLoader from '@/components/app/AppLoader';
 import {computed, ref, watch } from "vue";
 import {useStore} from "vuex";
+import dateFilter from "@/utils/dateFilter";
 
 const store = useStore();
 const loading = ref(true);
@@ -46,13 +47,7 @@ watch(rates, () => {
   loading.value = false;
 });
 
-const date = computed(() => {
-  return new Intl.DateTimeFormat('ru-RU', {
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-  }).format(new Date(store.getters.CURRENCY.lastupdate));
-});
+const date = computed(() => dateFilter(store.getters.CURRENCY.lastupdate));
 
 
 </script>

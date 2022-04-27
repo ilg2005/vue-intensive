@@ -55,6 +55,22 @@ export default {
                 throw e;
             }
         },
+        async fetchRecordById(context, id) {
+            try {
+                const uid = await context.dispatch('getUid');
+                const recordRef = ref(database, `/users/${uid}/records/${id}`);
+
+                let record;
+                onValue(recordRef, snapshot => {
+                        const data = snapshot.val();
+                        record = data ? {...data, id} : false;
+                });
+                return record;
+            } catch (e) {
+                context.commit('SET_ERROR', e);
+                throw e;
+            }
+        },
 
     }
 }
