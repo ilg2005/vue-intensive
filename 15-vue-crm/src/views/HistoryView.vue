@@ -11,7 +11,8 @@
     </p>
     <div v-else>
       <div class="history-chart">
-        <canvas></canvas>
+        <h5 class="center">Расходы по категориям</h5>
+        <pie-chart :data="chartData"></pie-chart>
       </div>
 
       <section>
@@ -61,17 +62,31 @@ const clickCallback = pageNum => {
   page.value = pageNum;
 }
 
+const chartData = ref();
+
 onMounted(async () => {
   const recs = await store.dispatch('fetchRecords');
   const categories = await store.dispatch('fetchCategories');
+
   if (recs) {
     recs.map(record => {
       record.category = categories.find(category => category.id === record.categoryId).name;
       record.class = record.type === 'outcome' ? 'red' : 'green';
       record.typeDescr = record.type === 'outcome' ? 'Расход' : 'Доход';
       record.date = computed(() => dateFilter(record.created));
-    })
+    });
+
+    const data2Chart = {};
+    categories.map(element => {
+      element.spent = recs
+          .filter(r => r.categoryId === element.id)
+          .filter(r => r.type === 'outcome')
+          .reduce((accumulator, currentValue) => accumulator + currentValue.amount, 0);
+      data2Chart[element.name] = element.spent;
+    });
+    chartData.value = data2Chart;
   }
+
   allRecords.value = recs ?? [];
 
   page.value = +route.query.page ?? 1;

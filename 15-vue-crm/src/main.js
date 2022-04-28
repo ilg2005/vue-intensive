@@ -11,6 +11,9 @@ import {firebaseConfig} from "../firebase.config.js";
 import { getAuth } from "firebase/auth";
 import tooltipDirective from "@/utils/tooltip.js";
 
+import VueChartkick from 'vue-chartkick'
+import 'chartkick/chart.js'
+
 const firebase = initializeApp(firebaseConfig);
 const auth = getAuth(firebase);
 
@@ -18,7 +21,7 @@ let app;
 
 auth.onAuthStateChanged(() => {
     if (!app) {
-        app = createApp(App).use(router).use(store).directive('tooltip',tooltipDirective).mount('#app');
+        app = createApp(App).use(router).use(store).directive('tooltip',tooltipDirective).use(VueChartkick).mount('#app');
     }
 })
 
