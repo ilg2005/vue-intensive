@@ -5,7 +5,7 @@
     </div>
 
     <AppLoader v-if="isLoading"/>
-    <p v-else-if="!records.length" class="center">
+    <p v-else-if="!allRecords.length" class="center">
       Записей пока нет.
       <router-link to="/record">Добавить первую?</router-link>
     </p>
@@ -16,6 +16,17 @@
 
       <section>
         <RecordsTable :records="records"/>
+        <Paginate
+            v-model="page"
+            :page-count="pageCount"
+            :page-range="pageSize"
+            :margin-pages="2"
+            :click-handler="clickCallback"
+            :prev-text="'Назад'"
+            :next-text="'Вперед'"
+            :container-class="'pagination'"
+            :page-class="'waves-effect'"
+        />
       </section>
     </div>
   </div>
@@ -25,16 +36,30 @@
 <script setup>
 import RecordsTable from '@/components/history/RecordsTable';
 import AppLoader from "@/components/app/AppLoader";
-import {onMounted, ref, computed} from "vue";
+import Paginate from "vuejs-paginate-next";
+import {onMounted, ref, computed, watch} from "vue";
 import {useStore} from "vuex";
 import dateFilter from "@/utils/dateFilter";
+import {useRoute, useRouter} from "vue-router";
+import _ from 'lodash';
 
 
 const store = useStore();
 
 const isLoading = ref(true);
+const allRecords = ref();
 const records = ref();
 
+const router = useRouter();
+const route = useRoute();
+const page = ref();
+
+const pageSize = 3;
+const pageCount = ref(0);
+
+const clickCallback = pageNum => {
+  page.value = pageNum;
+}
 
 onMounted(async () => {
   const recs = await store.dispatch('fetchRecords');
@@ -47,9 +72,25 @@ onMounted(async () => {
       record.date = computed(() => dateFilter(record.created));
     })
   }
-  records.value = recs ?? [];
+  allRecords.value = recs ?? [];
+
+  page.value = +route.query.page ?? 1;
   isLoading.value = false;
 });
+
+watch(page, () => {
+  router.push(`?page=${page.value}`);
+
+  const dividedArray = _.chunk(allRecords.value, pageSize);
+  pageCount.value = dividedArray.length;
+
+  if (!dividedArray[page.value - 1]) {
+    page.value = 1;
+  }
+
+  records.value = dividedArray[page.value - 1]
+})
+
 </script>
 
 <style scoped>
