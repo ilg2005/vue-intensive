@@ -4,15 +4,27 @@
       <h3>Профиль</h3>
     </div>
 
-    <form class="form">
-      <div class="input-field">
+    <form @submit.prevent="submitHandler" novalidate>
+      <div class="input-field mb-2">
         <input
-            id="description"
+            id="profile_username"
             type="text"
+            name="username"
+            v-model.trim="username"
+            :class="{invalid: usernameError && usernameMeta.touched}"
+            @blur="usernameBlur"
         >
-        <label for="description">Имя</label>
-        <span
-            class="helper-text invalid">name</span>
+        <label for="profile_username" class="active">Имя пользователя</label>
+        <span class="helper-text invalid" v-if="usernameError && usernameMeta.touched">{{ usernameError }}</span>
+      </div>
+
+      <div class="switch mb-2">
+        <label>
+          English
+          <input type="checkbox" v-model="locale">
+          <span class="lever"></span>
+          Русский
+        </label>
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">
@@ -24,12 +36,54 @@
 
 </template>
 
-<script>
-export default {
-  name: "ProfileView"
-}
+<script setup>
+import * as yup from "yup";
+import {useField, useForm} from "vee-validate";
+import {toast} from "@/utils/toast";
+import {onMounted, ref, computed} from "vue";
+import {useStore} from "vuex";
+
+const info = ref();
+const store = useStore();
+
+let locale = ref(true);
+
+onMounted(() => {
+  info.value = store.getters.USER.info;
+  username.value = info.value.username;
+})
+
+const schema = computed(() => {
+  return yup.object({
+    username: yup
+        .string()
+        .required('Введите имя'),
+  });
+});
+
+// Create a form context with the validation schema
+const {handleSubmit} = useForm({
+  validationSchema: schema,
+});
+
+// No need to define rules for fields
+let {value: username, errorMessage: usernameError, meta: usernameMeta, handleBlur: usernameBlur} = useField('username');
+
+const submitHandler = handleSubmit(async values => {
+  values.locale = locale.value;
+  values.bill = info.value.bill;
+  try {
+    await store.dispatch('updateInfo', values);
+    toast(`Данные успешно обновлены!`);
+  } catch (e) {
+    console.log(e.message);
+  }
+
+});
 </script>
 
 <style scoped>
-
+.mb-2 {
+  margin-bottom: 2rem;
+}
 </style>

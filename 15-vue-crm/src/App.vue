@@ -18,5 +18,4 @@ const view = computed(() => route.meta.layout === 'main' ? MainLayout : EmptyLay
 </script>
 
 <style>
-
 </style>

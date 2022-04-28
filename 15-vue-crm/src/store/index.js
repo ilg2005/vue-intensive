@@ -5,7 +5,7 @@ import recordModule from "@/store/record";
 import {initializeApp} from "firebase/app";
 import {firebaseConfig} from "../../firebase.config.js";
 import {getAuth} from "firebase/auth";
-import {getDatabase, ref, onValue } from "firebase/database";
+import {getDatabase, ref, onValue, set} from "firebase/database";
 
 
 const firebase = initializeApp(firebaseConfig);
@@ -61,7 +61,20 @@ export default createStore({
         const currency = await res.json();
         context.commit('SET_RATES', currency.rates);
         context.commit('SET_CURRENCY', currency);
-    }
+    },
+    async updateInfo(context, payload) {
+      try {
+        const uid = await context.dispatch('getUid');
+        await set(ref(database, `/users/${uid}/info`), {
+          bill: payload.bill,
+          username: payload.username,
+          locale: payload.locale,
+        });
+      } catch (e) {
+        context.commit('SET_ERROR', e);
+        throw e;
+      }
+    },
   },
   modules: {
     authModule,
