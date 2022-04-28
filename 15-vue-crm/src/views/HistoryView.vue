@@ -10,7 +10,7 @@
       <router-link to="/record">Добавить первую?</router-link>
     </p>
     <div v-else>
-      <div class="history-chart">
+      <div class="history-chart mb-2">
         <h5 class="center">Расходы по категориям</h5>
         <pie-chart :data="chartData"></pie-chart>
       </div>
@@ -110,5 +110,7 @@ watch(page, () => {
 </script>
 
 <style scoped>
-
+.mb-2 {
+  margin-bottom: 2rem;
+}
 </style>
