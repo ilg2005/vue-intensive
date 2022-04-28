@@ -79,6 +79,7 @@ onMounted(async () => {
 });
 
 watch(page, () => {
+
   router.push(`?page=${page.value}`);
 
   const dividedArray = _.chunk(allRecords.value, pageSize);
