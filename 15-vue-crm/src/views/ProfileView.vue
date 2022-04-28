@@ -21,7 +21,7 @@
       <div class="switch mb-2">
         <label>
           English
-          <input type="checkbox" v-model="locale">
+          <input type="checkbox" v-model="isRussian">
           <span class="lever"></span>
           Русский
         </label>
@@ -46,11 +46,12 @@ import {useStore} from "vuex";
 const info = ref();
 const store = useStore();
 
-let locale = ref(true);
+let isRussian = ref(true);
 
 onMounted(() => {
   info.value = store.getters.USER.info;
   username.value = info.value.username;
+  isRussian.value = info.value.locale === 'ru-RU';
 })
 
 const schema = computed(() => {
@@ -70,7 +71,7 @@ const {handleSubmit} = useForm({
 let {value: username, errorMessage: usernameError, meta: usernameMeta, handleBlur: usernameBlur} = useField('username');
 
 const submitHandler = handleSubmit(async values => {
-  values.locale = locale.value;
+  values.locale = isRussian.value ? 'ru-RU' : 'en-US';
   values.bill = info.value.bill;
   try {
     await store.dispatch('updateInfo', values);
