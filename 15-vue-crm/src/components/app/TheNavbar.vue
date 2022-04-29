@@ -23,7 +23,7 @@
           <ul id='dropdown' class='dropdown-content'>
             <li>
               <router-link to="/profile" class="black-text">
-                <i class="material-icons">account_circle</i>Профиль
+                <i class="material-icons">account_circle</i>{{ i18n.profile }}
               </router-link>
             </li>
             <li class="divider" tabindex="-1"></li>
@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import {onBeforeUnmount, onMounted, ref, defineProps} from "vue";
+import {onBeforeUnmount, onMounted, ref, defineProps, computed} from "vue";
 import {useRouter} from 'vue-router';
 import M from 'materialize-css';
 import {useStore} from "vuex";
@@ -56,6 +56,7 @@ const interval = ref();
 defineProps(['username']);
 
 const store = useStore();
+const i18n = computed(() => store.getters.TRANSLATION);
 
 const logout = async () => {
   await store.dispatch('logout');

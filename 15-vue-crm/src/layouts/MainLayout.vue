@@ -2,8 +2,6 @@
   <AppLoader v-if="isLoading"/>
   <div class="app-main-layout" v-else>
 
-    <h1>{{translation.profile}}</h1>
-
     <TheNavbar @sidebar-state="isOpen = !isOpen" :username="username"/>
     <TheSidebar :state="isOpen"/>
 
