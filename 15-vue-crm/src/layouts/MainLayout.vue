@@ -56,6 +56,7 @@ watch(username, () => {
 
 onMounted(async () => {
   await store.dispatch('fetchInfo');
+  await store.dispatch('fetchTranslation');
 });
 
 </script>
