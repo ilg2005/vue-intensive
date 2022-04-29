@@ -50,12 +50,14 @@ export default createStore({
 
     },
     actions: {
-        async fetchInfo({commit}) {
+        async fetchInfo({commit, dispatch}) {
             if (auth.currentUser) {
                 const userId = auth.currentUser.uid;
                 try {
                     await onValue(ref(database, '/users/' + userId), (snapshot) => {
-                        commit('SET_USER', snapshot.val());
+                        const user = snapshot.val();
+                        commit('SET_USER', user);
+                        dispatch('fetchTranslation', user.info.locale);
                     }, {
                         onlyOnce: false
                     });
