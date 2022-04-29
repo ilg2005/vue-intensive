@@ -1,11 +1,11 @@
 <template>
   <AppLoader v-if="isLoading"/>
-  <p v-else-if="!categories.length" class="text-center">Категорий пока нет.
-    <router-link to="/categories"> Добавить новую категорию ?</router-link>
+  <p v-else-if="!categories.length" class="text-center">{{ i18n.noCategories }}
+    <router-link to="/categories"> {{ i18n.addNewCategory }} ?</router-link>
   </p>
   <div v-else>
     <div class="page-title">
-      <h3>Планирование</h3>
+      <h3>{{ i18n.planning }}</h3>
       <h4>{{ bill }}</h4>
     </div>
 
@@ -38,6 +38,7 @@ import {onMounted, ref} from "vue";
 import {toast} from "@/utils/toast";
 
 const store = useStore();
+const i18n = store.getters.TRANSLATION;
 
 const user = store.getters.USER;
 const isLoading = ref(true);
@@ -61,7 +62,7 @@ onMounted(async () => {
 
         element.percent = spentAmount * 100 / element.limit;
         const tooltipValue = element.limit - spentAmount;
-        element.rest = tooltipValue < 0 ? `Перерасход на ${currencyFilter(Math.abs(tooltipValue), 'RUB')}` : `Осталось ${currencyFilter(Math.abs(tooltipValue), 'RUB')}`;
+        element.rest = tooltipValue < 0 ? `${i18n.overdraft} ${currencyFilter(Math.abs(tooltipValue), 'RUB')}` : `${i18n.balance} ${currencyFilter(Math.abs(tooltipValue), 'RUB')}`;
       });
     categories.value = cats;
     isLoading.value = false;

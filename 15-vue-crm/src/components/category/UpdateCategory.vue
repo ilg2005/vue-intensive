@@ -2,7 +2,7 @@
   <div class="col s12 m6" v-if="cats.length">
     <div>
       <div class="page-subtitle">
-        <h4>Редактировать</h4>
+        <h4>{{ i18n.edit }}</h4>
       </div>
 
       <form @submit.prevent="updateHandler">
@@ -12,7 +12,7 @@
                   v-model="current"
                   @change="updateFields"
           >
-            <option value="" disabled>Выберите категорию</option>
+            <option value="" disabled>{{ i18n.selectCategory }}</option>
             <option v-for="category in cats"
                     :key="category.id"
                     :value="category.id"
@@ -29,7 +29,7 @@
               :class="{invalid: editNameError && editNameMeta.touched}"
               @blur="editNameBlur"
           >
-          <label for="create_category_name" class="active">Название категории</label>
+          <label for="create_category_name" class="active">{{ i18n.categoryName }}</label>
           <span class="helper-text invalid" v-if="editNameError && editNameMeta.touched">{{ editNameError }}</span>
         </div>
 
@@ -42,15 +42,15 @@
               @blur="editLimitBlur"
               :min="MIN"
           >
-          <label for="create_category_limit" class="active">Лимит</label>
+          <label for="create_category_limit" class="active">{{ i18n.limit }}</label>
           <span class="helper-text invalid"
                 v-if="editLimitError && editLimitMeta.touched && editLimit">{{ editLimitError }}</span>
           <span class="helper-text invalid"
-                v-if="editLimitError && editLimitMeta.touched && !editLimit">Не менее {{ MIN }} рублей</span>
+                v-if="editLimitError && editLimitMeta.touched && !editLimit">{{ i18n.notLess }} {{ MIN }} {{ i18n.roubles }}</span>
         </div>
 
         <button class="btn waves-effect waves-light" type="submit">
-          Обновить
+          {{ i18n.update }}
           <i class="material-icons right">send</i>
         </button>
       </form>
@@ -68,6 +68,7 @@ import {useField, useForm} from "vee-validate";
 import {toast} from "@/utils/toast";
 
 const store = useStore();
+const i18n = store.getters.TRANSLATION;
 const select = ref();
 const loading = ref(true);
 
@@ -110,11 +111,11 @@ const schema = computed(() => {
   return yup.object({
     editName: yup
         .string()
-        .required('Введите новое название'),
+        .required(`${i18n.enterNewName}`),
     editLimit: yup
         .number()
         .integer()
-        .min(MIN, `Не менее ${MIN} рублей.`),
+        .min(MIN, `${i18n.notLess} ${MIN} ${i18n.roubles}.`),
   });
 });
 
@@ -134,13 +135,13 @@ let {
 
 const updateHandler = handleSubmit(async values => {
   if (current.value === '') {
-    toast('Выберите категорию', 1);
+    toast(`${i18n.selectCategory}`, 1);
   } else {
     values.id = current.value;
     try {
       await store.dispatch('updateCategory', values);
       fetchCategories();
-      toast('Категория успешно изменена!');
+      toast(`${i18n.categorySuccessfullyUpdated}!`);
     } catch (e) {
       console.log(e.message);
     }

@@ -2,7 +2,7 @@
   <div class="col s12 m6">
     <div>
       <div class="page-subtitle">
-        <h4>Создать</h4>
+        <h4>{{ i18n.create }}</h4>
       </div>
 
       <form @submit.prevent="submitHandler" novalidate>
@@ -14,7 +14,7 @@
               :class="{invalid: nameError && nameMeta.touched}"
               @blur="nameBlur"
           >
-          <label for="create_category_name">Название категории</label>
+          <label for="create_category_name">{{ i18n.categoryName }}</label>
           <span class="helper-text invalid" v-if="nameError && nameMeta.touched">{{ nameError }}</span>
         </div>
 
@@ -28,13 +28,13 @@
               @blur="limitBlur"
               :min="MIN"
           >
-          <label for="create_category_limit" class="active">Лимит</label>
+          <label for="create_category_limit" class="active">{{ i18n.limit }}</label>
           <span class="helper-text invalid" v-if="limitError && limitMeta.touched && limit">{{ limitError }}</span>
-          <span class="helper-text invalid" v-if="limitError && limitMeta.touched && !limit">Не менее {{MIN}} рублей</span>
+          <span class="helper-text invalid" v-if="limitError && limitMeta.touched && !limit">{{ i18n.notLess }} {{MIN}} {{ i18n.roubles }}</span>
         </div>
 
         <button class="btn waves-effect waves-light" type="submit">
-          Создать
+          {{ i18n.create }}
           <i class="material-icons right">send</i>
         </button>
       </form>
@@ -50,6 +50,7 @@ import {useStore} from "vuex";
 import {toast} from "@/utils/toast";
 
 const store = useStore();
+const i18n = store.getters.TRANSLATION;
 const MIN = 500;
 const emit = defineEmits(['created']);
 const schema = computed(() => {

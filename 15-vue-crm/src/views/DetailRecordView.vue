@@ -3,9 +3,9 @@
   <div v-else-if="record">
     <div>
       <div class="breadcrumb-wrap">
-        <router-link to="/history" class="breadcrumb">История</router-link>
+        <router-link to="/history" class="breadcrumb">{{ i18n.history }}</router-link>
         <a class="breadcrumb" @click.prevent>
-          {{ record.type === 'outcome' ? 'Расход' : 'Доход' }}
+          {{ record.type === 'outcome' ? i18n.outcome : i18n.income }}
         </a>
       </div>
       <div class="row">
@@ -17,9 +17,9 @@
                }"
           >
             <div class="card-content white-text">
-              <p>Описание: {{ record.description }}</p>
-              <p>Сумма: {{ currencyFilter(record.amount, 'RUB') }}</p>
-              <p>Категория: {{ category.name }}</p>
+              <p>{{ i18n.description }}: {{ record.description }}</p>
+              <p>{{ i18n.amount }}: {{ currencyFilter(record.amount, 'RUB') }}</p>
+              <p>{{ i18n.category }}: {{ category.name }}</p>
 
               <small>{{ dateFilter(record.created) }}</small>
             </div>
@@ -42,6 +42,7 @@ import currencyFilter from "@/utils/currencyFilter";
 import dateFilter from "@/utils/dateFilter";
 
 const store = useStore();
+const i18n = store.getters.TRANSLATION;
 const route = useRoute();
 const isLoading = ref(true);
 const record = ref();

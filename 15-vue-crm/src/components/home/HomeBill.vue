@@ -2,7 +2,7 @@
   <div class="col s12 m6 l4">
     <div class="card light-blue bill-card">
       <div class="card-content white-text">
-        <span class="card-title">Счет в валюте</span>
+        <span class="card-title">{{ i18n.currencyAccount }}</span>
 
         <AppLoader v-if="loading"/>
 
@@ -26,6 +26,7 @@ import AppLoader from "@/components/app/AppLoader";
 import currencyFilter from "@/utils/currencyFilter";
 
 const store = useStore();
+const i18n = store.getters.TRANSLATION;
 
 const loading = ref(true);
 

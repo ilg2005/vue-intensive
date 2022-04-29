@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Профиль</h3>
+      <h3>{{ i18n.profile }}</h3>
     </div>
 
     <form @submit.prevent="submitHandler" novalidate>
@@ -14,7 +14,7 @@
             :class="{invalid: usernameError && usernameMeta.touched}"
             @blur="usernameBlur"
         >
-        <label for="profile_username" class="active">Имя пользователя</label>
+        <label for="profile_username" class="active">{{ i18n.username }}</label>
         <span class="helper-text invalid" v-if="usernameError && usernameMeta.touched">{{ usernameError }}</span>
       </div>
 
@@ -28,7 +28,7 @@
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">
-        Обновить
+        {{ i18n.update }}
         <i class="material-icons right">send</i>
       </button>
     </form>
@@ -44,6 +44,7 @@ import {useStore} from "vuex";
 
 const info = ref();
 const store = useStore();
+const i18n = store.getters.TRANSLATION;
 
 let isRussian = ref(true);
 

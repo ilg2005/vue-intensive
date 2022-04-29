@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>История записей</h3>
+      <h3>{{ i18n.recordsHistory }}</h3>
     </div>
 
     <AppLoader v-if="isLoading"/>
     <p v-else-if="!allRecords.length" class="center">
-      Записей пока нет.
-      <router-link to="/record">Добавить первую?</router-link>
+      {{ i18n.noRecords }}
+      <router-link to="/record">{{ i18n.addFirst }}?</router-link>
     </p>
     <div v-else>
       <div class="history-chart mb-2">
-        <h5 class="center">Расходы по категориям</h5>
+        <h5 class="center">{{ i18n.expensesByCategory }}</h5>
         <pie-chart :data="chartData"></pie-chart>
       </div>
 
@@ -23,8 +23,8 @@
             :page-range="pageSize"
             :margin-pages="2"
             :click-handler="clickCallback"
-            :prev-text="'Назад'"
-            :next-text="'Вперед'"
+            :prev-text="`${i18n.prev}`"
+            :next-text="`${i18n.next}`"
             :container-class="'pagination'"
             :page-class="'waves-effect'"
         />
@@ -46,6 +46,7 @@ import _ from 'lodash';
 
 
 const store = useStore();
+const i18n = store.getters.TRANSLATION;
 
 const isLoading = ref(true);
 const allRecords = ref();
@@ -72,7 +73,7 @@ onMounted(async () => {
     recs.map(record => {
       record.category = categories.find(category => category.id === record.categoryId).name;
       record.class = record.type === 'outcome' ? 'red' : 'green';
-      record.typeDescr = record.type === 'outcome' ? 'Расход' : 'Доход';
+      record.typeDescr = record.type === 'outcome' ? i18n.outcome : i18n.income;
       record.date = computed(() => dateFilter(record.created));
     });
 

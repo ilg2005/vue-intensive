@@ -3,15 +3,15 @@
     <div class="card orange darken-3 bill-card">
       <div class="card-content white-text">
         <div class="card-header">
-          <span class="card-title">Курс валют</span>
+          <span class="card-title">{{ i18n.exchangeRate }}</span>
         </div>
         <AppLoader v-if="loading"/>
         <table v-else>
           <thead>
           <tr>
-            <th>Валюта</th>
-            <th>Курс</th>
-            <th>Дата</th>
+            <th>{{ i18n.currency }}</th>
+            <th>{{ i18n.rate }}</th>
+            <th>{{ i18n.date }}</th>
           </tr>
           </thead>
 
@@ -38,6 +38,8 @@ import {useStore} from "vuex";
 import dateFilter from "@/utils/dateFilter";
 
 const store = useStore();
+const i18n = store.getters.TRANSLATION;
+
 const loading = ref(true);
 const currencies = ['RUB', 'USD', 'EUR'];
 

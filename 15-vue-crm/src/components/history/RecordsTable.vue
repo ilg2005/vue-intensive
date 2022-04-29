@@ -3,11 +3,11 @@
     <thead>
     <tr>
       <th>#</th>
-      <th>Сумма</th>
-      <th>Дата</th>
-      <th>Категория</th>
-      <th>Тип</th>
-      <th>Открыть</th>
+      <th>{{ i18n.amount }}</th>
+      <th>{{ i18n.date }}</th>
+      <th>{{ i18n.category }}</th>
+      <th>{{ i18n.type }}</th>
+      <th>{{ i18n.open }}</th>
     </tr>
     </thead>
 
@@ -24,7 +24,7 @@
       </td>
       <td>
         <button
-            v-tooltip="'Открыть запись'"
+            v-tooltip="`${i18n.openRecord}`"
             class="btn-small btn"
             @click="$router.push(`/detail/${record.id}`)"
         >
@@ -40,6 +40,9 @@
 <script setup>
 import {defineProps} from "vue";
 import currencyFilter from "@/utils/currencyFilter";
+import {useStore} from "vuex";
+
+const i18n = useStore().getters.TRANSLATION;
 
 defineProps({
   records: {

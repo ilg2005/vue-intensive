@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Новая запись</h3>
+      <h3>{{ i18n.newRecord }}</h3>
     </div>
 
     <AppLoader v-if="loading"/>
-    <p v-else-if="!cats.length">Категорий пока нет.
-      <router-link to="/categories"> Добавить новую категорию ?</router-link>
+    <p v-else-if="!cats.length">{{ i18n.noCategories }}
+      <router-link to="/categories"> {{ i18n.addNewCategory }} ?</router-link>
     </p>
     <form
         v-else
@@ -18,7 +18,7 @@
         <select ref="select"
                 v-model="current"
         >
-          <option value="" disabled>Выберите категорию</option>
+          <option value="" disabled>{{ i18n.selectCategory }}</option>
           <option v-for="category in cats"
                   :key="category.id"
                   :value="category.id"
@@ -36,7 +36,7 @@
               value="income"
               v-model="picked"
           />
-          <span>Доход</span>
+          <span>{{ i18n.income }}</span>
         </label>
       </p>
 
@@ -49,7 +49,7 @@
               value="outcome"
               v-model="picked"
           />
-          <span>Расход</span>
+          <span>{{ i18n.outcome }}</span>
         </label>
       </p>
 
@@ -64,11 +64,11 @@
             @blur="amountBlur"
             :min="MIN"
         >
-        <label for="record_amount" class="active">Сумма</label>
+        <label for="record_amount" class="active">{{ i18n.amount }}</label>
         <span class="helper-text invalid"
               v-if="amountError && amountMeta.touched && amount">{{ amountError }}</span>
         <span class="helper-text invalid"
-              v-if="amountError && amountMeta.touched && !amount">Не менее {{ MIN }} рубля</span>
+              v-if="amountError && amountMeta.touched && !amount">{{ i18n.notLess }} {{ MIN }} {{i18n.rouble}}</span>
       </div>
 
       <div class="input-field">
@@ -79,14 +79,14 @@
             :class="{invalid: descriptionError && descriptionMeta.touched}"
             @blur="descriptionBlur"
         >
-        <label for="description">Описание</label>
+        <label for="description">{{ i18n.description }}</label>
         <span class="helper-text invalid" v-if="descriptionError && descriptionMeta.touched">{{
             descriptionError
           }}</span>
       </div>
 
       <button class="btn waves-effect waves-light" type="submit">
-        Создать
+        {{ i18n.create }}
         <i class="material-icons right">send</i>
       </button>
     </form>
@@ -104,6 +104,7 @@ import {useField, useForm} from "vee-validate";
 import {toast} from "@/utils/toast";
 
 const store = useStore();
+const i18n = store.getters.TRANSLATION;
 const select = ref();
 const selectInstance = ref(null);
 const current = ref('');
@@ -134,11 +135,11 @@ const schema = computed(() => {
   return yup.object({
     description: yup
         .string()
-        .required('Введите описание'),
+        .required(`${i18n.enterDescription}`),
     amount: yup
         .number()
         .integer()
-        .min(MIN, `Не менее ${MIN} рубля.`),
+        .min(MIN, `${i18n.notLess} ${MIN} ${i18n.rouble}.`),
   });
 });
 
@@ -174,7 +175,7 @@ const makeTransaction = (type, sum) => {
 
 const submitForm = handleSubmit(async (values, {resetForm}) => {
   if (current.value === '') {
-    toast('Выберите категорию', 1);
+    toast(`${i18n.selectCategory}`, 1);
   } else {
     values.categoryId = current.value;
     values.amount = values.amount ? +values.amount : MIN;
@@ -187,9 +188,9 @@ const submitForm = handleSubmit(async (values, {resetForm}) => {
         const username = store.getters.USER.info.username;
         await store.dispatch('updateBill', {total: updatedBill, username});
         resetForm();
-        toast('Запись успешно создана!');
+        toast(`${i18n.recordSuccessfullyCreated}!`);
       } else {
-        toast('Недостаточно средств на счете', 1);
+        toast(`${i18n.notEnoughMoney}`, 1);
       }
     } catch (e) {
       console.log(e.message);

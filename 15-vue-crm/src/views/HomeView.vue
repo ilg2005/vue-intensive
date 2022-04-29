@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="page-title">
-      <h3>Счет</h3>
+      <h3>{{ i18n.account }}</h3>
 
       <button class="btn waves-effect waves-light btn-small" @click="refresh">
         <i class="material-icons">refresh</i>
@@ -29,6 +29,7 @@ import {onMounted, ref} from "vue";
 import {useStore} from "vuex";
 
 const store = useStore();
+const i18n = store.getters.TRANSLATION;
 
 const loading = ref(false);
 const refresh =  () => {

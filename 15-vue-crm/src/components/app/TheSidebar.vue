@@ -20,29 +20,31 @@
 
 <script setup>
 import {defineProps} from "vue";
+import {useStore} from "vuex";
 
 defineProps(['state']);
-
+const store = useStore();
+const i18n = store.getters.TRANSLATION;
 
 const links = [
   {
-    title: 'Счет',
+    title: i18n.account,
     url: '/',
   },
   {
-    title: 'История',
+    title: i18n.history,
     url: '/history',
   },
   {
-    title: 'Планирование',
+    title: i18n.planning,
     url: '/planning',
   },
   {
-    title: 'Новая запись',
+    title: i18n.newRecord,
     url: '/record',
   },
   {
-    title: 'Категории',
+    title: i18n.categories,
     url: '/categories',
   },
 ];
