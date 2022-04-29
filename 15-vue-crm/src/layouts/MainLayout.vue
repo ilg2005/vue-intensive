@@ -48,12 +48,8 @@ watch(error, (newError) => {
   }
 });
 
-watch(username, async () => {
-  try {
+watch(user,  () => {
     isLoading.value = false;
-  } catch (e) {
-    toast(e.message, 1);
-  }
 });
 
 onMounted(async () => {
