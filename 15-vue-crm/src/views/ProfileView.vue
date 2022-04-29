@@ -39,7 +39,6 @@
 <script setup>
 import * as yup from "yup";
 import {useField, useForm} from "vee-validate";
-import {toast} from "@/utils/toast";
 import {onMounted, ref, computed} from "vue";
 import {useStore} from "vuex";
 
@@ -75,7 +74,7 @@ const submitHandler = handleSubmit(async values => {
   values.bill = info.value.bill;
   try {
     await store.dispatch('updateInfo', values);
-    toast(`Данные успешно обновлены!`);
+    window.location.reload();
   } catch (e) {
     console.log(e.message);
   }
