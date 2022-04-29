@@ -1,15 +1,12 @@
 <template>
-  <div class="app-main-layout">
-
+  <AppLoader v-if="isLoading"/>
+  <div class="app-main-layout" v-else>
 
     <TheNavbar @sidebar-state="isOpen = !isOpen" :username="username"/>
-
     <TheSidebar :state="isOpen"/>
 
-
     <main :class="['app-content', {full: !isOpen}]">
-      <AppLoader v-if="isLoading"/>
-      <div class="app-page" v-else>
+      <div class="app-page">
         <router-view/>
       </div>
     </main>
@@ -25,7 +22,7 @@
 <script setup>
 import TheNavbar from "@/components/app/TheNavbar";
 import TheSidebar from "@/components/app/TheSidebar";
-import {computed, onMounted, ref, watch,} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useStore} from "vuex";
 import AppLoader from "@/components/app/AppLoader";
 import messages from "@/utils/messages";
@@ -41,6 +38,7 @@ const user = computed(() => store.getters.USER);
 
 const username = computed(() => user.value ? user.value.info.username : '');
 
+
 const error = computed(() => store.getters.ERROR);
 watch(error, (newError) => {
   if (messages[newError.code]) {
@@ -50,13 +48,20 @@ watch(error, (newError) => {
   }
 });
 
-watch(username, () => {
-  isLoading.value = false;
+watch(username, async () => {
+  try {
+    isLoading.value = false;
+  } catch (e) {
+    toast(e.message, 1);
+  }
 });
 
 onMounted(async () => {
-  await store.dispatch('fetchInfo');
-  await store.dispatch('fetchTranslation');
+  try {
+    await store.dispatch('fetchInfo');
+  } catch (e) {
+    toast(e.message, 1);
+  }
 });
 
 </script>

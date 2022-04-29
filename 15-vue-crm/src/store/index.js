@@ -19,12 +19,14 @@ export default createStore({
         user: null,
         rates: null,
         currency: null,
+        translation: null,
     },
     getters: {
         ERROR: state => state.error,
         USER: state => state.user,
         RATES: state => state.rates,
         CURRENCY: state => state.currency,
+        TRANSLATION: state => state.translation,
     },
     mutations: {
         SET_ERROR(state, error) {
@@ -41,7 +43,11 @@ export default createStore({
         },
         SET_CURRENCY(state, currency) {
             state.currency = currency;
-        }
+        },
+        SET_TRANSLATION(state, translation) {
+            state.translation = translation;
+        },
+
     },
     actions: {
         async fetchInfo({commit}) {
@@ -68,12 +74,13 @@ export default createStore({
             }
         },
 
-        async fetchTranslation(context) {
+        async fetchTranslation(context, locale) {
+            const url = locale === 'ru-RU' ? process.env.VUE_APP_RU_TRANSLATION : process.env.VUE_APP_EN_TRANSLATION;
             try {
-                const res = await fetch(`https://firebasestorage.googleapis.com/v0/b/vue-crm-3afa8.appspot.com/o/en.txt?alt=media&token=54deace7-8902-47de-ba4f-81e9e444cf2f`);
+                const res = await fetch(url);
                 const translation = await res.json();
-                console.log(translation);
-
+                context.commit('SET_TRANSLATION', translation);
+                return translation;
             } catch (e) {
                 context.commit('SET_ERROR', e);
                 throw e;

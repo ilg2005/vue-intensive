@@ -64,8 +64,9 @@ const logout = async () => {
 
 onMounted( () => {
   dropdownInstance.value = M.Dropdown.init(dropdown.value, {constrainWidth: false});
+  const locale = store.getters.USER.info.locale;
 
-  interval.value = setInterval(() => date.value = new Intl.DateTimeFormat('ru-RU', {
+  interval.value = setInterval(() => date.value = new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

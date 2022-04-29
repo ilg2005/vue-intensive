@@ -21,7 +21,8 @@
 <script setup>
 import {defineProps} from "vue";
 
-defineProps(['state'])
+defineProps(['state']);
+
 
 const links = [
   {

@@ -33,8 +33,9 @@ export default {
                 await createUserWithEmailAndPassword(auth, email, password);
                 const uid = await dispatch('getUid');
                 await set(ref(database, `/users/${uid}/info`), {
-                    bill: 100000,
-                    username
+                    bill: 0,
+                    username,
+                    locale: 'ru-RU'
                 });
             } catch (e) {
                 commit('SET_ERROR', e);
