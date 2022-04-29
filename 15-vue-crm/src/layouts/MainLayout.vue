@@ -2,6 +2,8 @@
   <AppLoader v-if="isLoading"/>
   <div class="app-main-layout" v-else>
 
+    <h1>{{translation.profile}}</h1>
+
     <TheNavbar @sidebar-state="isOpen = !isOpen" :username="username"/>
     <TheSidebar :state="isOpen"/>
 
@@ -35,6 +37,7 @@ const store = useStore();
 const isLoading = ref(true);
 
 const user = computed(() => store.getters.USER);
+const translation = computed(() => store.getters.TRANSLATION);
 
 const username = computed(() => user.value ? user.value.info.username : '');
 
@@ -48,7 +51,7 @@ watch(error, (newError) => {
   }
 });
 
-watch(user,  () => {
+watch(translation,  () => {
     isLoading.value = false;
 });
 
