@@ -53,13 +53,16 @@ export default createStore({
         async fetchInfo({commit}) {
             if (auth.currentUser) {
                 const userId = auth.currentUser.uid;
-                await onValue(ref(database, '/users/' + userId), (snapshot) => {
-                    commit('SET_USER', snapshot.val());
-                    return snapshot.val();
-                }, {
-                    onlyOnce: false
-                });
-
+                try {
+                    await onValue(ref(database, '/users/' + userId), (snapshot) => {
+                        commit('SET_USER', snapshot.val());
+                    }, {
+                        onlyOnce: false
+                    });
+                } catch (e) {
+                    commit('SET_ERROR', e);
+                    throw e;
+                }
             }
         },
         async fetchCurrency(context) {
