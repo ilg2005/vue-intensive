@@ -50,18 +50,19 @@ import {useStore} from "vuex";
 import {toast} from "@/utils/toast";
 
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 const MIN = 500;
 const emit = defineEmits(['created']);
 const schema = computed(() => {
   return yup.object({
     name: yup
         .string()
-        .required('Введите название категории'),
+        .required(`${i18n.value.required}`),
     limit: yup
         .number()
         .integer()
-        .min(MIN, `Не менее ${MIN} рублей.`),
+        .min(MIN, `${i18n.value.notLess} ${MIN} ${i18n.value.roubles}.`),
   });
 });
 
@@ -84,7 +85,7 @@ const submitHandler = handleSubmit(async values => {
   try {
     await store.dispatch('createCategory', values);
     emit('created');
-    toast(`Создана категория "${values.name}"`);
+    toast(`${i18n.value.categoryCreated} "${values.name}"`);
   } catch (e) {
     console.log(e.message);
   }

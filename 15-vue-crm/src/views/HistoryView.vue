@@ -46,7 +46,8 @@ import _ from 'lodash';
 
 
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
 const isLoading = ref(true);
 const allRecords = ref();
@@ -73,7 +74,7 @@ onMounted(async () => {
     recs.map(record => {
       record.category = categories.find(category => category.id === record.categoryId).name;
       record.class = record.type === 'outcome' ? 'red' : 'green';
-      record.typeDescr = record.type === 'outcome' ? i18n.outcome : i18n.income;
+      record.typeDescr = record.type === 'outcome' ? i18n.value.outcome : i18n.value.income;
       record.date = computed(() => dateFilter(record.created));
     });
 

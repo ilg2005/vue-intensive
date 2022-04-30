@@ -26,7 +26,8 @@ import AppLoader from "@/components/app/AppLoader";
 import currencyFilter from "@/utils/currencyFilter";
 
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
 const loading = ref(true);
 

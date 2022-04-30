@@ -38,11 +38,13 @@
 </template>
 
 <script setup>
-import {defineProps} from "vue";
+import {defineProps, computed} from "vue";
 import currencyFilter from "@/utils/currencyFilter";
 import {useStore} from "vuex";
 
-const i18n = useStore().getters.TRANSLATION;
+const store = useStore();
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
 defineProps({
   records: {

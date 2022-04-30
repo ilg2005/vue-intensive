@@ -38,7 +38,8 @@ import {useStore} from "vuex";
 import dateFilter from "@/utils/dateFilter";
 
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
 const loading = ref(true);
 const currencies = ['RUB', 'USD', 'EUR'];

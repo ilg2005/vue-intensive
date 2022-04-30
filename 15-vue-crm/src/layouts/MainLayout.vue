@@ -35,10 +35,11 @@ const store = useStore();
 const isLoading = ref(true);
 
 const user = computed(() => store.getters.USER);
-const translation = computed(() => store.getters.TRANSLATION);
 
 const username = computed(() => user.value ? user.value.info.username : '');
 
+const locale = computed(() => user.value.info.locale);
+const translation = computed(() => store.getters.TRANSLATION[locale.value]);
 
 const error = computed(() => store.getters.ERROR);
 watch(error, (newError) => {

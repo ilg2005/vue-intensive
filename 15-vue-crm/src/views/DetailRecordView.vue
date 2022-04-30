@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref, computed} from "vue";
 import {toast} from "@/utils/toast";
 import {useStore} from "vuex";
 import {useRoute} from "vue-router";
@@ -42,7 +42,8 @@ import currencyFilter from "@/utils/currencyFilter";
 import dateFilter from "@/utils/dateFilter";
 
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 const route = useRoute();
 const isLoading = ref(true);
 const record = ref();

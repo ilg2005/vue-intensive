@@ -104,7 +104,8 @@ import {useField, useForm} from "vee-validate";
 import {toast} from "@/utils/toast";
 
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 const select = ref();
 const selectInstance = ref(null);
 const current = ref('');
@@ -135,11 +136,11 @@ const schema = computed(() => {
   return yup.object({
     description: yup
         .string()
-        .required(`${i18n.enterDescription}`),
+        .required(`${i18n.value.enterDescription}`),
     amount: yup
         .number()
         .integer()
-        .min(MIN, `${i18n.notLess} ${MIN} ${i18n.rouble}.`),
+        .min(MIN, `${i18n.value.notLess} ${MIN} ${i18n.value.rouble}.`),
   });
 });
 
@@ -175,7 +176,7 @@ const makeTransaction = (type, sum) => {
 
 const submitForm = handleSubmit(async (values, {resetForm}) => {
   if (current.value === '') {
-    toast(`${i18n.selectCategory}`, 1);
+    toast(`${i18n.value.selectCategory}`, 1);
   } else {
     values.categoryId = current.value;
     values.amount = values.amount ? +values.amount : MIN;
@@ -188,9 +189,9 @@ const submitForm = handleSubmit(async (values, {resetForm}) => {
         const username = store.getters.USER.info.username;
         await store.dispatch('updateBill', {total: updatedBill, username});
         resetForm();
-        toast(`${i18n.recordSuccessfullyCreated}!`);
+        toast(`${i18n.value.recordSuccessfullyCreated}!`);
       } else {
-        toast(`${i18n.notEnoughMoney}`, 1);
+        toast(`${i18n.value.notEnoughMoney}`, 1);
       }
     } catch (e) {
       console.log(e.message);

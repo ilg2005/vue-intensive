@@ -56,7 +56,8 @@ const interval = ref();
 defineProps(['username']);
 
 const store = useStore();
-const i18n = computed(() => store.getters.TRANSLATION);
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
 const logout = async () => {
   await store.dispatch('logout');

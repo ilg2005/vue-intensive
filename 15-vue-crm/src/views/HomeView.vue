@@ -25,11 +25,12 @@
 import HomeBill from "@/components/home/HomeBill";
 import HomeCurrency from "@/components/home/HomeCurrency";
 import AppLoader from "@/components/app/AppLoader";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, computed} from "vue";
 import {useStore} from "vuex";
 
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
 const loading = ref(false);
 const refresh =  () => {

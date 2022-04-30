@@ -68,7 +68,8 @@ import {useField, useForm} from "vee-validate";
 import {toast} from "@/utils/toast";
 
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 const select = ref();
 const loading = ref(true);
 
@@ -111,11 +112,11 @@ const schema = computed(() => {
   return yup.object({
     editName: yup
         .string()
-        .required(`${i18n.enterNewName}`),
+        .required(`${i18n.value.enterNewName}`),
     editLimit: yup
         .number()
         .integer()
-        .min(MIN, `${i18n.notLess} ${MIN} ${i18n.roubles}.`),
+        .min(MIN, `${i18n.value.notLess} ${MIN} ${i18n.value.roubles}.`),
   });
 });
 
@@ -135,13 +136,13 @@ let {
 
 const updateHandler = handleSubmit(async values => {
   if (current.value === '') {
-    toast(`${i18n.selectCategory}`, 1);
+    toast(`${i18n.value.selectCategory}`, 1);
   } else {
     values.id = current.value;
     try {
       await store.dispatch('updateCategory', values);
       fetchCategories();
-      toast(`${i18n.categorySuccessfullyUpdated}!`);
+      toast(`${i18n.value.categorySuccessfullyUpdated}!`);
     } catch (e) {
       console.log(e.message);
     }

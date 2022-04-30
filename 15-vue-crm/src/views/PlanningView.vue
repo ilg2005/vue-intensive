@@ -34,11 +34,12 @@
 import {useStore} from "vuex";
 import currencyFilter from "@/utils/currencyFilter";
 import AppLoader from "@/components/app/AppLoader";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, computed} from "vue";
 import {toast} from "@/utils/toast";
 
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
 const user = store.getters.USER;
 const isLoading = ref(true);
@@ -62,7 +63,7 @@ onMounted(async () => {
 
         element.percent = spentAmount * 100 / element.limit;
         const tooltipValue = element.limit - spentAmount;
-        element.rest = tooltipValue < 0 ? `${i18n.overdraft} ${currencyFilter(Math.abs(tooltipValue), 'RUB')}` : `${i18n.balance} ${currencyFilter(Math.abs(tooltipValue), 'RUB')}`;
+        element.rest = tooltipValue < 0 ? `${i18n.value.overdraft} ${currencyFilter(Math.abs(tooltipValue), 'RUB')}` : `${i18n.value.balance} ${currencyFilter(Math.abs(tooltipValue), 'RUB')}`;
       });
     categories.value = cats;
     isLoading.value = false;

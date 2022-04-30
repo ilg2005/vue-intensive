@@ -19,32 +19,33 @@
 </template>
 
 <script setup>
-import {defineProps} from "vue";
+import {computed, defineProps} from "vue";
 import {useStore} from "vuex";
 
 defineProps(['state']);
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
 const links = [
   {
-    title: i18n.account,
+    title: i18n.value.account,
     url: '/',
   },
   {
-    title: i18n.history,
+    title: i18n.value.history,
     url: '/history',
   },
   {
-    title: i18n.planning,
+    title: i18n.value.planning,
     url: '/planning',
   },
   {
-    title: i18n.newRecord,
+    title: i18n.value.newRecord,
     url: '/record',
   },
   {
-    title: i18n.categories,
+    title: i18n.value.categories,
     url: '/categories',
   },
 ];

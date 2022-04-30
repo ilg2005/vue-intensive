@@ -44,7 +44,8 @@ import {useStore} from "vuex";
 
 const info = ref();
 const store = useStore();
-const i18n = store.getters.TRANSLATION;
+const locale = computed(() => store.getters.USER.info.locale);
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
 let isRussian = ref(true);
 
@@ -58,7 +59,7 @@ const schema = computed(() => {
   return yup.object({
     username: yup
         .string()
-        .required('Введите имя'),
+        .required(i18n.value.required),
   });
 });
 
