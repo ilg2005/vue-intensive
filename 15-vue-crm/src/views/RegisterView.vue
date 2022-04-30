@@ -1,7 +1,9 @@
 <template>
   <form class="card auth-card" @submit.prevent="submitHandler">
     <div class="card-content">
-      <span class="card-title">Домашняя бухгалтерия</span>
+      <p class="card-title">{{ i18n.homeBanking }}
+        <a class="i18n" @click.prevent="changeLocale">{{ isRussian ? 'En' : 'Ru' }}</a>
+      </p>
       <div class="input-field">
         <input
             id="register-email"
@@ -21,7 +23,7 @@
             v-model.trim="password"
             @blur="passwordBlur"
         >
-        <label for="register-password">Пароль</label>
+        <label for="register-password">{{ i18n.password }}</label>
         <small class="helper-text invalid" v-if="passwordError && passwordMeta.touched">{{ passwordError }}</small>
       </div>
       <div class="input-field">
@@ -32,7 +34,7 @@
             v-model.trim="username"
             @blur="usernameBlur"
         >
-        <label for="register-username">Имя</label>
+        <label for="register-username">{{ i18n.username }}</label>
         <small class="helper-text invalid" v-if="usernameError && usernameMeta.touched">{{ usernameError }}</small>
       </div>
       <p>
@@ -40,7 +42,7 @@
           <input type="checkbox"
                  v-model="agree"
           />
-          <span>С правилами согласен</span>
+          <span>{{ i18n.agree }}</span>
         </label>
       </p>
       <small class="helper-text invalid" v-if="agreeError">{{ agreeError }}</small>
@@ -51,14 +53,14 @@
             class="btn waves-effect waves-light auth-submit"
             type="submit"
         >
-          Зарегистрироваться
+          {{ i18n.signUp }}
           <i class="material-icons right">send</i>
         </button>
       </div>
 
       <p class="center">
-        Уже есть аккаунт?
-        <router-link to="/login">Войти!</router-link>
+        {{ i18n.haveAccount }}?
+        <router-link to="/login">{{ i18n.signIn }}!</router-link>
       </p>
     </div>
   </form>
@@ -68,12 +70,21 @@
 <script setup>
 import {useForm, useField} from 'vee-validate';
 import * as yup from 'yup';
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import {useRouter} from "vue-router";
 import {useStore} from "vuex";
 
 const router = useRouter();
 const store = useStore();
+
+const isRussian = ref(true);
+const locale = computed(() => isRussian.value ? 'ru-RU' : 'en-US');
+
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
+
+const changeLocale = () => {
+  isRussian.value = !isRussian.value;
+}
 
 // Define a validation schema
 const MIN_LENGTH = 8;
@@ -81,18 +92,18 @@ const schema = computed(() => {
   return yup.object({
     email: yup
         .string()
-        .required('Это поле должно быть заполнено')
-        .email('Введите валидный email'),
+        .required(`${i18n.value['required']}`)
+        .email(`${i18n.value['invalidEmail']}`),
     password: yup
         .string()
-        .required('Это поле должно быть заполнено')
-        .min(MIN_LENGTH, `Пароль должен содержать не менее ${MIN_LENGTH} символов.`),
+        .required(`${i18n.value['required']}`)
+        .min(MIN_LENGTH, `${i18n.value['notLess']} ${MIN_LENGTH} ${i18n.value['chars']}.`),
     username: yup
         .string()
-        .required('Это поле должно быть заполнено'),
+        .required(`${i18n.value['required']}`),
     agree: yup
         .bool()
-        .required('Выберите для регистрации')
+        .required(`${i18n.value['registrationSelect']}`)
   });
 });
 
@@ -118,6 +129,7 @@ const {
 const {value: agree, errorMessage: agreeError,} = useField('agree');
 
 const submitHandler = handleSubmit(async values => {
+  values.locale = locale.value;
   try {
     await store.dispatch('register', values);
     await router.push('/');
@@ -130,5 +142,9 @@ const submitHandler = handleSubmit(async values => {
 </script>
 
 <style scoped>
-
+.i18n {
+  float: right;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
 </style>

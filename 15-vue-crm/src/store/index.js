@@ -89,8 +89,8 @@ export default createStore({
             try {
                 const resRU = await fetch(urlRU);
                 const resEN = await fetch(urlEN);
-                translation.ru = await resRU.json();
-                translation.en = await resEN.json();
+                translation['ru-RU'] = await resRU.json();
+                translation['en-US'] = await resEN.json();
                 context.commit('SET_TRANSLATION', translation);
                 return translation;
             } catch (e) {

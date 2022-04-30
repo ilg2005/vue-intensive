@@ -63,7 +63,7 @@ const store = useStore();
 
 
 const isRussian = ref(true);
-const locale = computed(() => isRussian.value ? 'ru' : 'en');
+const locale = computed(() => isRussian.value ? 'ru-RU' : 'en-US');
 
 const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 

@@ -28,14 +28,14 @@ export default {
                 throw e;
             }
         },
-        async register({commit, dispatch}, {email, password, username}) {
+        async register({commit, dispatch}, {email, password, username, locale}) {
             try {
                 await createUserWithEmailAndPassword(auth, email, password);
                 const uid = await dispatch('getUid');
                 await set(ref(database, `/users/${uid}/info`), {
                     bill: 0,
                     username,
-                    locale: 'ru-RU'
+                    locale
                 });
             } catch (e) {
                 commit('SET_ERROR', e);
