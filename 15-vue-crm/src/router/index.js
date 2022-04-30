@@ -85,7 +85,10 @@ router.beforeEach((to, _, next) => {
   const requiresAuth = to.meta.auth;
   if (requiresAuth && currentUser === null) {
     next('/login?message=login');
-    toast(messages['login']);
+    if (to.path !== '/') {
+      toast(messages['login']);
+    }
+
   } else {
     next();
   }
