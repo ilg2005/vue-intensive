@@ -49,7 +49,7 @@ watch(error, (newError) => {
   }
 });
 
-watch(translation,  () => {
+watch(user,  () => {
     isLoading.value = false;
 });
 

@@ -20,6 +20,7 @@ export default createStore({
         rates: null,
         currency: null,
         translation: null,
+        isRussian: true,
     },
     getters: {
         ERROR: state => state.error,
@@ -47,17 +48,19 @@ export default createStore({
         SET_TRANSLATION(state, translation) {
             state.translation = translation;
         },
+        SET_LOCALE(state, isRussian) {
+            state.isRussian = isRussian;
+        }
 
     },
     actions: {
-        async fetchInfo({commit, dispatch}) {
+        async fetchInfo({commit}) {
             if (auth.currentUser) {
                 const userId = auth.currentUser.uid;
                 try {
                     await onValue(ref(database, '/users/' + userId), (snapshot) => {
                         const user = snapshot.val();
                         commit('SET_USER', user);
-                        dispatch('fetchTranslation', user.info.locale);
                     }, {
                         onlyOnce: false
                     });
@@ -79,12 +82,13 @@ export default createStore({
             }
         },
 
-        async fetchTranslation(context, locale) {
-            const url = locale === 'ru-RU' ? process.env.VUE_APP_RU_TRANSLATION : process.env.VUE_APP_EN_TRANSLATION;
+        async fetchTranslation(context, isRussian) {
+            const url = isRussian ? process.env.VUE_APP_RU_TRANSLATION : process.env.VUE_APP_EN_TRANSLATION;
             try {
                 const res = await fetch(url);
                 const translation = await res.json();
                 context.commit('SET_TRANSLATION', translation);
+                context.commit('SET_LOCALE', isRussian);
                 return translation;
             } catch (e) {
                 context.commit('SET_ERROR', e);

@@ -1,7 +1,9 @@
 <template>
   <form class="card auth-card" @submit.prevent="submitHandler">
     <div class="card-content">
-      <span class="card-title">Домашняя бухгалтерия</span>
+      <p class="card-title">{{ i18n.homeBanking }}
+        <a class="i18n" @click.prevent="changeLocale">{{ isRussian ? 'En' : 'Ru' }}</a>
+      </p>
       <div class="input-field">
         <input
             id="login-email"
@@ -21,7 +23,7 @@
             v-model.trim="password"
             @blur="passwordBlur"
         >
-        <label for="login-password">Пароль</label>
+        <label for="login-password">{{ i18n.password }}</label>
         <small class="helper-text invalid" v-if="passwordError && passwordMeta.touched">{{ passwordError }}</small>
       </div>
     </div>
@@ -31,48 +33,59 @@
             class="btn waves-effect waves-light auth-submit"
             type="submit"
         >
-          Войти
+          {{ i18n.signIn }}
           <i class="material-icons right">send</i>
         </button>
       </div>
 
       <p class="center">
-        Нет аккаунта?
-        <router-link to="/register">Зарегистрироваться</router-link>
+        {{ i18n.noAccount }}?
+        <router-link to="/register">{{ i18n.signUp }}</router-link>
       </p>
     </div>
   </form>
+
 </template>
 
 <script setup>
-import { useForm, useField } from 'vee-validate';
+import {useForm, useField} from 'vee-validate';
 import * as yup from 'yup';
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useRouter, useRoute} from "vue-router";
 import {toast} from "@/utils/toast";
 import {useStore} from "vuex";
 
-onMounted(() => {
-  if (route.query.message === 'logout') {
-    toast('Вы вышли из системы');
-  }
-});
 
 const route = useRoute();
 const router = useRouter();
 
 const store = useStore();
 
+const i18n = computed(() => store.getters.TRANSLATION);
+
+const isRussian = ref(true);
+
+onMounted(() => {
+  if (route.query.message === 'logout') {
+    toast(i18n.value['loggedOut']);
+  }
+});
+
+
+const changeLocale = () => {
+  isRussian.value = !isRussian.value;
+}
+
 // Define a validation schema
 const schema = computed(() => {
   return yup.object({
     email: yup
         .string()
-        .required('Это поле должно быть заполнено')
-        .email('Введите валидный email'),
+        .required(`${i18n.value['required']}`)
+        .email(`${i18n.value['invalidEmail']}`),
     password: yup
         .string()
-        .required('Это поле должно быть заполнено'),
+        .required(`${i18n.value['required']}`),
   });
 });
 
@@ -82,8 +95,13 @@ const {handleSubmit} = useForm({
 });
 
 // No need to define rules for fields
-const { value: email, errorMessage: emailError, meta: emailMeta, handleBlur: emailBlur } = useField('email');
-const { value: password, errorMessage: passwordError, meta: passwordMeta, handleBlur: passwordBlur } = useField('password');
+const {value: email, errorMessage: emailError, meta: emailMeta, handleBlur: emailBlur} = useField('email');
+const {
+  value: password,
+  errorMessage: passwordError,
+  meta: passwordMeta,
+  handleBlur: passwordBlur
+} = useField('password');
 
 const submitHandler = handleSubmit(async values => {
   try {
@@ -96,4 +114,12 @@ const submitHandler = handleSubmit(async values => {
 });
 
 </script>
+
+<style scoped>
+.i18n {
+  float: right;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+</style>
 
