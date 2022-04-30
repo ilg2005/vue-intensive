@@ -62,6 +62,9 @@ const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 const logout =  () => {
   router.push('/login?message=logout');
   store.dispatch('logout');
+  setTimeout(() => {
+    store.commit('SET_USER', null);
+  }, 1000);
 }
 
 onMounted( () => {

@@ -19,10 +19,9 @@ export default {
                 throw e;
             }
         },
-        async logout(context) {
+        async logout() {
             try {
                 await auth.signOut();
-                context.commit('SET_USER', null);
             } catch (e) {
                 console.log(e);
                 throw e;
