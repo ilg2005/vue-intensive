@@ -82,13 +82,16 @@ export default createStore({
             }
         },
 
-        async fetchTranslation(context, isRussian) {
-            const url = isRussian ? process.env.VUE_APP_RU_TRANSLATION : process.env.VUE_APP_EN_TRANSLATION;
+        async fetchTranslation(context) {
+            const urlRU = process.env.VUE_APP_RU_TRANSLATION;
+            const urlEN = process.env.VUE_APP_EN_TRANSLATION;
+            const translation = {};
             try {
-                const res = await fetch(url);
-                const translation = await res.json();
+                const resRU = await fetch(urlRU);
+                const resEN = await fetch(urlEN);
+                translation.ru = await resRU.json();
+                translation.en = await resEN.json();
                 context.commit('SET_TRANSLATION', translation);
-                context.commit('SET_LOCALE', isRussian);
                 return translation;
             } catch (e) {
                 context.commit('SET_ERROR', e);

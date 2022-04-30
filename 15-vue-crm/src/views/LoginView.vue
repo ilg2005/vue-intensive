@@ -61,9 +61,11 @@ const router = useRouter();
 
 const store = useStore();
 
-const i18n = computed(() => store.getters.TRANSLATION);
 
 const isRussian = ref(true);
+const locale = computed(() => isRussian.value ? 'ru' : 'en');
+
+const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
 onMounted(() => {
   if (route.query.message === 'logout') {
