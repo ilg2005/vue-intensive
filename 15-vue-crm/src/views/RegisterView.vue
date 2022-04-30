@@ -1,4 +1,8 @@
 <template>
+  <Teleport to="head">
+    <title>{{ i18n.signUp }} | {{ i18n.homeBanking }}</title>
+  </Teleport>
+
   <form class="card auth-card" @submit.prevent="submitHandler">
     <div class="card-content">
       <p class="card-title">{{ i18n.homeBanking }}

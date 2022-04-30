@@ -1,6 +1,10 @@
 <template>
   <div>
     <div class="page-title">
+      <Teleport to="head">
+        <title>{{ i18n.profile }} | {{ i18n.homeBanking }}</title>
+      </Teleport>
+
       <h3>{{ i18n.profile }}</h3>
     </div>
 
@@ -76,7 +80,6 @@ const submitHandler = handleSubmit(async values => {
   values.bill = info.value.bill;
   try {
     await store.dispatch('updateInfo', values);
-    window.location.reload();
   } catch (e) {
     console.log(e.message);
   }

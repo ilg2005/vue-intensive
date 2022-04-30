@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="page-title">
+      <Teleport to="head">
+        <title>{{ i18n.categories }} | {{ i18n.homeBanking }}</title>
+      </Teleport>
       <h3>{{ i18n.categories }}</h3>
     </div>
     <section>

@@ -1,6 +1,6 @@
 <template>
   <AppLoader v-if="isLoading"/>
-  <div class="app-main-layout" v-else>
+  <div class="app-main-layout" v-else :key="locale">
 
     <TheNavbar @sidebar-state="isOpen = !isOpen" :username="username"/>
     <TheSidebar :state="isOpen"/>

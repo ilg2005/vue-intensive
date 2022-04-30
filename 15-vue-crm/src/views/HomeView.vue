@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="page-title">
+      <Teleport to="head">
+        <title>{{ i18n.account }} | {{ i18n.homeBanking }}</title>
+      </Teleport>
       <h3>{{ i18n.account }}</h3>
 
       <button class="btn waves-effect waves-light btn-small" @click="refresh">

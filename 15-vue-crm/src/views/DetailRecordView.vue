@@ -1,4 +1,8 @@
 <template>
+  <Teleport to="head">
+    <title>{{ i18n.recordsHistory }} | {{ i18n.homeBanking }}</title>
+  </Teleport>
+
   <AppLoader v-if="isLoading"/>
   <div v-else-if="record">
     <div>

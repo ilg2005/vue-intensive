@@ -1,4 +1,8 @@
 <template>
+  <Teleport to="head">
+    <title>{{ i18n.planning }} | {{ i18n.homeBanking }}</title>
+  </Teleport>
+
   <AppLoader v-if="isLoading"/>
   <p v-else-if="!categories.length" class="text-center">{{ i18n.noCategories }}
     <router-link to="/categories"> {{ i18n.addNewCategory }} ?</router-link>

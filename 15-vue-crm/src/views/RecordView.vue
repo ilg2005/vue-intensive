@@ -1,6 +1,10 @@
 <template>
   <div>
     <div class="page-title">
+      <Teleport to="head">
+        <title>{{ i18n.newRecord }} | {{ i18n.homeBanking }}</title>
+      </Teleport>
+
       <h3>{{ i18n.newRecord }}</h3>
     </div>
 

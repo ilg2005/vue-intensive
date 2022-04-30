@@ -59,6 +59,7 @@ const store = useStore();
 const locale = computed(() => store.getters.USER.info.locale);
 const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
+
 const logout =  () => {
   router.push('/login?message=logout');
   store.dispatch('logout');
@@ -78,6 +79,7 @@ onMounted( () => {
     minute: 'numeric',
     second: 'numeric',
   }).format(new Date()), 1000);
+
 })
 
 onBeforeUnmount(() => {
