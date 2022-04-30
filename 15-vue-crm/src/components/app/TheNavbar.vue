@@ -28,9 +28,9 @@
             </li>
             <li class="divider" tabindex="-1"></li>
             <li>
-              <a href="#" class="black-text" @click.prevent="logout">
+              <router-link to="/login" class="black-text" @click.prevent="logout">
                 <i class="material-icons">assignment_return</i>{{ i18n.logout }}
-              </a>
+              </router-link>
             </li>
           </ul>
         </li>
@@ -59,16 +59,15 @@ const store = useStore();
 const locale = computed(() => store.getters.USER.info.locale);
 const i18n = computed(() => store.getters.TRANSLATION[locale.value]);
 
-const logout = async () => {
-  await store.dispatch('logout');
-  await router.push('/login?message=logout');
+const logout =  () => {
+  router.push('/login?message=logout');
+  store.dispatch('logout');
 }
 
 onMounted( () => {
   dropdownInstance.value = M.Dropdown.init(dropdown.value, {constrainWidth: false});
-  const locale = store.getters.USER.info.locale;
 
-  interval.value = setInterval(() => date.value = new Intl.DateTimeFormat(locale, {
+  interval.value = setInterval(() => date.value = new Intl.DateTimeFormat(locale.value, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

@@ -38,8 +38,8 @@ const user = computed(() => store.getters.USER);
 
 const username = computed(() => user.value ? user.value.info.username : '');
 
-const locale = computed(() => user.value.info.locale);
-const translation = computed(() => store.getters.TRANSLATION[locale.value]);
+const locale = computed(() => user.value ? user.value.info.locale : '');
+const translation = computed(() => user.value ? store.getters.TRANSLATION[locale.value] : '');
 
 const error = computed(() => store.getters.ERROR);
 watch(error, (newError) => {
