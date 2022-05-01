@@ -4,8 +4,10 @@ import {firebaseConfig} from "../../firebase.config.js";
 import {getAuth} from "firebase/auth";
 import {initializeApp} from "firebase/app";
 
+/*
 import {toast} from "@/utils/toast";
 import messages from "@/utils/messages";
+*/
 
 
 const firebase = initializeApp(firebaseConfig);
