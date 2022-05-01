@@ -6,12 +6,12 @@ import {initializeApp} from "firebase/app";
 import {firebaseConfig} from "../../firebase.config.js";
 import {getAuth} from "firebase/auth";
 import {getDatabase, ref, onValue, set} from "firebase/database";
-
+import {getStorage, ref as refStorage, getDownloadURL} from "firebase/storage";
 
 const firebase = initializeApp(firebaseConfig);
 const auth = getAuth(firebase);
 const database = getDatabase(firebase);
-
+const storage = getStorage();
 
 export default createStore({
     state: {
@@ -83,10 +83,10 @@ export default createStore({
         },
 
         async fetchTranslation(context) {
-            const urlRU = process.env.VUE_APP_RU_TRANSLATION;
-            const urlEN = process.env.VUE_APP_EN_TRANSLATION;
             const translation = {};
             try {
+                const urlRU = await getDownloadURL(refStorage(storage, 'ru.json'));
+                const urlEN = await getDownloadURL(refStorage(storage, 'en.json'));
                 const resRU = await fetch(urlRU);
                 const resEN = await fetch(urlEN);
                 translation['ru-RU'] = await resRU.json();
