@@ -1,5 +1,10 @@
 <template>
-  <AppLoader v-if="isLoading"/>
+  <AppLoader
+      v-if="isLoading"
+      class="grey darken-1 empty-layout"
+      spinner="spinner-yellow-only"
+      size="big"
+  />
   <component :is="view" v-else>
     <router-view/>
   </component>
