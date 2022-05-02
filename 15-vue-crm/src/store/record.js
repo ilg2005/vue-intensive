@@ -30,6 +30,7 @@ export default {
                 await set(ref(database, `/users/${uid}/info`), {
                     bill: payload.total,
                     username: payload.username,
+                    locale: payload.locale,
                 });
             } catch (e) {
                 context.commit('SET_ERROR', e);

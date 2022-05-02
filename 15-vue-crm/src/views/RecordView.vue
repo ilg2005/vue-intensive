@@ -191,7 +191,7 @@ const submitForm = handleSubmit(async (values, {resetForm}) => {
       if (updatedBill !== false) {
         await store.dispatch('createRecord', values);
         const username = store.getters.USER.info.username;
-        await store.dispatch('updateBill', {total: updatedBill, username});
+        await store.dispatch('updateBill', {total: updatedBill, username, locale: locale.value});
         resetForm();
         toast(`${i18n.value.recordSuccessfullyCreated}!`);
       } else {
