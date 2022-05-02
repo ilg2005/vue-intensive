@@ -1,6 +1,6 @@
 import {initializeApp} from "firebase/app";
 import {firebaseConfig} from "../../firebase.config.js";
-import {getDatabase, ref, push, set, onValue} from "firebase/database";
+import {getDatabase, ref, push, set, onValue, update} from "firebase/database";
 
 const firebase = initializeApp(firebaseConfig);
 const database = getDatabase(firebase);
@@ -24,14 +24,12 @@ export default {
                 throw e;
             }
         },
-        async updateBill(context, payload) {
+        async updateBill(context, {total}) {
             try {
                 const uid = await context.dispatch('getUid');
-                await set(ref(database, `/users/${uid}/info`), {
-                    bill: payload.total,
-                    username: payload.username,
-                    locale: payload.locale,
-                });
+                const updates = {};
+                updates[`/users/${uid}/info/bill`] = total;
+                await update(ref(database), updates);
             } catch (e) {
                 context.commit('SET_ERROR', e);
                 throw e;
