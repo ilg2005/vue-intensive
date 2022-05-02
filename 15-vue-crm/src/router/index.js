@@ -74,6 +74,10 @@ const routes = [
         component: () => import(/* webpackChunkName: "record" */ '../views/RecordView.vue'),
         meta: {layout: 'main', auth: true}
     },
+    {
+        path: "/:catchAll(.*)",
+        redirect: "/"
+    }
 ]
 
 const router = createRouter({
